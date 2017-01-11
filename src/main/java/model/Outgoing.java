@@ -7,12 +7,12 @@ import java.time.LocalDate;
  */
 public class Outgoing extends Document {
     private Person recipient;
-    private DeliveryMethods deliveryMethod;
+    private String deliveryMethod;
 
     public Outgoing() {
     }
 
-    public Outgoing(int id, String name, String text, String regNumber, LocalDate date, Person author, Person recipient, DeliveryMethods deliveryMethod) {
+    public Outgoing(int id, String name, String text, String regNumber, LocalDate date, Person author, Person recipient, String deliveryMethod) {
         super(id, name, text, regNumber, date, author);
         this.recipient = recipient;
         this.deliveryMethod = deliveryMethod;
@@ -26,11 +26,11 @@ public class Outgoing extends Document {
         this.recipient = recipient;
     }
 
-    public DeliveryMethods getDeliveryMethod() {
+    public String getDeliveryMethod() {
         return deliveryMethod;
     }
 
-    public void setDeliveryMethod(DeliveryMethods deliveryMethod) {
+    public void setDeliveryMethod(String deliveryMethod) {
         this.deliveryMethod = deliveryMethod;
     }
 
