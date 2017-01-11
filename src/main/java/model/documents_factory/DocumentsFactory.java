@@ -15,7 +15,6 @@ public class DocumentsFactory {
         incomingFactory = new IncomingFactory();
         outgoingFactory = new OutgoingFactory();
         taskFactory = new TaskFactory();
-
     }
 
     public Document createDocument(FactoryEnum factoryEnum) throws InstantiationException, IllegalAccessException {

@@ -3,16 +3,14 @@ import model.Person;
 import model.documents_factory.DocumentsFactory;
 import model.documents_factory.FactoryEnum;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import static model.documents_factory.FactoryEnum.*;
 
 
 public class Main {
     private static DocumentsFactory factory = DocumentsFactory.INSTANCE;
-    private static TreeMap<Person, ArrayList<Document>> result = new TreeMap<>();
+    private static TreeMap<Person, TreeSet<Document>> result = new TreeMap<>();
 
     public static void main(String[] args) throws IllegalAccessException, InstantiationException {
 
@@ -22,11 +20,11 @@ public class Main {
             createDocument(TASK);
         }
 
-        for (Map.Entry<Person, ArrayList<Document>> entry : result.entrySet()) {
+        for (Map.Entry<Person, TreeSet<Document>> entry : result.entrySet()) {
             System.out.println(entry.getKey());
-            ArrayList<Document> documents = entry.getValue();
+            TreeSet<Document> documents = entry.getValue();
             for (Document document : documents) {
-                System.out.println("  "+document);
+                System.out.println("    "+document);
             }
         }
     }
@@ -38,7 +36,7 @@ public class Main {
            result.get(author).add(document);
        }
        else {
-           result.put(author, new ArrayList<>());
+           result.put(author, new TreeSet<>(Arrays.asList(document)));
        }
     }
 }
