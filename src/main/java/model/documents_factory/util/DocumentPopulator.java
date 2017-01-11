@@ -19,12 +19,12 @@ public class DocumentPopulator {
     private static char[] numbers = "0123456789".toCharArray();
     private static List<Person> persons = new ArrayList<Person>(){
         {
-            add(new Person("Petr", "Petrov", "Petrovich","manager"));
-            add(new Person("Ivan", "Ivanov", "Ivanovich","engineer"));
-            add(new Person("Ivan", "Petrov", "Vasilievich","clerk"));
-            add(new Person("Nikolay", "Nikolaev", "Nikolaevich","security"));
-            add(new Person("Vasya", "Vasiliev", "Vasilievich","tester"));
-            add(new Person("Petr", "Vasiliev", "Vasilievich","cleaner"));
+            add(new Person(getRandomInt(0,10000), "Petr", "Petrov", "Petrovich","manager"));
+            add(new Person(getRandomInt(0,10000), "Ivan", "Ivanov", "Ivanovich","engineer"));
+            add(new Person(getRandomInt(0,10000), "Ivan", "Petrov", "Vasilievich","clerk"));
+            add(new Person(getRandomInt(0,10000), "Nikolay", "Nikolaev", "Nikolaevich","security"));
+            add(new Person(getRandomInt(0,10000), "Vasya", "Vasiliev", "Vasilievich","tester"));
+            add(new Person(getRandomInt(0,10000), "Petr", "Vasiliev", "Vasilievich","cleaner"));
 
         }
 

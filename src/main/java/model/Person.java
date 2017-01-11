@@ -3,13 +3,14 @@ package model;
 /**
  * Created by dkarachurin on 09.01.2017.
  */
-public class Person implements Comparable<Person>{
+public class Person extends Staff implements Comparable<Person>{
     private String firstName;
     private String lastName;
     private String middleName;
     private String position;
 
-    public Person(String firstName, String lastName, String middleName, String position) {
+    public Person(int id, String firstName, String lastName, String middleName, String position) {
+        super(id);
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
