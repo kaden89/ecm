@@ -17,7 +17,7 @@ public class DocumentPopulator {
     private static ThreadLocalRandom random = ThreadLocalRandom.current();
     private static char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
     private static char[] numbers = "0123456789".toCharArray();
-    private static List<Person> personList = new ArrayList<Person>(){
+    private static List<Person> persons = new ArrayList<Person>(){
         {
             add(new Person("Petr", "Petrov", "Petrovich","manager"));
             add(new Person("Ivan", "Ivanov", "Ivanovich","engineer"));
@@ -50,6 +50,8 @@ public class DocumentPopulator {
     }
 
     public static String getRandomString(int length){
+        checkLength(length);
+
         char[] text = new char[length];
         for (int i = 0; i < length; i++)
         {
@@ -59,6 +61,9 @@ public class DocumentPopulator {
     }
 
     public static LocalDate getRandomDate(LocalDate min, LocalDate max){
+        if (min.isAfter(max)) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
         long minDay = min.toEpochDay();
         long maxDay = max.toEpochDay();
         long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
@@ -67,8 +72,8 @@ public class DocumentPopulator {
     }
 
     public static Person getRandomPerson(){
-        if (personList.size()!=0)
-         return personList.get(random.nextInt(personList.size()));
+        if (persons.size()!=0)
+         return persons.get(random.nextInt(persons.size()));
         else return null;
     }
 
@@ -77,6 +82,7 @@ public class DocumentPopulator {
     }
 
     public static String getRandomRegNumber(int length){
+        checkLength(length);
 
         char[] text = new char[length];
 
@@ -92,5 +98,11 @@ public class DocumentPopulator {
 
     private static void checkNumber(String regNumber){
         if (documents.containsKey(regNumber)) throw new DocumentExistsException();
+    }
+
+    private static void checkLength(int length){
+        if (length <= 0) {
+            throw new IllegalArgumentException("Length must be greater than 0");
+        }
     }
 }
