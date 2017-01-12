@@ -8,6 +8,20 @@
     <artifactId>ecm</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <properties>
         <javaee.version>7.0</javaee.version>
         <gson.version>2.8.0</gson.version>
@@ -27,6 +41,9 @@
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
         </dependency>
+
+
+
 
     </dependencies>
 

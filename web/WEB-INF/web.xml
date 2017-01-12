@@ -6,6 +6,6 @@
     <listener>
         <description>Application startup and shutdown events</description>
         <display-name>Start</display-name>
-        <listener-class>StartClass</listener-class>
+        <listener-class>web.StartClass</listener-class>
     </listener>
 </web-app>

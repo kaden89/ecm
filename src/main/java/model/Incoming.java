@@ -1,10 +1,12 @@
 package model;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
 
 /**
  * Created by dkarachurin on 09.01.2017.
  */
+@XmlRootElement(name = "Incoming")
 public class Incoming extends Document {
     private Person sender;
     private Person recipient;

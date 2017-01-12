@@ -2,12 +2,16 @@ package model;
 
 import db.Storable;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.time.LocalDate;
 
 
 /**
  * Created by dkarachurin on 09.01.2017.
  */
+@XmlSeeAlso({Incoming.class, Outgoing.class, Task.class})
+@XmlRootElement(name = "Document")
 public abstract class Document implements Comparable<Document>, Storable {
     private int id;
     private String name;

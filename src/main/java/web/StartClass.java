@@ -1,3 +1,5 @@
+package web;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -32,7 +34,7 @@ import static model.documents_factory.FactoryEnum.TASK;
  */
 public class StartClass implements ServletContextListener {
     private DocumentsFactory factory = DocumentsFactory.INSTANCE;
-    private TreeMap<Person, TreeSet<Document>> result = new TreeMap<>();
+    public static TreeMap<Person, TreeSet<Document>> result = new TreeMap<>();
     private ServletContext context;
 
     @Override
