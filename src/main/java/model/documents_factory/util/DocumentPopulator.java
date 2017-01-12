@@ -1,5 +1,6 @@
 package model.documents_factory.util;
 
+import db.MemoryStore;
 import exceptions.DocumentExistsException;
 import model.Document;
 import model.Person;
@@ -72,8 +73,8 @@ public class DocumentPopulator {
     }
 
     public static Person getRandomPerson(){
-        if (persons.size()!=0)
-         return persons.get(random.nextInt(persons.size()));
+        if (MemoryStore.personStore.size()!=0)
+            return MemoryStore.personStore.get(random.nextInt(MemoryStore.personStore.size()));
         else return null;
     }
 

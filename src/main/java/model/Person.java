@@ -1,19 +1,26 @@
 package model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by dkarachurin on 09.01.2017.
  */
+@XmlRootElement
 public class Person extends Staff implements Comparable<Person>{
     private String firstName;
-    private String lastName;
-    private String middleName;
+    private String surname;
+    private String patronymic;
     private String position;
 
-    public Person(int id, String firstName, String lastName, String middleName, String position) {
+    public Person() {
+    }
+
+    public Person(int id, String firstName, String surname, String patronymic, String position) {
         super(id);
         this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleName = middleName;
+        this.surname = surname;
+        this.patronymic = patronymic;
         this.position = position;
     }
 
@@ -21,30 +28,34 @@ public class Person extends Staff implements Comparable<Person>{
         return firstName;
     }
 
+    @XmlElement
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    @XmlElement
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
-    public String getMiddleName() {
-        return middleName;
+    public String getPatronymic() {
+        return patronymic;
     }
 
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+    @XmlElement
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
     }
 
     public String getPosition() {
         return position;
     }
 
+    @XmlElement
     public void setPosition(String position) {
         this.position = position;
     }
@@ -52,8 +63,8 @@ public class Person extends Staff implements Comparable<Person>{
     @Override
     public String toString() {
         return firstName  +
-                " " + lastName +
-                " " + middleName;
+                " " + surname +
+                " " + patronymic;
     }
 
     @Override

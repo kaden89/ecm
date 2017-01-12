@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persons>
+	<person id="100">
+			<firstName>Ivan</firstName>
+			<patronymic>Ivanovich</patronymic>
+			<position>engineer</position>
+			<surname>Ivanov</surname>
+	</person>
+	<person id="101">
+			<firstName>Petr</firstName>
+			<patronymic>Petrovich</patronymic>
+			<position>manager</position>
+			<surname>Petrov</surname>
+	</person>
+	<person id="102">
+			<firstName>Ivan</firstName>
+			<patronymic>Vasilievich</patronymic>
+			<position>clerk</position>
+			<surname>Petrov</surname>
+	</person>
+	<person id="103">
+			<firstName>Nikolay</firstName>
+			<patronymic>Nikolaevich</patronymic>
+			<position>security</position>
+			<surname>Nikolaev</surname>
+	</person>
+	<person id="104">
+			<firstName>Vasya</firstName>
+			<patronymic>Vasilievich</patronymic>
+			<position>tester</position>
+			<surname>Vasiliev</surname>
+	</person>
+	<person id="105">
+			<firstName>Petr</firstName>
+			<patronymic>Vasilievich</patronymic>
+			<position>cleaner</position>
+			<surname>Vasiliev</surname>
+	</person>
+</persons>
+
+

@@ -9,6 +9,9 @@ public class Department extends Staff {
     private Person manager;
     private String contactsTelephones;
 
+    public Department() {
+    }
+
     public Department(int id, String fullName, String shortName, Person manager, String contactsTelephones) {
         super(id);
         this.fullName = fullName;

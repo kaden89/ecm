@@ -9,6 +9,9 @@ public class Organization extends Staff{
     private Person manager;
     private String contactsTelephones;
 
+    public Organization() {
+    }
+
     public Organization(int id, String fullName, String shortName, Person manager, String contactsTelephones) {
         super(id);
         this.fullName = fullName;
