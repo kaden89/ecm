@@ -1,3 +1,6 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import db.MemoryStore;
 import model.Department;
 import model.Document;
@@ -12,6 +15,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.*;
 
 import static model.documents_factory.FactoryEnum.*;
@@ -24,7 +30,12 @@ public class Main {
     public static void main(String[] args) throws IllegalAccessException, InstantiationException, JAXBException {
 
         loadStaff();
+        generateDocuments();
+        createJSON();
 
+    }
+
+    private static void generateDocuments() throws InstantiationException, IllegalAccessException {
         for (int i = 0; i < 10; i++) {
             createDocument(INCOMING);
             createDocument(OUTGOING);
@@ -38,9 +49,7 @@ public class Main {
                 System.out.println("    "+document);
             }
         }
-
     }
-
     private static void createDocument(FactoryEnum factoryEnum) throws IllegalAccessException, InstantiationException {
        Document document = factory.createDocument(factoryEnum);
        Person author = document.getAuthor();
@@ -71,10 +80,28 @@ public class Main {
             Departments departments = (Departments) um.unmarshal(departmentsFile);
             MemoryStore.departmentStore = departments.getDepartments();
 
-            int a = 1;
         } catch (JAXBException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void createJSON(){
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+
+        for (Map.Entry<Person, TreeSet<Document>> entry : result.entrySet()) {
+            try (Writer writer = new FileWriter("C:\\reports\\"+entry.getKey().toString()+".json")) {
+                for (Document document : entry.getValue()) {
+                    JsonElement jsonElement = gson.toJsonTree(document);
+                    jsonElement.getAsJsonObject().addProperty("type", document.getClass().getSimpleName());
+                    gson.toJson(jsonElement, writer);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }
