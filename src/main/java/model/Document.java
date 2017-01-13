@@ -1,6 +1,6 @@
 package model;
 
-import db.Storable;
+import dao.Storable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;

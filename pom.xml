@@ -8,6 +8,14 @@
     <artifactId>ecm</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <java.version>1.8</java.version>
+        <javaee.version>7.0</javaee.version>
+        <gson.version>2.8.0</gson.version>
+        <derby.version>10.11.1.1</derby.version>
+        <hibernate.version>5.2.5.Final</hibernate.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -15,17 +23,12 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <properties>
-        <javaee.version>7.0</javaee.version>
-        <gson.version>2.8.0</gson.version>
-    </properties>
 
     <dependencies>
         <!-- JavaEE API -->
@@ -42,7 +45,19 @@
             <version>${gson.version}</version>
         </dependency>
 
+        <!-- Apache Derby embedded -->
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>${derby.version}</version>
+        </dependency>
 
+        <!-- Hibernate entitymanager -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
 
 
     </dependencies>

@@ -21,7 +21,6 @@ public abstract class Staff {
         return id;
     }
 
-    @XmlAttribute
     public void setId(int id) {
         this.id = id;
     }

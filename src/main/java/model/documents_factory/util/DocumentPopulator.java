@@ -1,7 +1,7 @@
 package model.documents_factory.util;
 
-import db.MemoryStore;
-import exceptions.DocumentExistsException;
+import dao.MemoryStore;
+import util.exceptions.DocumentExistsException;
 import model.Document;
 import model.Person;
 

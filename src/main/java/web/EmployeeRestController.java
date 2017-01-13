@@ -1,11 +1,12 @@
 package web;
 
-import db.MemoryStore;
+import dao.MemoryStore;
+import dao.PersonDAO;
 import model.Document;
 import model.Person;
-import util.xml.Organizations;
 import util.xml.Persons;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -24,7 +25,8 @@ import java.util.TreeSet;
 @Path(value = EmployeeRestController.REST_URL)
 public class EmployeeRestController {
     static final String REST_URL = "/employees";
-
+    @Inject
+    private PersonDAO personDAO;
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployees(){

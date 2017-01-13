@@ -1,4 +1,4 @@
-package db;
+package dao;
 
 /**
  * Created by dkarachurin on 09.01.2017.
