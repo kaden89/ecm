@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  */
 @XmlSeeAlso({Person.class, Department.class, Organization.class})
 @MappedSuperclass
-@Access(AccessType.FIELD)
 public abstract class Staff {
     @Id
     private int id;
@@ -25,6 +24,7 @@ public abstract class Staff {
         return id;
     }
 
+    @XmlAttribute
     public void setId(int id) {
         this.id = id;
     }

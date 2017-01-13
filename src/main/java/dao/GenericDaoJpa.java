@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by dkarachurin on 13.01.2017.
  */
-public class GenericDaoJpa<T> implements GenericDAO<T> {
+public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
 
     @PersistenceContext(unitName="EcmPersistence")
     private EntityManager entityManager;
@@ -19,6 +19,7 @@ public class GenericDaoJpa<T> implements GenericDAO<T> {
     private Class<T> entityClass;
 
     public GenericDaoJpa() {
+
         Class obtainedClass = getClass();
         Type genericSuperclass = null;
         for(;;) {

@@ -121,6 +121,11 @@ public class StartClass implements ServletContextListener {
             Persons persons = (Persons) um.unmarshal(personsStream);
             MemoryStore.personStore = persons.getPersons();
             List<Person> personList = persons.getPersons();
+
+            List<Person> tmp = personDAO.findAll();
+            for (Person person : tmp) {
+                personDAO.delete(person.getId());
+            }
             for (Person person : personList) {
                 personDAO.save(person);
             }
