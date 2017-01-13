@@ -1,7 +1,9 @@
 package web;
 
+import dao.GenericDAO;
 import dao.MemoryStore;
 import dao.PersonDAO;
+import dao.PersonDaoJPA;
 import model.Document;
 import model.Person;
 import util.xml.Persons;
@@ -25,20 +27,30 @@ import java.util.TreeSet;
 @Path(value = EmployeeRestController.REST_URL)
 public class EmployeeRestController {
     static final String REST_URL = "/employees";
+
     @Inject
-    private PersonDAO personDAO;
+    private PersonDaoJPA personDAO;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployees(){
         List<Person> employees = MemoryStore.personStore;
         Persons persons = new Persons(employees);
-        GenericEntity<List<Person>> list = new GenericEntity<List<Person>>(employees) {
+        GenericEntity<List<Person>> list = new GenericEntity<List<Person>>(personDAO.findAll()) {
         };
         return Response.ok(list).build();
     }
 
     @GET
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEmployee(@PathParam("id") int employeeId){
+        Person person = personDAO.find(employeeId);
+        return Response.ok(person).build();
+    }
+
+    @GET
+    @Path("/{id}/documents")
     @Produces(MediaType.APPLICATION_XML)
     public Response getEmployeeDocuments(@PathParam("id") int employeeId){
         List<TreeSet<Document>> documents = new ArrayList<>(StartClass.result.values());

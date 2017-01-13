@@ -11,7 +11,7 @@
             <property name="javax.persistence.jdbc.url" value="jdbc:derby:C:/db/ecm"/>
             <property name="javax.persistence.jdbc.user" value="admin"/>
             <property name="javax.persistence.jdbc.password" value=""/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform" />
         </properties>
     </persistence-unit>

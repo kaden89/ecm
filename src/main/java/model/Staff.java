@@ -1,5 +1,6 @@
 package model;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
@@ -7,7 +8,10 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  * Created by dkarachurin on 11.01.2017.
  */
 @XmlSeeAlso({Person.class, Department.class, Organization.class})
+@MappedSuperclass
+@Access(AccessType.FIELD)
 public abstract class Staff {
+    @Id
     private int id;
 
     public Staff() {

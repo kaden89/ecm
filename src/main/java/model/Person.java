@@ -1,5 +1,9 @@
 package model;
 
+import dao.Storable;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -7,7 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by dkarachurin on 09.01.2017.
  */
 @XmlRootElement
-public class Person extends Staff implements Comparable<Person>{
+@Entity
+@Table(name = "Persons")
+public class Person extends Staff implements Comparable<Person>, Storable{
     private String firstName;
     private String surname;
     private String patronymic;
@@ -70,5 +76,10 @@ public class Person extends Staff implements Comparable<Person>{
     @Override
     public int compareTo(Person person) {
         return this.toString().compareTo(person.toString());
+    }
+
+    @Override
+    public String getStorageName() {
+        return "Person";
     }
 }

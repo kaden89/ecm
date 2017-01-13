@@ -10,5 +10,11 @@ import java.util.List;
 public interface PersonDAO {
     List<Person> findAll();
 
+    Person find(int id);
+
     void addPerson(Person person);
+
+    void updatePerson(Person person);
+
+    void deletePerson(int id);
 }

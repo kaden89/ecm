@@ -3,7 +3,10 @@ package web;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import dao.GenericDAO;
 import dao.MemoryStore;
+import dao.PersonDAO;
+import dao.PersonDaoJPA;
 import model.Document;
 import model.Person;
 import model.documents_factory.DocumentsFactory;
@@ -12,6 +15,7 @@ import util.xml.Departments;
 import util.xml.Organizations;
 import util.xml.Persons;
 
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -19,10 +23,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 import static model.documents_factory.FactoryEnum.INCOMING;
 import static model.documents_factory.FactoryEnum.OUTGOING;
@@ -35,6 +36,9 @@ public class StartClass implements ServletContextListener {
     private DocumentsFactory factory = DocumentsFactory.INSTANCE;
     public static TreeMap<Person, TreeSet<Document>> result = new TreeMap<>();
     private ServletContext context;
+
+    @Inject
+    PersonDaoJPA personDAO;
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -116,6 +120,10 @@ public class StartClass implements ServletContextListener {
 
             Persons persons = (Persons) um.unmarshal(personsStream);
             MemoryStore.personStore = persons.getPersons();
+            List<Person> personList = persons.getPersons();
+            for (Person person : personList) {
+                personDAO.save(person);
+            }
 
             Departments departments = (Departments) um.unmarshal(departmentsStream);
             MemoryStore.departmentStore = departments.getDepartments();
