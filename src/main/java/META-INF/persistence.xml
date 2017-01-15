@@ -4,7 +4,7 @@
     <persistence-unit name="EcmPersistence">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>jdbc/Derby</jta-data-source>
-        <!--<class>model.Person</class>-->
+        <!--<class>ecm.model.Person</class>-->
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect" />
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
@@ -13,6 +13,7 @@
             <property name="javax.persistence.jdbc.password" value=""/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform" />
+            <property name="hibernate.show_sql" value = "true" />
         </properties>
     </persistence-unit>
 </persistence>

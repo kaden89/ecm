@@ -1,0 +1,63 @@
+package ecm.model;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import java.time.LocalDate;
+
+/**
+ * Created by dkarachurin on 09.01.2017.
+ */
+@XmlRootElement(name = "Incoming")
+public class Incoming extends Document {
+    private Person sender;
+    private Person recipient;
+    private int referenceNumber;
+    private LocalDate outboundRegDate;
+
+    public Incoming() {
+    }
+
+    public Incoming(int id, String name, String text, String regNumber, LocalDate date, Person author, Person sender, Person recipient, int referenceNumber, LocalDate outboundRegDate) {
+        super(id, name, text, regNumber, date, author);
+        this.sender = sender;
+        this.recipient = recipient;
+        this.referenceNumber = referenceNumber;
+        this.outboundRegDate = outboundRegDate;
+    }
+
+    public Person getSender() {
+        return sender;
+    }
+
+    public void setSender(Person sender) {
+        this.sender = sender;
+    }
+
+    public Person getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(Person recipient) {
+        this.recipient = recipient;
+    }
+
+    public int getReferenceNumber() {
+        return referenceNumber;
+    }
+
+    public void setReferenceNumber(int referenceNumber) {
+        this.referenceNumber = referenceNumber;
+    }
+
+    public LocalDate getOutboundRegDate() {
+        return outboundRegDate;
+    }
+
+    public void setOutboundRegDate(LocalDate outboundRegDate) {
+        this.outboundRegDate = outboundRegDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Incoming №" + super.toString();
+    }
+}
