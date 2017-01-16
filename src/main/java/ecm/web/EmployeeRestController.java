@@ -1,10 +1,9 @@
 package ecm.web;
 
-import ecm.dao.DocumentDaoJpa;
 import ecm.dao.GenericDAO;
 import ecm.dao.PersonDaoJPA;
-import ecm.model.Document;
-import ecm.model.Person;
+import ecm.model.*;
+
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -24,7 +23,13 @@ public class EmployeeRestController {
     private GenericDAO<Person> personDAO;
 
     @Inject
-    private GenericDAO<Document> documentDao;
+    private GenericDAO<Outgoing> outgoingDAO;
+
+    @Inject
+    private GenericDAO<Incoming> incomingDAO;
+
+    @Inject
+    private GenericDAO<Task> taskDAO;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

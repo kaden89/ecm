@@ -2,6 +2,9 @@ package ecm.model;
 
 import ecm.dao.Storable;
 
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -11,14 +14,17 @@ import java.time.LocalDate;
 /**
  * Created by dkarachurin on 09.01.2017.
  */
+@MappedSuperclass
 @XmlSeeAlso({Incoming.class, Outgoing.class, Task.class})
 @XmlRootElement
 public abstract class Document implements Comparable<Document>, Storable {
+    @Id
     private int id;
     private String name;
     private String text;
     private String regNumber;
     private LocalDate date;
+    @ManyToOne
     private Person author;
 
     public Document() {

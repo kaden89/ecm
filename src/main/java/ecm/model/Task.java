@@ -1,5 +1,7 @@
 package ecm.model;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
 
@@ -7,11 +9,14 @@ import java.time.LocalDate;
  * Created by dkarachurin on 09.01.2017.
  */
 @XmlRootElement(name = "Task")
+@Entity
 public class Task extends Document {
     private LocalDate dateOfIssue;
     private LocalDate deadline;
+    @ManyToOne
     private Person executor;
     private boolean isControlled;
+    @ManyToOne
     private Person controller;
 
     public Task() {

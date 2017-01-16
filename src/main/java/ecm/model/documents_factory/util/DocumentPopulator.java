@@ -1,15 +1,21 @@
 package ecm.model.documents_factory.util;
 
+import ecm.dao.GenericDAO;
+import ecm.dao.GenericDaoJpa;
 import ecm.dao.MemoryStore;
+import ecm.dao.PersonDaoJPA;
 import ecm.util.exceptions.DocumentExistsException;
 import ecm.model.Document;
 import ecm.model.Person;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static ecm.web.StartClass.result;
 
 /**
  * Created by dkarachurin on 10.01.2017.
@@ -31,6 +37,8 @@ public class DocumentPopulator {
 
     };
     private static HashMap<String, Document> documents = new HashMap<>();
+
+//    private static GenericDAO<Person> personDAO = new PersonDaoJPA();
 
     public static Document populateBasicsOfDocument(Document document) throws DocumentExistsException {
         document.setId(getRandomInt(0,10000));
@@ -73,8 +81,9 @@ public class DocumentPopulator {
     }
 
     public static Person getRandomPerson(){
-        if (MemoryStore.personStore.size()!=0)
-            return MemoryStore.personStore.get(random.nextInt(MemoryStore.personStore.size()));
+        List<Person> list = new ArrayList<>(result.keySet());
+        if (list.size()!=0)
+            return list.get(random.nextInt(MemoryStore.personStore.size()));
         else return null;
     }
 

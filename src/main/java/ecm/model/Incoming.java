@@ -1,5 +1,7 @@
 package ecm.model;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
 
@@ -7,8 +9,11 @@ import java.time.LocalDate;
  * Created by dkarachurin on 09.01.2017.
  */
 @XmlRootElement(name = "Incoming")
+@Entity
 public class Incoming extends Document {
+    @ManyToOne
     private Person sender;
+    @ManyToOne
     private Person recipient;
     private int referenceNumber;
     private LocalDate outboundRegDate;

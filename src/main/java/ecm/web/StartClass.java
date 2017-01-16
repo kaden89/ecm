@@ -3,10 +3,10 @@ package ecm.web;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import ecm.dao.GenericDAO;
 import ecm.dao.MemoryStore;
 import ecm.dao.PersonDaoJPA;
-import ecm.model.Document;
-import ecm.model.Person;
+import ecm.model.*;
 import ecm.model.documents_factory.DocumentsFactory;
 import ecm.model.documents_factory.FactoryEnum;
 import ecm.util.exceptions.DocumentExistsException;
@@ -37,7 +37,17 @@ public class StartClass implements ServletContextListener {
     private ServletContext context;
 
     @Inject
-    PersonDaoJPA personDAO;
+    private GenericDAO<Person> personDAO;
+
+    @Inject
+    private GenericDAO<Outgoing> outgoingDAO;
+
+    @Inject
+    private GenericDAO<Incoming> incomingDAO;
+
+    @Inject
+    private GenericDAO<Task> taskDAO;
+
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -61,17 +71,20 @@ public class StartClass implements ServletContextListener {
     private void generateDocuments() throws InstantiationException, IllegalAccessException {
         for (int i = 0; i < 10; i++) {
             try {
-                createDocument(INCOMING);
+                Incoming incoming = (Incoming) createDocument(INCOMING);
+                incomingDAO.save(incoming);
             } catch (DocumentExistsException e) {
                 e.printStackTrace();
             }
             try {
-                createDocument(OUTGOING);
+                Outgoing outgoing = (Outgoing) createDocument(OUTGOING);
+                outgoingDAO.save(outgoing);
             } catch (DocumentExistsException e) {
                 e.printStackTrace();
             }
             try {
-                createDocument(TASK);
+                Task task = (Task) createDocument(TASK);
+                taskDAO.save(task);
             } catch (DocumentExistsException e) {
                 e.printStackTrace();
             }
@@ -85,7 +98,7 @@ public class StartClass implements ServletContextListener {
             }
         }
     }
-    private void createDocument(FactoryEnum factoryEnum) throws IllegalAccessException, InstantiationException, DocumentExistsException {
+    private Document createDocument(FactoryEnum factoryEnum) throws IllegalAccessException, InstantiationException, DocumentExistsException {
         Document document = factory.createDocument(factoryEnum);
         Person author = document.getAuthor();
         if (result.containsKey(author)){
@@ -94,6 +107,7 @@ public class StartClass implements ServletContextListener {
         else {
             result.put(author, new TreeSet<>(Arrays.asList(document)));
         }
+        return document;
     }
 
 
@@ -146,11 +160,13 @@ public class StartClass implements ServletContextListener {
             List<Person> personList = persons.getPersons();
 
             List<Person> tmp = personDAO.findAll();
-            for (Person person : tmp) {
-                personDAO.delete(person.getId());
-            }
+//            for (Person person : tmp) {
+//                personDAO.delete(person.getId());
+//            }
             for (Person person : personList) {
                 personDAO.save(person);
+                //TODO костыль
+                result.put(person,new TreeSet<>());
             }
 
             Departments departments = (Departments) um.unmarshal(departmentsStream);
