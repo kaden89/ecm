@@ -32,9 +32,12 @@ import static ecm.model.documents_factory.FactoryEnum.TASK;
  * Created by dkarachurin on 12.01.2017.
  */
 public class StartClass implements ServletContextListener {
-    private DocumentsFactory factory = DocumentsFactory.INSTANCE;
+
     public static TreeMap<Person, TreeSet<Document>> result = new TreeMap<>();
     private ServletContext context;
+
+    @Inject
+    private DocumentsFactory factory;
 
     @Inject
     private GenericDAO<Person> personDAO;
@@ -53,6 +56,7 @@ public class StartClass implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         context = servletContextEvent.getServletContext();
         loadStaff();
+        deleteOldDocuments();
         try {
             generateDocuments();
         } catch (InstantiationException e) {
@@ -68,6 +72,11 @@ public class StartClass implements ServletContextListener {
 
     }
 
+    private void deleteOldDocuments(){
+        outgoingDAO.deleteAll();
+        incomingDAO.deleteAll();
+        taskDAO.deleteAll();
+    }
     private void generateDocuments() throws InstantiationException, IllegalAccessException {
         for (int i = 0; i < 10; i++) {
             try {

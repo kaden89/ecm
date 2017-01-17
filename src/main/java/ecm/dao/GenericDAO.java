@@ -15,4 +15,8 @@ public interface GenericDAO<T> {
     T update(T entity);
 
     void delete(int id);
+
+    void deleteAll();
+
+    List<T> findAllByAuthorId(int id);
 }

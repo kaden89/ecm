@@ -1,7 +1,7 @@
 package ecm.web;
 
 import ecm.dao.GenericDAO;
-import ecm.dao.PersonDaoJPA;
+import ecm.dao.TaskDaoJPA;
 import ecm.model.*;
 
 import javax.inject.Inject;
@@ -45,6 +45,33 @@ public class EmployeeRestController {
     public Response getEmployee(@PathParam("id") int employeeId){
         Person person = personDAO.find(employeeId);
         return Response.ok(person).build();
+    }
+
+    @GET
+    @Path("/{id}/incoming")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEmployeeIncomingDocuments(@PathParam("id") int employeeId){
+        GenericEntity<List<Incoming>> incomings = new GenericEntity<List<Incoming>>(incomingDAO.findAllByAuthorId(employeeId)) {
+        };
+        return Response.ok(incomings).build();
+    }
+
+    @GET
+    @Path("/{id}/outgoing")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEmployeeOutgoingDocuments(@PathParam("id") int employeeId){
+        GenericEntity<List<Outgoing>> outgoings = new GenericEntity<List<Outgoing>>(outgoingDAO.findAllByAuthorId(employeeId)) {
+        };
+        return Response.ok(outgoings).build();
+    }
+
+    @GET
+    @Path("/{id}/task")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEmployeeTaskDocuments(@PathParam("id") int employeeId){
+        GenericEntity<List<Task>> tasks = new GenericEntity<List<Task>>(taskDAO.findAllByAuthorId(employeeId)) {
+        };
+        return Response.ok(tasks).build();
     }
 
     @GET

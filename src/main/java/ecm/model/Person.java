@@ -2,8 +2,10 @@ package ecm.model;
 
 import ecm.dao.Storable;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import java.util.List;
 
 /**
  * Created by dkarachurin on 09.01.2017.
@@ -58,6 +60,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     public void setPosition(String position) {
         this.position = position;
     }
+    
 
     @Override
     public String toString() {

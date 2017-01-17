@@ -12,9 +12,9 @@ import java.util.List;
 public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
 
     @PersistenceContext(unitName="EcmPersistence")
-    private EntityManager entityManager;
+    EntityManager entityManager;
 
-    private Class<T> entityClass;
+    Class<T> entityClass;
 
     public GenericDaoJpa() {
 
@@ -34,6 +34,11 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
     @Override
     public List<T> findAll() {
         return entityManager.createQuery("SELECT e FROM "+entityClass.getSimpleName()+" e").getResultList();
+    }
+
+    @Override
+    public List<T> findAllByAuthorId(int id) {
+        return entityManager.createQuery("SELECT e FROM "+entityClass.getSimpleName()+" e where e.author.id = "+id).getResultList();
     }
 
     @Override
@@ -59,5 +64,13 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
     @Override
     public void delete(int id) {
         entityManager.remove(find(id));
+    }
+
+    @Override
+    public void deleteAll() {
+        List<T> list = findAll();
+        for (T t : list) {
+            entityManager.remove(t);
+        }
     }
 }

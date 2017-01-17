@@ -8,7 +8,7 @@ import java.time.LocalDate;
 /**
  * Created by dkarachurin on 09.01.2017.
  */
-@XmlRootElement(name = "Task")
+@XmlRootElement
 @Entity
 public class Task extends Document {
     private LocalDate dateOfIssue;

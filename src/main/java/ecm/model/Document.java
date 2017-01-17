@@ -5,9 +5,7 @@ import ecm.dao.Storable;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
 
 
@@ -16,6 +14,7 @@ import java.time.LocalDate;
  */
 @MappedSuperclass
 @XmlSeeAlso({Incoming.class, Outgoing.class, Task.class})
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public abstract class Document implements Comparable<Document>, Storable {
     @Id
