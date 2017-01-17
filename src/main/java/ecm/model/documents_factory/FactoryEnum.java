@@ -4,6 +4,12 @@ import ecm.model.Incoming;
 import ecm.model.Outgoing;
 import ecm.model.Task;
 
+import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 /**
  * Created by dkarachurin on 10.01.2017.
  */
@@ -22,7 +28,18 @@ public enum FactoryEnum {
     }
 
     public AbstractDocumentsFactory getFactory() throws IllegalAccessException, InstantiationException {
-        return (AbstractDocumentsFactory) this.factoryClass.newInstance();
+        AbstractDocumentsFactory factory = null;
+        try {
+            InitialContext ic = new InitialContext();
+            BeanManager bm  = (BeanManager)ic.lookup("java:comp/BeanManager");
+            Bean<AbstractDocumentsFactory> bean = (Bean<AbstractDocumentsFactory>) bm.getBeans(factoryClass).iterator().next();
+            CreationalContext<AbstractDocumentsFactory> ctx = bm.createCreationalContext(bean);
+            factory = (AbstractDocumentsFactory) bm.getReference(bean, factoryClass, ctx);
+
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return factory;
     }
 
 }
