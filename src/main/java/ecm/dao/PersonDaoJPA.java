@@ -18,10 +18,4 @@ import java.util.List;
 @Singleton
 @Transactional
 public class PersonDaoJPA extends GenericDaoJpa<Person>{
-    @Override
-    public void delete(int id){
-        Person person = find(id);
-
-        super.delete(id);
-    }
 }

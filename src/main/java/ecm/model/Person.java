@@ -3,6 +3,7 @@ package ecm.model;
 import ecm.dao.Storable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
@@ -13,34 +14,12 @@ import java.util.List;
 @XmlRootElement
 @Entity
 public class Person extends Staff implements Comparable<Person>, Storable{
+    @NotNull
     private String firstName;
     private String surname;
     private String patronymic;
     private String position;
-    @XmlTransient
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
-    private  List<Incoming> incomings;
-    @XmlTransient
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
-    private  List<Outgoing> outgoings;
-    @XmlTransient
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
-    private  List<Task> tasks;
-    @XmlTransient
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "executor")
-    private  List<Task> tasksExecutor;
-    @XmlTransient
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "controller")
-    private  List<Task> tasksController;
-    @XmlTransient
-    @OneToMany( fetch = FetchType.LAZY, mappedBy = "recipient")
-    private  List<Outgoing> recipient;
-    @XmlTransient
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipient")
-    private  List<Incoming> recipientInc;
-    @XmlTransient
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
-    private  List<Incoming> senderInc;
+
     public Person() {
     }
 

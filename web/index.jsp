@@ -41,11 +41,12 @@
             "gridx/modules/RowHeader",
             "gridx/modules/select/Row",
             "gridx/modules/IndirectSelect",
+            "dijit/Dialog",
             "dijit/registry",
             "dojo/query",
             /*'dojo/store/Memory',*/
             "dojo/domReady!"], function(declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults,Memory,SingleSort, JsonRest, Bar, Toolbar, Button,
-                                        RowHeader, Row, IndirectSelect, Registry,query) {
+                                        RowHeader, Row, IndirectSelect, Dialog, Registry,query) {
 
             var restURL = 'http://localhost:8080/ecm/rest/employees';
             var store = new JsonRest({
@@ -56,9 +57,11 @@
 
             //create structure......
             var columns = [
+                {id: 'id', field: 'id', name: 'id'},
                 {id: 'firstname', field: 'firstName', name: 'Firstname'},
                 {id: 'surname', field: 'surname', name: 'Surname'},
-                {id: 'patronymic', field: 'patronymic', name: 'Patronymic'}
+                {id: 'patronymic', field: 'patronymic', name: 'Patronymic'},
+                {id: 'position', field: 'position', name: 'Position'}
             ];
 
             var toolbar = new Toolbar({}, "toolbar");
@@ -109,12 +112,29 @@
                 if(items.length){
                     dojo.forEach(items, function(selectedItem){
                         if(selectedItem !== null){
-                            grid.store.remove(selectedItem);
+                            grid.store.remove(selectedItem).then(success, error);
+                            grid.model.clearCache();
+                            grid.body.refresh();
                         }
                     });
-                    var args = {onError: function() {alert('error!');}};
-                    grid.store.add(args);
+//                    var args = {onError: function() {alert('error!');}};
+//                    grid.store.add(args);
+
                 }
+            }
+
+            function success() {
+                console.log("succes");
+            }
+
+            function error(err) {
+                myDialog = new Dialog({
+                    title: "Error!",
+                    content: err.responseText,
+                    style: "width: 300px"
+                });
+                console.log("error");
+                myDialog.show();
             }
 
         });
