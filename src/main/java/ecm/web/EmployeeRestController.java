@@ -36,7 +36,8 @@ public class EmployeeRestController {
     public Response getEmployees(){
         GenericEntity<List<Person>> employees = new GenericEntity<List<Person>>(personDAO.findAll()) {
         };
-        return Response.ok(employees).build();
+        int size = employees.getEntity().size();
+        return Response.ok(employees).header( "Content-Range" , "items 0-"+size+"/"+size).build();
     }
 
     @GET

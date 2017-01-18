@@ -72,11 +72,12 @@ public class StartClass implements ServletContextListener {
 
     }
 
-    private void deleteOldDocuments(){
+    private void deleteOldDocuments() {
         outgoingDAO.deleteAll();
         incomingDAO.deleteAll();
         taskDAO.deleteAll();
     }
+
     private void generateDocuments() throws InstantiationException, IllegalAccessException {
         for (int i = 0; i < 10; i++) {
             try {
@@ -103,25 +104,24 @@ public class StartClass implements ServletContextListener {
             System.out.println(entry.getKey());
             TreeSet<Document> documents = entry.getValue();
             for (Document document : documents) {
-                System.out.println("    "+document);
+                System.out.println("    " + document);
             }
         }
     }
+
     private Document createDocument(FactoryEnum factoryEnum) throws IllegalAccessException, InstantiationException, DocumentExistsException {
         Document document = factory.createDocument(factoryEnum);
         Person author = document.getAuthor();
-        if (result.containsKey(author)){
+        if (result.containsKey(author)) {
             result.get(author).add(document);
-        }
-        else {
+        } else {
             result.put(author, new TreeSet<>(Arrays.asList(document)));
         }
         return document;
     }
 
 
-
-    private void createJSON(){
+    private void createJSON() {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
@@ -130,16 +130,15 @@ public class StartClass implements ServletContextListener {
         File theDir = new File(dirName);
 
         if (!theDir.exists()) {
-            try{
+            try {
                 theDir.mkdir();
-            }
-            catch(SecurityException se){
+            } catch (SecurityException se) {
                 se.printStackTrace();
             }
         }
 
         for (Map.Entry<Person, TreeSet<Document>> entry : result.entrySet()) {
-            try (Writer writer = new FileWriter(dirName+entry.getKey().toString()+".json")) {
+            try (Writer writer = new FileWriter(dirName + entry.getKey().toString() + ".json")) {
                 for (Document document : entry.getValue()) {
                     JsonElement jsonElement = gson.toJsonTree(document);
                     jsonElement.getAsJsonObject().addProperty("type", document.getClass().getSimpleName());
@@ -152,7 +151,7 @@ public class StartClass implements ServletContextListener {
 
     }
 
-    private void loadStaff(){
+    private void loadStaff() {
         try {
             InputStream personsStream = context.getResourceAsStream("/resources/xml/persons.xml");
             InputStream organizationsStream = context.getResourceAsStream("/resources/xml/organizations.xml");
@@ -175,7 +174,7 @@ public class StartClass implements ServletContextListener {
             for (Person person : personList) {
                 personDAO.save(person);
                 //TODO костыль
-                result.put(person,new TreeSet<>());
+                result.put(person, new TreeSet<>());
             }
 
             Departments departments = (Departments) um.unmarshal(departmentsStream);
