@@ -6,6 +6,7 @@
         <jta-data-source>jdbc/Derby</jta-data-source>
         <!--<class>ecm.model.Incoming</class>-->
         <!--<class>ecm.model.Person</class>-->
+
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect" />
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>

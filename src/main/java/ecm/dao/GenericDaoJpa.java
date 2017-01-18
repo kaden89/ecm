@@ -1,9 +1,12 @@
 package ecm.dao;
 
+import ecm.model.Person;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**
@@ -62,15 +65,13 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
 
 
     @Override
-    public void delete(int id) {
-        entityManager.remove(find(id));
+    public void delete(int id){
+        T entity = find(id);
+        entityManager.remove(entity);
     }
 
     @Override
     public void deleteAll() {
-        List<T> list = findAll();
-        for (T t : list) {
-            entityManager.remove(t);
-        }
+        entityManager.createQuery("DELETE FROM "+entityClass.getSimpleName()+" e").executeUpdate();
     }
 }

@@ -17,7 +17,30 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     private String surname;
     private String patronymic;
     private String position;
-
+    @XmlTransient
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    private  List<Incoming> incomings;
+    @XmlTransient
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    private  List<Outgoing> outgoings;
+    @XmlTransient
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    private  List<Task> tasks;
+    @XmlTransient
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "executor")
+    private  List<Task> tasksExecutor;
+    @XmlTransient
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "controller")
+    private  List<Task> tasksController;
+    @XmlTransient
+    @OneToMany( fetch = FetchType.LAZY, mappedBy = "recipient")
+    private  List<Outgoing> recipient;
+    @XmlTransient
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipient")
+    private  List<Incoming> recipientInc;
+    @XmlTransient
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
+    private  List<Incoming> senderInc;
     public Person() {
     }
 
@@ -60,7 +83,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     public void setPosition(String position) {
         this.position = position;
     }
-    
+
 
     @Override
     public String toString() {
@@ -78,4 +101,6 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     public String getStorageName() {
         return "Person";
     }
+
+
 }

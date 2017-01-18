@@ -20,27 +20,13 @@
         require({
             packages: [
                 {
-                    name: 'dgrid',
-                    location: '//cdn.rawgit.com/SitePen/dgrid/v0.3.16'
-                },
-                {
                     name: 'gridx',
                     location: '//cdn.rawgit.com/oria/gridx/1.3'
-                },
-                {
-                    name: 'xstyle',
-                    location: '//cdn.rawgit.com/kriszyp/xstyle/v0.2.1'
-                },
-                {
-                    name: 'put-selector',
-                    location: '//cdn.rawgit.com/kriszyp/put-selector/v0.3.5'
                 }
             ]
         }, ["dojo/_base/declare",
             "dijit/layout/TabContainer",
             "dijit/layout/ContentPane",
-            "dgrid/OnDemandGrid",
-            "dgrid/extensions/DijitRegistry",
             'gridx/Grid',
             'gridx/modules/Dod',
             'gridx/core/model/cache/Async',
@@ -55,9 +41,11 @@
             "gridx/modules/RowHeader",
             "gridx/modules/select/Row",
             "gridx/modules/IndirectSelect",
+            "dijit/registry",
+            "dojo/query",
             /*'dojo/store/Memory',*/
-            "dojo/domReady!"], function(declare, TabContainer, ContentPane, Grid, DijitRegistry, GridX, Dod, Cache, Deferred, QueryResults,Memory,SingleSort, JsonRest, Bar, Toolbar, Button,
-                                        RowHeader, Row, IndirectSelect) {
+            "dojo/domReady!"], function(declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults,Memory,SingleSort, JsonRest, Bar, Toolbar, Button,
+                                        RowHeader, Row, IndirectSelect, Registry,query) {
 
             var restURL = 'http://localhost:8080/ecm/rest/employees';
             var store = new JsonRest({
@@ -82,7 +70,7 @@
             var deleteButton = new Button({
                 label:"Delete",
                 iconClass:"dijitEditorIcon dijitEditorIconDelete",
-                onClick:myButtonHandler
+                onClick:deleteSelected
             });
             toolbar.addChild(createButton);
             toolbar.addChild(deleteButton);
@@ -115,7 +103,22 @@
             grid.startup();
 
 
+            function deleteSelected() {
+                // Get all selected items from the Grid:
+                var items = grid.select.row.getSelected();
+                if(items.length){
+                    dojo.forEach(items, function(selectedItem){
+                        if(selectedItem !== null){
+                            grid.store.remove(selectedItem);
+                        }
+                    });
+                    var args = {onError: function() {alert('error!');}};
+                    grid.store.add(args);
+                }
+            }
+
         });
+
 
         function myButtonHandler() {
             console.log('Clicked button');

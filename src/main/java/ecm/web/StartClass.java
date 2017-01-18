@@ -55,8 +55,8 @@ public class StartClass implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         context = servletContextEvent.getServletContext();
-        loadStaff();
         deleteOldDocuments();
+        loadStaff();
         try {
             generateDocuments();
         } catch (InstantiationException e) {
@@ -64,7 +64,9 @@ public class StartClass implements ServletContextListener {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        createJSON();
+        Person test = new Person(1111,"test", "test", "testovich", "ttt");
+        personDAO.save(test);
+//        createJSON();
     }
 
     @Override
@@ -76,6 +78,7 @@ public class StartClass implements ServletContextListener {
         outgoingDAO.deleteAll();
         incomingDAO.deleteAll();
         taskDAO.deleteAll();
+        personDAO.deleteAll();
     }
 
     private void generateDocuments() throws InstantiationException, IllegalAccessException {

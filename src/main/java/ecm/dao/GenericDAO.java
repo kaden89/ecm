@@ -1,5 +1,7 @@
 package ecm.dao;
 
+import javax.transaction.TransactionalException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**
@@ -14,7 +16,7 @@ public interface GenericDAO<T> {
 
     T update(T entity);
 
-    void delete(int id);
+    void delete(int id) throws TransactionalException;
 
     void deleteAll();
 

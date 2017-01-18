@@ -3,10 +3,14 @@ package ecm.web;
 import ecm.dao.GenericDAO;
 import ecm.dao.TaskDaoJPA;
 import ecm.model.*;
+import ecm.util.exceptions.HasLinksException;
+import org.hibernate.exception.ConstraintViolationException;
 
 import javax.inject.Inject;
+import javax.transaction.TransactionalException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -113,8 +117,24 @@ public class EmployeeRestController {
     @Path("/{id}")
     public Response deleteEmployee(@PathParam("id") int personId){
         //log.info("delete organization with id "+organizationId);
-        personDAO.delete(personId);
+//        incomingDAO.deleteAll();
+//        outgoingDAO.deleteAll();
+//        taskDAO.deleteAll();
+        try {
+            personDAO.delete(personId);
+        }
+        catch (TransactionalException e){
+            if (e.getCause().getCause().getCause() instanceof ConstraintViolationException)
+                throw new HasLinksException("Can't delete person, because he has links to some documents!");
+        }
         return Response.ok().build();
     }
 
+    @GET
+    @Path("/delete")
+    public void delete(){
+        incomingDAO.deleteAll();
+        outgoingDAO.deleteAll();
+        taskDAO.deleteAll();
+    }
 }
