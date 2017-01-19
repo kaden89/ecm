@@ -45,7 +45,7 @@
             "dijit/registry",
             "dojo/query",
             "dojo/dom",
-            "resources/js/formsWidget",
+            "/ecm/resources/js/formsWidget.js",
             /*'dojo/store/Memory',*/
             "dojo/domReady!"], function(declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults,Memory,SingleSort, JsonRest, Bar, Toolbar, Button,
                                         RowHeader, Row, IndirectSelect, Dialog, Registry,query, Dom, formsWidget) {
@@ -140,15 +140,15 @@
             }
 
             function createNewTab() {
+                var widget = new formsWidget({ name: "John", surname: "Smith" });
                 var tabContainer = Registry.byId("TabContainer");
-                var pane = new ContentPane({ title:"Person", href: "resources/html/person.html", closable: true, onClose: function(){
+                var pane = new ContentPane({ title:"Person",  content: widget, closable: true, onClose: function(){
                     return confirm("Do you really want to Close this?");
                 }});
-
                 tabContainer.addChild(pane);
                 tabContainer.selectChild(pane);
-                var formsWidget = new formsWidget({ name: "John", surname: "Smith" });
-                formsWidget.placeAt(document.body);
+
+
             }
 
             function myButtonHandler() {
