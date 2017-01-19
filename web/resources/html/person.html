@@ -1,9 +1,13 @@
 
 <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'" style="width: 100%; height:100%;">
-    <span id="toolbar">test</span>
-    <div>
+    <span id="toolbar"></span>
+    <div id ="personDiv">
         <span data-dojo-attach-point="surnameNode">${surname}</span>
 
         <span data-dojo-attach-point="nameNode">${name}</span>
+        <script type="dojo/require">at: "dojox/mvc/at"</script>
+        <input type="text"
+               data-dojo-type="dijit/form/TextBox"
+               data-dojo-props="value: at(model, 'firstname')">
     </div>
 </div>

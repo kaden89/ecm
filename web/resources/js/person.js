@@ -15,10 +15,6 @@ require(["dojo/_base/declare",
     "dojo/dom",
     "dojo/domReady!"], function(declare, TabContainer, ContentPane, Deferred, QueryResults,Memory, JsonRest, Toolbar, Button, Dialog, Registry,query, Dom) {
 
-    var restURL = 'http://localhost:8080/ecm/rest/employees';
-
-
-
     var toolbar = new Toolbar({}, "toolbar");
     var createButton = new Button({
         label:"Save",
@@ -39,34 +35,4 @@ require(["dojo/_base/declare",
     toolbar.addChild(closeButton);
 
     toolbar.startup();
-
-
-
-
-    function success() {
-        console.log("succes");
-    }
-
-    function error(err) {
-        myDialog = new Dialog({
-            title: "Error!",
-            content: err.responseText,
-            style: "width: 300px"
-        });
-        console.log("error");
-        myDialog.show();
-    }
-
-    function createNewTab() {
-        var tabContainer = Registry.byId("TabContainer");
-        var pane = new ContentPane({ title:"Person", closable: true, onClose: function(){
-            return confirm("Do you really want to Close this?");
-        }});
-        tabContainer.addChild(pane);
-        tabContainer.selectChild(pane);
-    }
-
-    function myButtonHandler() {
-        console.log('Clicked button');
-    }
 });

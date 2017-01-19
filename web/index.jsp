@@ -46,10 +46,10 @@
             "dojo/query",
             "dojo/dom",
             "/ecm/resources/js/formsWidget.js",
+            "dojo/parser",
             /*'dojo/store/Memory',*/
             "dojo/domReady!"], function(declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults,Memory,SingleSort, JsonRest, Bar, Toolbar, Button,
-                                        RowHeader, Row, IndirectSelect, Dialog, Registry,query, Dom, formsWidget) {
-
+                                        RowHeader, Row, IndirectSelect, Dialog, Registry,query, Dom, formsWidget, parser) {
             var restURL = 'http://localhost:8080/ecm/rest/employees';
             var store = new JsonRest({
                 idProperty: 'id',
@@ -107,6 +107,7 @@
 
             grid.startup();
 
+//            parser.parse();
 
             function deleteSelected() {
                 // Get all selected items from the Grid:
@@ -140,15 +141,15 @@
             }
 
             function createNewTab() {
-                var widget = new formsWidget({ name: "John", surname: "Smith" });
+                var widget = new formsWidget({ model:{firstname:"firstname", surname:"surname"},name: "John", surname: "Smith" });
+                model = widget.get("model");
                 var tabContainer = Registry.byId("TabContainer");
                 var pane = new ContentPane({ title:"Person",  content: widget, closable: true, onClose: function(){
                     return confirm("Do you really want to Close this?");
                 }});
                 tabContainer.addChild(pane);
                 tabContainer.selectChild(pane);
-
-
+                parser.parse(Dom.byId("personDiv"));
             }
 
             function myButtonHandler() {
@@ -163,7 +164,6 @@
 
 
 <body class="claro">
-
 <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'" style="width: 100%; height:100%;">
     <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left', splitter: true">
         Sidebar content (left)
