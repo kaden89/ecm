@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Person</title>
+    <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/dojo.js' data-dojo-config="async: true, parseOnLoad: true"></script>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.1/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/main.css">
+
+</head>
+
+<body class="claro">
+
+<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'" style="width: 100%; height:100%;">
+    <span id="toolbar">test</span>
+    <div>
+        <span data-dojo-attach-point="surnameNode">${surname}</span>
+
+        <span data-dojo-attach-point="nameNode">${name}</span>
+    </div>
+</div>
+</body>
+</html>

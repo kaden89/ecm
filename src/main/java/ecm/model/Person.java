@@ -14,7 +14,7 @@ import java.util.List;
 @XmlRootElement
 @Entity
 public class Person extends Staff implements Comparable<Person>, Storable{
-    @NotNull
+
     private String firstName;
     private String surname;
     private String patronymic;

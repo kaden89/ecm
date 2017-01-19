@@ -44,9 +44,11 @@
             "dijit/Dialog",
             "dijit/registry",
             "dojo/query",
+            "dojo/dom",
+            "resources/js/formsWidget",
             /*'dojo/store/Memory',*/
             "dojo/domReady!"], function(declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults,Memory,SingleSort, JsonRest, Bar, Toolbar, Button,
-                                        RowHeader, Row, IndirectSelect, Dialog, Registry,query) {
+                                        RowHeader, Row, IndirectSelect, Dialog, Registry,query, Dom, formsWidget) {
 
             var restURL = 'http://localhost:8080/ecm/rest/employees';
             var store = new JsonRest({
@@ -68,7 +70,7 @@
             var createButton = new Button({
                         label:"Create",
                 iconClass:"dijitEditorIcon dijitEditorIconPaste",
-                onClick:myButtonHandler
+                onClick:createNewTab
             });
             var deleteButton = new Button({
                 label:"Delete",
@@ -137,12 +139,22 @@
                 myDialog.show();
             }
 
+            function createNewTab() {
+                var tabContainer = Registry.byId("TabContainer");
+                var pane = new ContentPane({ title:"Person", href: "resources/html/person.html", closable: true, onClose: function(){
+                    return confirm("Do you really want to Close this?");
+                }});
+
+                tabContainer.addChild(pane);
+                tabContainer.selectChild(pane);
+                var formsWidget = new formsWidget({ name: "John", surname: "Smith" });
+                formsWidget.placeAt(document.body);
+            }
+
+            function myButtonHandler() {
+                console.log('Clicked button');
+            }
         });
-
-
-        function myButtonHandler() {
-            console.log('Clicked button');
-        }
     </script>
 
 
@@ -156,7 +168,7 @@
     <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left', splitter: true">
         Sidebar content (left)
     </div>
-    <div data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region:'center', tabStrip:true">
+    <div data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region:'center', tabStrip:true" id="TabContainer">
         <div data-dojo-type="dijit/layout/ContentPane" title="Welcom">
             <div id='gridContainer'></div>
         </div>
