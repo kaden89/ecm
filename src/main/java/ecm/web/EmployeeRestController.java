@@ -52,6 +52,7 @@ public class EmployeeRestController {
         GenericEntity<List<Person>> employees = new GenericEntity<List<Person>>(personDAO.findAll()) {
         };
         int size = employees.getEntity().size();
+        //TODO Paging need to implementing
         return Response.ok(employees).header( "Content-Range" , "items 0-"+size+"/"+size).build();
     }
 
