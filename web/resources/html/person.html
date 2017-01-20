@@ -8,7 +8,8 @@
                        data-dojo-props="content: at(model, 'firstname'), region:'bottom'">
                 </div>
             </div>
-            <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'right'" style="width: 40%">r</div>
+            <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'right'" style="width: 40%">
+            </div>
             <!--<div data-dojo-type="dijit/form/ValidationTextBox" data-dojo-props="value: at(model, 'firstname')"/>-->
         </div>
         <div data-dojo-type="dijit/layout/BorderContainer"  style="height: 60%">
@@ -71,10 +72,14 @@
                 </tr>
                 <tr>
                     <td>
-                        <label for="dob">Date of birth:</label>
+                        <label for="birthday">Date of birth:</label>
                     </td>
                     <td>
-                        <input type="text" id="dob" name="birthday" data-dojo-type="dijit/form/DateTextBox"/>
+                        <input type="text"
+                               id="birthday"
+                               name="birthday"
+                               required="true"
+                               data-dojo-type="dijit/form/DateTextBox"/>
                     </td>
                 </tr>
                 <tr>
@@ -97,6 +102,23 @@
             <!--<button data-dojo-type="dijit/form/Button" type="button" onClick="console.log(myForm.getValues())">Get Values from form!</button>-->
             <button data-dojo-type="dijit/form/Button" type="submit" name="submitButton" value="Submit">Submit</button>
             <!--<button data-dojo-type="dijit/form/Button" type="reset">Reset</button>-->
+            <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+                <label for="photo">Photo:</label>
+
+                <input type="file" multiple="true" data-dojo-type="dojox/form/Uploader"
+                       name="uploadedfile"
+                       multiple="false"
+                       type="file"
+                       id="photo"
+                       data-dojo-props="
+                label: 'Select photo',
+
+                value: at(model, 'photo'),
+                uploadOnSelect: false">
+
+                <div id="files" data-dojo-type="dojox/form/uploader/FileList" data-dojo-props="uploaderId: 'photo'"></div>
+                <button data-dojo-type="dijit/form/Button" type="submit" name="submitButton" value="Submit">Upload</button>
+            </div>
         </div>
         </div>
     </div>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <organizations>
-    <organization id="1000">
+    <organization >
         <fullName>OOO Company</fullName>
         <shortName>Company</shortName>
-        <manager id="100">
+        <manager >
 			<firstName>Ivan</firstName>
 			<patronymic>Ivanovich</patronymic>
 			<position>engineer</position>
@@ -11,10 +11,10 @@
 		</manager>
         <contactsTelephones>+7 777 777</contactsTelephones>
     </organization>
-	<organization id="1001">
+	<organization>
         <fullName>OOO Sales</fullName>
         <shortName>Sales</shortName>
-         <manager id="101">
+         <manager >
 			<firstName>Nikolay</firstName>
 			<patronymic>Nikolaevich</patronymic>
 			<position>security</position>
@@ -22,10 +22,10 @@
 		</manager>
         <contactsTelephones>+7 888 888</contactsTelephones>
     </organization>
-	<organization id="1002">
+	<organization >
         <fullName>OOO Trade</fullName>
         <shortName>Trade</shortName>
-        <manager id="102">
+        <manager>
 			<firstName>Petr</firstName>
 			<patronymic>Petrovich</patronymic>
 			<position>manager</position>

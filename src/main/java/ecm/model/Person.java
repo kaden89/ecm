@@ -28,8 +28,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     public Person() {
     }
 
-    public Person(Integer id, String firstName, String surname, String patronymic, String position, byte[] photo, LocalDate birthday) {
-        super(id);
+    public Person(String firstName, String surname, String patronymic, String position, byte[] photo, LocalDate birthday) {
         this.firstName = firstName;
         this.surname = surname;
         this.patronymic = patronymic;

@@ -112,7 +112,7 @@ public class EmployeeRestController {
                                     @FormParam("birthday") String birthday){
 
 
-        Person person = new Person(null, firstname, surname, patronymic, position, null, LocalDate.parse(birthday));
+        Person person = new Person(firstname, surname, patronymic, position, null, LocalDate.parse(birthday));
         person = personDAO.save(person);
         return Response.ok(person).build();
     }

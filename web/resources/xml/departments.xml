@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <departments>
-    <department id="2000">
+    <department>
         <fullName>Programmers</fullName>
         <shortName>Programmers</shortName>
-        <manager id="103">
+        <manager >
             <firstName>Nikolay</firstName>
             <patronymic>Nikolaevich</patronymic>
             <position>security</position>
@@ -11,10 +11,10 @@
         </manager>
         <contactsTelephones>+7 777 777</contactsTelephones>
     </department>
-    <department id="2001">
+    <department >
         <fullName>Administration</fullName>
         <shortName>Administration</shortName>
-        <manager id="104">
+        <manager >
             <firstName>Vasya</firstName>
             <patronymic>Vasilievich</patronymic>
             <position>tester</position>
@@ -22,10 +22,10 @@
         </manager>
         <contactsTelephones>+7 888 888</contactsTelephones>
     </department>
-    <department id="2002">
+    <department >
         <fullName>Testers</fullName>
         <shortName>Testers</shortName>
-        <manager id="105">
+        <manager >
             <firstName>Petr</firstName>
             <patronymic>Vasilievich</patronymic>
             <position>cleaner</position>

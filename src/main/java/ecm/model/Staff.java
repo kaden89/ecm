@@ -11,22 +11,19 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @XmlSeeAlso({Person.class, Department.class, Organization.class})
 @XmlAccessorType(XmlAccessType.FIELD)
 @MappedSuperclass
+@Access(value = AccessType.FIELD)
 public abstract class Staff {
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     public Staff() {
     }
 
-    public Staff(Integer id) {
-        this.id = id;
-    }
 
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }

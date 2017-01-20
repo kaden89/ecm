@@ -4,10 +4,7 @@ import ecm.dao.Storable;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
 
@@ -21,6 +18,7 @@ import java.time.LocalDate;
 @XmlRootElement
 public abstract class Document implements Comparable<Document>, Storable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
     private String text;
@@ -32,8 +30,7 @@ public abstract class Document implements Comparable<Document>, Storable {
     public Document() {
     }
 
-    public Document(Integer id, String name, String text, String regNumber, LocalDate date, Person author) {
-        this.id = id;
+    public Document(String name, String text, String regNumber, LocalDate date, Person author) {
         this.name = name;
         this.text = text;
         this.regNumber = regNumber;

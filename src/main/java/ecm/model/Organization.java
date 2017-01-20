@@ -12,8 +12,7 @@ public class Organization extends Staff{
     public Organization() {
     }
 
-    public Organization(Integer id, String fullName, String shortName, Person manager, String contactsTelephones) {
-        super(id);
+    public Organization(String fullName, String shortName, Person manager, String contactsTelephones) {
         this.fullName = fullName;
         this.shortName = shortName;
         this.manager = manager;
