@@ -25,7 +25,7 @@ public class Incoming extends Document {
     public Incoming() {
     }
 
-    public Incoming(int id, String name, String text, String regNumber, LocalDate date, Person author, Person sender, Person recipient, int referenceNumber, LocalDate outboundRegDate) {
+    public Incoming(Integer id, String name, String text, String regNumber, LocalDate date, Person author, Person sender, Person recipient, int referenceNumber, LocalDate outboundRegDate) {
         super(id, name, text, regNumber, date, author);
         this.sender = sender;
         this.recipient = recipient;

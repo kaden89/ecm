@@ -21,7 +21,7 @@ import java.time.LocalDate;
 @XmlRootElement
 public abstract class Document implements Comparable<Document>, Storable {
     @Id
-    private int id;
+    private Integer id;
     private String name;
     private String text;
     private String regNumber;
@@ -32,7 +32,7 @@ public abstract class Document implements Comparable<Document>, Storable {
     public Document() {
     }
 
-    public Document(int id, String name, String text, String regNumber, LocalDate date, Person author) {
+    public Document(Integer id, String name, String text, String regNumber, LocalDate date, Person author) {
         this.id = id;
         this.name = name;
         this.text = text;
@@ -41,11 +41,11 @@ public abstract class Document implements Comparable<Document>, Storable {
         this.author = author;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

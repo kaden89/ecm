@@ -67,12 +67,12 @@
             <version>1.19</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-multipart-provider -->
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-multipart-provider</artifactId>
-            <version>3.1.0.Final</version>
-        </dependency>
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-multipart-provider &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.jboss.resteasy</groupId>-->
+            <!--<artifactId>resteasy-multipart-provider</artifactId>-->
+            <!--<version>3.1.0.Final</version>-->
+        <!--</dependency>-->
 
 
 

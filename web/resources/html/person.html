@@ -15,7 +15,7 @@
 
         <script type="dojo/require">at: "dojox/mvc/at"</script>
         <div data-dojo-type="dijit/form/Form" id="myForm" data-dojo-id="myForm" data-dojo-props="region:'left'"
-             encType="multipart/form-data" action="/ecm/rest/employees" method="post" style="border: 0px">
+             encType="application/x-www-form-urlencoded" action="/ecm/rest/employees" method="post" style="border: 0px">
             <script type="dojo/on" data-dojo-event="reset">
                 return confirm('Press OK to reset widget values');
             </script>
@@ -50,6 +50,7 @@
                     <td>
                         <input type="text"
                                id="surname"
+                               name="surname"
                                required="true"
                                data-dojo-type="dijit/form/ValidationTextBox"
                                data-dojo-props="value: at(model, 'surname')">
@@ -62,6 +63,7 @@
                     <td>
                         <input type="text"
                                id="patronymic"
+                               name="patronymic"
                                required="true"
                                data-dojo-type="dijit/form/ValidationTextBox"
                                data-dojo-props="value: at(model, 'patronymic')">
@@ -72,7 +74,7 @@
                         <label for="dob">Date of birth:</label>
                     </td>
                     <td>
-                        <input type="text" id="dob" name="dob" data-dojo-type="dijit/form/DateTextBox"/>
+                        <input type="text" id="dob" name="birthday" data-dojo-type="dijit/form/DateTextBox"/>
                     </td>
                 </tr>
                 <tr>
@@ -82,31 +84,10 @@
                     <td>
                         <input type="text"
                                id="position"
+                               name="position"
                                required="true"
                                data-dojo-type="dijit/form/ValidationTextBox"
                                data-dojo-props="value: at(model, 'position')">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="photo">Photo:</label>
-                    </td>
-                    <td>
-                        <input type="file" multiple="true" data-dojo-type="dojox/form/Uploader"
-                               name="uploadedfile"
-                               multiple="false"
-                               type="file"
-                               id="photo"
-                               data-dojo-props="
-                                label: 'Select photo',
-
-                                value: at(model, 'photo'),
-                                uploadOnSelect: false">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="files" data-dojo-type="dojox/form/uploader/FileList" data-dojo-props="uploaderId: 'photo'"></div>
                     </td>
                 </tr>
             </table>

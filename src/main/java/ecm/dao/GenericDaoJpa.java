@@ -51,7 +51,7 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
 
     @Override
     public T save(Storable entity) {
-        if (find(entity.getId()) == null)
+        if (entity.getId() == null || find(entity.getId())==null)
             entityManager.persist(entity);
         else
             entityManager.merge(entity);

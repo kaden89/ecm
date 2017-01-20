@@ -1,7 +1,6 @@
 package ecm.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -14,20 +13,21 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @MappedSuperclass
 public abstract class Staff {
     @Id
-    private int id;
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
     public Staff() {
     }
 
-    public Staff(int id) {
+    public Staff(Integer id) {
         this.id = id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }

@@ -1,5 +1,6 @@
 package ecm.web;
 
+import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.FormDataParam;
 import ecm.dao.GenericDAO;
 import ecm.dao.TaskDaoJPA;
@@ -10,6 +11,9 @@ import sun.misc.IOUtils;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.mail.internet.MimeMultipart;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.TransactionalException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -19,10 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Created by dkarachurin on 12.01.2017.
@@ -100,27 +103,32 @@ public class EmployeeRestController {
     }
 
     @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createEmployee(@FormDataParam("uploadedfile") InputStream stream, @Context UriInfo uriDetails){
-        //log.info("create organization "+organization);
-//        Person created = personDAO.save(person);
-//        UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-//        builder.path(Integer.toString(created.getId()));
+    public Response createEmployee2(@FormParam("firstname") String firstname,
+                                    @FormParam("surname") String surname,
+                                    @FormParam("patronymic") String patronymic,
+                                    @FormParam("position") String position,
+                                    @FormParam("birthday") String birthday){
+
+
+        Person person = new Person(null, firstname, surname, patronymic, position, null, LocalDate.parse(birthday));
+        person = personDAO.save(person);
+        return Response.ok(person).build();
+    }
+//    @POST
+//    @Consumes(MediaType.MULTIPART_FORM_DATA)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response createEmployee(@FormDataParam("uploadedfile") InputStream stream, @Context UriInfo uriDetails){
+//        byte[] targetArray = null;
 //        try {
-//            Image img = ImageIO.read(stream);
+//            targetArray = new byte[stream.available()];
+//            stream.read(targetArray);
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        byte[] targetArray = null;
-        try {
-            targetArray = new byte[stream.available()];
-            stream.read(targetArray);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Response.ok().build();
-    }
+//        return Response.ok().build();
+//    }
 
     @PUT
     @Path("/{id}")

@@ -22,7 +22,7 @@ public class Outgoing extends Document {
     public Outgoing() {
     }
 
-    public Outgoing(int id, String name, String text, String regNumber, LocalDate date, Person author, Person recipient, String deliveryMethod) {
+    public Outgoing(Integer id, String name, String text, String regNumber, LocalDate date, Person author, Person recipient, String deliveryMethod) {
         super(id, name, text, regNumber, date, author);
         this.recipient = recipient;
         this.deliveryMethod = deliveryMethod;

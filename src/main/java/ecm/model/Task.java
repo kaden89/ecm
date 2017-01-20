@@ -26,7 +26,7 @@ public class Task extends Document {
     public Task() {
     }
 
-    public Task(int id, String name, String text, String regNumber, LocalDate date, Person author, LocalDate dateOfIssue, LocalDate deadline, Person executor, boolean isControlled, Person controller) {
+    public Task(Integer id, String name, String text, String regNumber, LocalDate date, Person author, LocalDate dateOfIssue, LocalDate deadline, Person executor, boolean isControlled, Person controller) {
         super(id, name, text, regNumber, date, author);
         this.dateOfIssue = dateOfIssue;
         this.deadline = deadline;

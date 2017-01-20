@@ -12,7 +12,7 @@ public class Department extends Staff {
     public Department() {
     }
 
-    public Department(int id, String fullName, String shortName, Person manager, String contactsTelephones) {
+    public Department(Integer id, String fullName, String shortName, Person manager, String contactsTelephones) {
         super(id);
         this.fullName = fullName;
         this.shortName = shortName;

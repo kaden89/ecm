@@ -4,6 +4,7 @@ import ecm.dao.Storable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.FormParam;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.time.LocalDate;
@@ -27,7 +28,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     public Person() {
     }
 
-    public Person(int id, String firstName, String surname, String patronymic, String position, byte[] photo, LocalDate birthday) {
+    public Person(Integer id, String firstName, String surname, String patronymic, String position, byte[] photo, LocalDate birthday) {
         super(id);
         this.firstName = firstName;
         this.surname = surname;
