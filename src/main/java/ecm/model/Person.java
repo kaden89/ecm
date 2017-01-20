@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -19,16 +20,21 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     private String surname;
     private String patronymic;
     private String position;
+    @Lob
+    private byte[] photo;
+    private LocalDate birthday;
 
     public Person() {
     }
 
-    public Person(int id, String firstName, String surname, String patronymic, String position) {
+    public Person(int id, String firstName, String surname, String patronymic, String position, byte[] photo, LocalDate birthday) {
         super(id);
         this.firstName = firstName;
         this.surname = surname;
         this.patronymic = patronymic;
         this.position = position;
+        this.photo = photo;
+        this.birthday = birthday;
     }
 
     public String getFirstName() {
@@ -63,6 +69,22 @@ public class Person extends Staff implements Comparable<Person>, Storable{
         this.position = position;
     }
 
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
 
     @Override
     public String toString() {

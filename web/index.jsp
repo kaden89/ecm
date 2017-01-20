@@ -141,7 +141,7 @@
             }
 
             function createNewTab() {
-                var widget = new formsWidget({ model:{firstname:"firstname", surname:"surname"},name: "John", surname: "Smith" });
+                var widget = new formsWidget({ model:{firstname:"firstname", surname:"surname"}});
                 model = widget.get("model");
                 var tabContainer = Registry.byId("TabContainer");
                 var pane = new ContentPane({ title:"Person",  content: widget, closable: true, onClose: function(){

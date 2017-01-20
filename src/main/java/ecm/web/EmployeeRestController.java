@@ -1,15 +1,23 @@
 package ecm.web;
 
+import com.sun.jersey.multipart.FormDataParam;
 import ecm.dao.GenericDAO;
 import ecm.dao.TaskDaoJPA;
 import ecm.model.*;
 import ecm.util.exceptions.HasLinksException;
 import org.hibernate.exception.ConstraintViolationException;
+import sun.misc.IOUtils;
 
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.transaction.TransactionalException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,14 +100,26 @@ public class EmployeeRestController {
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createEmployee(Person person, @Context UriInfo uriInfo){
+    public Response createEmployee(@FormDataParam("uploadedfile") InputStream stream, @Context UriInfo uriDetails){
         //log.info("create organization "+organization);
-        Person created = personDAO.save(person);
-        UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-        builder.path(Integer.toString(created.getId()));
-        return Response.created(builder.build()).entity(person).build();
+//        Person created = personDAO.save(person);
+//        UriBuilder builder = uriInfo.getAbsolutePathBuilder();
+//        builder.path(Integer.toString(created.getId()));
+//        try {
+//            Image img = ImageIO.read(stream);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        byte[] targetArray = null;
+        try {
+            targetArray = new byte[stream.available()];
+            stream.read(targetArray);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Response.ok().build();
     }
 
     @PUT
@@ -130,11 +150,11 @@ public class EmployeeRestController {
         return Response.ok().build();
     }
 
-    @GET
-    @Path("/delete")
-    public void delete(){
-        incomingDAO.deleteAll();
-        outgoingDAO.deleteAll();
-        taskDAO.deleteAll();
-    }
+//    @GET
+//    @Path("/delete")
+//    public void delete(){
+//        incomingDAO.deleteAll();
+//        outgoingDAO.deleteAll();
+//        taskDAO.deleteAll();
+//    }
 }

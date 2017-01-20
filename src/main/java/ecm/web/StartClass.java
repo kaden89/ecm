@@ -22,6 +22,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
+import java.time.LocalDate;
 import java.util.*;
 
 import static ecm.model.documents_factory.FactoryEnum.INCOMING;
@@ -64,7 +65,7 @@ public class StartClass implements ServletContextListener {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        Person test = new Person(1111,"test", "test", "testovich", "ttt");
+        Person test = new Person(1111,"test", "test", "testovich", "ttt", new byte[0], LocalDate.now());
         personDAO.save(test);
 //        createJSON();
     }

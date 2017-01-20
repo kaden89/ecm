@@ -17,11 +17,6 @@ define([
 
             this._set("model", new Stateful(model));
         },
-        _setSurnameAttr: { node: "surnameNode", type: "innerHTML" },
-        _setNameAttr: function(val){
-            this.nameNode.innerHTML = val;
-            this._set("name", val);
-        },
         startup: function(){
             var toolbar = new Toolbar({}, "toolbar");
             var createButton = new Button({
