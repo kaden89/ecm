@@ -60,12 +60,24 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/com.sun.jersey.contribs/jersey-multipart -->
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-multipart -->
         <dependency>
-            <groupId>com.sun.jersey.contribs</groupId>
-            <artifactId>jersey-multipart</artifactId>
-            <version>1.19</version>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>2.25</version>
         </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>org.glassfish.jersey.media</groupId>-->
+            <!--<artifactId>jersey-media-multipart</artifactId>-->
+            <!--<version>2.25.1</version>-->
+        <!--</dependency>-->
+         <!--&lt;!&ndash;https://mvnrepository.com/artifact/com.sun.jersey.contribs/jersey-multipart&ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>com.sun.jersey.contribs</groupId>-->
+            <!--<artifactId>jersey-multipart</artifactId>-->
+            <!--<version>1.19</version>-->
+        <!--</dependency>-->
 
         <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-multipart-provider &ndash;&gt;-->
         <!--<dependency>-->

@@ -1,11 +1,11 @@
 package ecm.web;
 
-import com.sun.jersey.multipart.FormDataMultiPart;
-import com.sun.jersey.multipart.FormDataParam;
 import ecm.dao.GenericDAO;
 import ecm.dao.TaskDaoJPA;
 import ecm.model.*;
 import ecm.util.exceptions.HasLinksException;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.hibernate.exception.ConstraintViolationException;
 import sun.misc.IOUtils;
 
@@ -18,10 +18,9 @@ import javax.transaction.TransactionalException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.util.*;
@@ -103,33 +102,41 @@ public class EmployeeRestController {
         return Response.ok(data).build();
     }
 
+//    @POST
+//    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response createEmployee2(@FormParam("firstname") String firstname,
+//                                    @FormParam("surname") String surname,
+//                                    @FormParam("patronymic") String patronymic,
+//                                    @FormParam("position") String position,
+//                                    @FormParam("birthday") String birthday){
+//
+//
+//        Person person = new Person(firstname, surname, patronymic, position, null, LocalDate.parse(birthday));
+//        person = personDAO.save(person);
+//        return Response.ok(person).build();
+//    }
     @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createEmployee2(@FormParam("firstname") String firstname,
-                                    @FormParam("surname") String surname,
-                                    @FormParam("patronymic") String patronymic,
-                                    @FormParam("position") String position,
-                                    @FormParam("birthday") String birthday){
+    public Response createEmployee(@FormDataParam("uploadedfile") File stream,
+                                   @FormDataParam("firstname") String firstname,
+                                   @FormDataParam("surname") String surname,
+                                   @FormDataParam("patronymic") String patronymic,
+                                   @FormDataParam("position") String position,
+                                   @FormDataParam("birthday") String birthday){
+        byte[] photo = null;
+        try {
+            photo = Files.readAllBytes(Paths.get(stream.getPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-
-        Person person = new Person(firstname, surname, patronymic, position, null, LocalDate.parse(birthday));
+        Person person = new Person(firstname, surname, patronymic, position, photo, LocalDate.parse(birthday));
         person = personDAO.save(person);
+
         return Response.ok(person).build();
     }
-//    @POST
-//    @Consumes(MediaType.MULTIPART_FORM_DATA)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response createEmployee(@FormDataParam("uploadedfile") InputStream stream, @Context UriInfo uriDetails){
-//        byte[] targetArray = null;
-//        try {
-//            targetArray = new byte[stream.available()];
-//            stream.read(targetArray);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return Response.ok().build();
-//    }
 
     @PUT
     @Path("/{id}")

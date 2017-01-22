@@ -47,9 +47,10 @@
             "dojo/dom",
             "/ecm/resources/js/formsWidget.js",
             "dojo/parser",
+            "dojo/request/xhr",
             /*'dojo/store/Memory',*/
             "dojo/domReady!"], function(declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults,Memory,SingleSort, JsonRest, Bar, Toolbar, Button,
-                                        RowHeader, Row, IndirectSelect, Dialog, Registry,query, Dom, formsWidget, parser) {
+                                        RowHeader, Row, IndirectSelect, Dialog, Registry,query, Dom, formsWidget, parser, xhr) {
             var restURL = 'http://localhost:8080/ecm/rest/employees';
             var store = new JsonRest({
                 idProperty: 'id',
@@ -72,6 +73,11 @@
                 iconClass:"dijitEditorIcon dijitEditorIconPaste",
                 onClick:createNewTab
             });
+            var editButton = new Button({
+                label:"Edit",
+                iconClass:"dijitIcon dijitIconEdit",
+                onClick:edit
+            });
             var deleteButton = new Button({
                 label:"Delete",
                 iconClass:"dijitEditorIcon dijitEditorIconDelete",
@@ -79,6 +85,7 @@
             });
             toolbar.addChild(createButton);
             toolbar.addChild(deleteButton);
+            toolbar.addChild(editButton);
             toolbar.startup();
 
             //Create grid widget.
@@ -138,6 +145,35 @@
                 });
                 console.log("error");
                 myDialog.show();
+            }
+
+            function edit() {
+
+                var id;
+                var items = grid.select.row.getSelected();
+                if (items.length) {
+                    dojo.forEach(items, function (selectedItem) {
+                        if (selectedItem !== null) {
+                            id = selectedItem;
+                        }
+                    });
+                    xhr(restURL + "/" + id, {
+                        handleAs: "json"
+                    }).then(function (data) {
+                        var widget = new formsWidget({model: data});
+                        model = widget.get("model");
+                        var tabContainer = Registry.byId("TabContainer");
+                        var pane = new ContentPane({
+                            title: "Person", content: widget, closable: true, onClose: function () {
+                                return confirm("Do you really want to Close this?");
+                            }
+                        });
+                        tabContainer.addChild(pane);
+                        tabContainer.selectChild(pane);
+                        parser.parse(Dom.byId("personDiv"));
+                    });
+
+                }
             }
 
             function createNewTab() {
