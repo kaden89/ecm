@@ -1,27 +1,36 @@
-
-<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'" style="width: 100%; height:100%;">
+<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'"
+     style="width: 100%; height:100%;">
     <span id="toolbar"></span>
-    <div id ="personDiv">
-        <div data-dojo-type="dijit/layout/BorderContainer"  style="height: 40%">
-            <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left'"  style="width: 60%">
+    <div id="personDiv">
+        <div data-dojo-type="dijit/layout/BorderContainer" style="height: 40%">
+            <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left'" style="width: 60%">
+                <div data-dojo-type="dijit/layout/ContentPane" style="height: 40%">
+                </div>
                 <div data-dojo-type="dijit/layout/ContentPane"
-                       data-dojo-props="content: at(model, 'firstname'), region:'bottom'">
+                     data-dojo-props="region:'bottom'"
+                     style="text-align: center; font-size: large">
+                    <span data-dojo-type="dijit/_WidgetBase" data-dojo-props="_setValueAttr: {node: 'domNode', type: 'innerText'}, value: at(model, 'firstName')"></span>
+                    <span data-dojo-type="dijit/_WidgetBase" data-dojo-props="_setValueAttr: {node: 'domNode', type: 'innerText'}, value: at(model, 'surname')"></span>
+                    <span data-dojo-type="dijit/_WidgetBase" data-dojo-props="_setValueAttr: {node: 'domNode', type: 'innerText'}, value: at(model, 'patronymic')"></span>
                 </div>
             </div>
             <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'right'" style="width: 40%">
             </div>
             <!--<div data-dojo-type="dijit/form/ValidationTextBox" data-dojo-props="value: at(model, 'firstname')"/>-->
         </div>
-        <div data-dojo-type="dijit/layout/BorderContainer"  style="height: 60%">
+        <div data-dojo-type="dijit/layout/BorderContainer" style="height: 60%">
+            <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
 
-        <script type="dojo/require">at: "dojox/mvc/at"</script>
-        <div data-dojo-type="dijit/form/Form" id="myForm" data-dojo-id="myForm" data-dojo-props="region:'left'"
-             encType="application/x-www-form-urlencoded" action="/ecm/rest/employees" method="post" style="border: 0px">
-            <script type="dojo/on" data-dojo-event="reset">
+                    <script type="dojo/require">at: "dojox/mvc/at"</script>
+                    <div data-dojo-type="dijit/form/Form" id="myForm" data-dojo-id="myForm" data-dojo-props="region:'right'"
+                         encType="application/x-www-form-urlencoded" action="/ecm/rest/employees" method="post"
+                         style="border: 0px">
+                        <script type="dojo/on" data-dojo-event="reset">
                 return confirm('Press OK to reset widget values');
-            </script>
 
-            <script type="dojo/on" data-dojo-event="submit">
+                    </script>
+
+                        <script type="dojo/on" data-dojo-event="submit">
                 if(this.validate()){
                     return confirm('Form is valid, press OK to submit');
                 }else{
@@ -29,98 +38,106 @@
                     return false;
                 }
                 return true;
-            </script>
-            <table style="border: 1px solid #9f9f9f;" cellspacing="10">
-                <tr>
-                    <td>
-                        <label for="firstname">Fisrt name:</label>
-                    </td>
-                    <td>
-                        <input type="text"
-                               name="firstname"
-                               id="firstname"
-                               required="true"
-                               data-dojo-type="dijit/form/ValidationTextBox"
-                               data-dojo-props="value: at(model, 'firstname')">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="surname">Surname:</label>
-                    </td>
-                    <td>
-                        <input type="text"
-                               id="surname"
-                               name="surname"
-                               required="true"
-                               data-dojo-type="dijit/form/ValidationTextBox"
-                               data-dojo-props="value: at(model, 'surname')">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="patronymic">Patronymic:</label>
-                    </td>
-                    <td>
-                        <input type="text"
-                               id="patronymic"
-                               name="patronymic"
-                               required="true"
-                               data-dojo-type="dijit/form/ValidationTextBox"
-                               data-dojo-props="value: at(model, 'patronymic')">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="birthday">Date of birth:</label>
-                    </td>
-                    <td>
-                        <input type="text"
-                               id="birthday"
-                               name="birthday"
-                               required="true"
-                               data-dojo-type="dijit/form/DateTextBox"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="position">Position:</label>
-                    </td>
-                    <td>
-                        <input type="text"
-                               id="position"
-                               name="position"
-                               required="true"
-                               data-dojo-type="dijit/form/ValidationTextBox"
-                               data-dojo-props="value: at(model, 'position')">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="photo">Photo:</label>
-                    </td>
-                    <td>
-                        <input type="file" multiple="false"
-                               data-dojo-type="dojox/form/Uploader"
-                               name="uploadedfile"
-                               id="photo"
-                               data-dojo-props="
+
+                    </script>
+                        <table style="border: 1px solid #9f9f9f;" cellspacing="10">
+                            <tr>
+                                <td>
+                                    <label for="firstname">Fisrt name:</label>
+                                </td>
+                                <td>
+                                    <input type="text"
+                                           name="firstname"
+                                           id="firstname"
+                                           required="true"
+                                           data-dojo-type="dijit/form/ValidationTextBox"
+                                           data-dojo-props="value: at(model, 'firstName')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="surname">Surname:</label>
+                                </td>
+                                <td>
+                                    <input type="text"
+                                           id="surname"
+                                           name="surname"
+                                           required="true"
+                                           data-dojo-type="dijit/form/ValidationTextBox"
+                                           data-dojo-props="value: at(model, 'surname')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="patronymic">Patronymic:</label>
+                                </td>
+                                <td>
+                                    <input type="text"
+                                           id="patronymic"
+                                           name="patronymic"
+                                           required="true"
+                                           data-dojo-type="dijit/form/ValidationTextBox"
+                                           data-dojo-props="value: at(model, 'patronymic')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="birthday">Date of birth:</label>
+                                </td>
+                                <td>
+                                    <input type="text"
+                                           id="birthday"
+                                           name="birthday"
+                                           required="true"
+                                           data-dojo-type="dijit/form/DateTextBox"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="position">Position:</label>
+                                </td>
+                                <td>
+                                    <input type="text"
+                                           id="position"
+                                           name="position"
+                                           required="true"
+                                           data-dojo-type="dijit/form/ValidationTextBox"
+                                           data-dojo-props="value: at(model, 'position')">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="photo">Photo:</label>
+                                </td>
+                                <td>
+                                    <input type="file" multiple="false"
+                                           data-dojo-type="dojox/form/Uploader"
+                                           name="uploadedfile"
+                                           id="photo"
+                                           data-dojo-props="
                                 label: 'Select photo',
                                 value: at(model, 'photo'),
                                 uploadOnSelect: false">
-                        <div id="files" data-dojo-type="dojox/form/uploader/FileList" data-dojo-props="uploaderId: 'photo'"></div>
-                    </td>
-                </tr>
-            </table>
+                                    <div id="files" data-dojo-type="dojox/form/uploader/FileList"
+                                         data-dojo-props="uploaderId: 'photo'"></div>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <!--<button data-dojo-type="dijit/form/Button" type="button" onClick="console.log(myForm.getValues())">Get Values from form!</button>-->
+                        <button data-dojo-type="dijit/form/Button" type="submit" name="submitButton" value="Submit">Submit
+                        </button>
+                        <!--<button data-dojo-type="dijit/form/Button" type="reset">Reset</button>-->
+                        <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+                        </div>
+                    </div>
 
 
 
-            <!--<button data-dojo-type="dijit/form/Button" type="button" onClick="console.log(myForm.getValues())">Get Values from form!</button>-->
-            <button data-dojo-type="dijit/form/Button" type="submit" name="submitButton" value="Submit">Submit</button>
-            <!--<button data-dojo-type="dijit/form/Button" type="reset">Reset</button>-->
-            <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+
             </div>
-        </div>
+
         </div>
     </div>
 </div>
