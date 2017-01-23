@@ -148,7 +148,7 @@ public class EmployeeRestController {
                                    @FormParam("patronymic") String patronymic,
                                    @FormParam("position") String position,
                                    @FormParam("birthday") String birthday,
-                                   @FormParam("photo") byte[] photo){
+                                   @FormParam("photo") String photo){
         //log.info("update organization "+organization+" with id "+organizationId);
         Person updated = new Person(firstname, surname, patronymic, position, null, LocalDate.parse(birthday));
         updated.setId(personId);

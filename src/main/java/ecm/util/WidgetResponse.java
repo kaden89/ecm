@@ -1,30 +1,34 @@
 package ecm.util;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import ecm.dao.Storable;
+import ecm.model.Person;
+
+import javax.xml.bind.annotation.*;
 
 /**
  * Created by dkarachurin on 23.01.2017.
  */
-@XmlRootElement
-public class WidgetResponse {
-    private Object model;
+
+public class WidgetResponse<T> {
+
+    private T model;
     private String template;
     private String[] scripts;
 
     public WidgetResponse() {
     }
 
-    public WidgetResponse(Object model, String template, String[] scripts) {
+    public WidgetResponse(T model, String template, String[] scripts) {
         this.model = model;
         this.template = template;
         this.scripts = scripts;
     }
 
-    public Object getModel() {
+    public T getModel() {
         return model;
     }
 
-    public void setModel(Object model) {
+    public void setModel(T model) {
         this.model = model;
     }
 

@@ -14,7 +14,12 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @Access(value = AccessType.FIELD)
 public abstract class Staff {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.TABLE)
+//    @SequenceGenerator(
+//            name="staff_seq",
+//            sequenceName="staff_sequence",
+//            allocationSize=20
+//    )
     private Integer id;
 
     public Staff() {
