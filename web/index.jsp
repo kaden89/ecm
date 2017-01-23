@@ -48,9 +48,11 @@
             "/ecm/resources/js/formsWidget.js",
             "dojo/parser",
             "dojo/request/xhr",
+            "dojox/image/Lightbox",
+            "dojo/dom",
             /*'dojo/store/Memory',*/
             "dojo/domReady!"], function(declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults,Memory,SingleSort, JsonRest, Bar, Toolbar, Button,
-                                        RowHeader, Row, IndirectSelect, Dialog, Registry,query, Dom, formsWidget, parser, xhr) {
+                                        RowHeader, Row, IndirectSelect, Dialog, Registry,query, Dom, formsWidget, parser, xhr, Lightbox, dom) {
             var restURL = 'http://localhost:8080/ecm/rest/employees';
             var store = new JsonRest({
                 idProperty: 'id',

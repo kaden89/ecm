@@ -9,8 +9,14 @@ define([
     "dijit/Toolbar",
     "dijit/form/Button",
     "dojo/Stateful",
-    "dojo/_base/declare"
-], function(declare, _Widget, _TemplatedMixin, template, Toolbar, Button, Stateful, declare){
+    "dojo/_base/declare",
+    "dojo/request",
+    "dojo/dom-form",
+    "dijit/registry",
+    "dojox/image/Lightbox",
+    "dojo/dom",
+    "dojo/dom-attr"
+], function(declare, _Widget, _TemplatedMixin, template, Toolbar, Button, Stateful, declare, request, domForm, registry, Lightbox, dom, domAttr){
     return declare([_Widget, _TemplatedMixin], {
         templateString: template,
         _setModel: function(model){
@@ -21,7 +27,8 @@ define([
             var toolbar = new Toolbar({}, "toolbar");
             var createButton = new Button({
                 label:"Save",
-                iconClass:"dijitEditorIcon dijitEditorIconSave"
+                iconClass:"dijitEditorIcon dijitEditorIconSave",
+                onClick: save
             });
             var deleteButton = new Button({
                 label:"Delete",
@@ -36,6 +43,27 @@ define([
             toolbar.addChild(closeButton);
 
             toolbar.startup();
+
+            var node = dom.byId("avatar");
+            domAttr.set(node,"src", "data:image/png;base64, "+model.photo);
+
+            function save() {
+                var formObj = domForm.toObject("personForm");
+                var widget = registry.byId("photo");
+                var v = dom.byId("photo");
+                var photo =  domAttr.get(node,"src").replace("data:image/png;base64, ", "");
+                // var photo = widget.getFileList()[0];
+
+                formObj.photo = photo;
+                request.put("http://localhost:8080/ecm/rest/employees/"+formObj.id, {
+                    data: formObj,
+                    headers: {
+                        "X-Something": "A value"
+                    }
+                }).then(function(text){
+                    console.log("The server returned: ", text);
+                });
+            }
         },
         baseClass: "formsWidget"
         // postCreate: function() {

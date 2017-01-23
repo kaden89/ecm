@@ -105,7 +105,7 @@ public class EmployeeRestController {
 //    @POST
 //    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 //    @Produces(MediaType.APPLICATION_JSON)
-//    public Response createEmployee2(@FormParam("firstname") String firstname,
+//    public WidgetResponse createEmployee2(@FormParam("firstname") String firstname,
 //                                    @FormParam("surname") String surname,
 //                                    @FormParam("patronymic") String patronymic,
 //                                    @FormParam("position") String position,
@@ -114,7 +114,7 @@ public class EmployeeRestController {
 //
 //        Person person = new Person(firstname, surname, patronymic, position, null, LocalDate.parse(birthday));
 //        person = personDAO.save(person);
-//        return Response.ok(person).build();
+//        return WidgetResponse.ok(person).build();
 //    }
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -140,12 +140,19 @@ public class EmployeeRestController {
 
     @PUT
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateEmployee(Person person, @PathParam("id") int personId){
+    public Response updateEmployee(@PathParam("id") int personId,
+                                   @FormParam("firstname") String firstname,
+                                   @FormParam("surname") String surname,
+                                   @FormParam("patronymic") String patronymic,
+                                   @FormParam("position") String position,
+                                   @FormParam("birthday") String birthday,
+                                   @FormParam("photo") byte[] photo){
         //log.info("update organization "+organization+" with id "+organizationId);
-        Person updated =  personDAO.update(person);
-        return Response.ok(updated).build();
+        Person updated = new Person(firstname, surname, patronymic, position, null, LocalDate.parse(birthday));
+        updated.setId(personId);
+        return Response.ok(personDAO.update(updated)).build();
     }
 
 
