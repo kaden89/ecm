@@ -24,7 +24,16 @@ define([
             this._set("model", new Stateful(model));
         },
         startup: function(){
-            var toolbar = new Toolbar({}, "toolbar");
+
+            var toolbarNode = dom.byId("toolbar");
+            var rootDiv = dom.byId("personDiv");
+            var personForm = dom.byId("personForm");
+            domAttr.set(toolbarNode, "id", "toolbar"+model.id)
+            domAttr.set(rootDiv, "id", "personDiv"+model.id)
+            domAttr.set(personForm, "id", "personForm"+model.id)
+
+
+            var toolbar = new Toolbar({}, toolbarNode);
             var createButton = new Button({
                 label:"Save",
                 iconClass:"dijitEditorIcon dijitEditorIconSave",

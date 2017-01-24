@@ -25,23 +25,9 @@ import java.util.Scanner;
  * Created by dkarachurin on 23.01.2017.
  */
 @Path(value = WidgetRestController.REST_URL)
-public class WidgetRestController {
+public class WidgetRestController extends AbstractRestController{
     static final String REST_URL = "/widgets";
     private ClassLoader classLoader = getClass().getClassLoader();
-    //Glassfish can't correctly marshall generics, have to use GSON for it.
-    private Gson gson = new Gson();
-
-    @Inject
-    private GenericDAO<Person> personDAO;
-
-    @Inject
-    private GenericDAO<Outgoing> outgoingDAO;
-
-    @Inject
-    private GenericDAO<Incoming> incomingDAO;
-
-    @Inject
-    private GenericDAO<Task> taskDAO;
 
     @GET
     @Path("/person")
@@ -49,6 +35,7 @@ public class WidgetRestController {
     public Response getNewEmployeeTemplate(){
         WidgetResponse response = new WidgetResponse();
         response.setTemplate(readFile("/html/person.html"));
+        response.setScript(readFile("/js/person.js"));
         return Response.ok(response).build();
     }
 
@@ -59,6 +46,7 @@ public class WidgetRestController {
         WidgetResponse response = new WidgetResponse<Person>();
         response.setTemplate(readFile("/html/person.html"));
         response.setModel(personDAO.find(employeeId));
+        response.setScript(readFile("/js/person.js"));
         String jsonInString = gson.toJson(response);
 
         return Response.ok(jsonInString).build();

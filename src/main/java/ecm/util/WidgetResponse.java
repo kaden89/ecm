@@ -13,15 +13,15 @@ public class WidgetResponse<T> {
 
     private T model;
     private String template;
-    private String[] scripts;
+    private String script;
 
     public WidgetResponse() {
     }
 
-    public WidgetResponse(T model, String template, String[] scripts) {
+    public WidgetResponse(T model, String template, String script) {
         this.model = model;
         this.template = template;
-        this.scripts = scripts;
+        this.script = script;
     }
 
     public T getModel() {
@@ -40,11 +40,11 @@ public class WidgetResponse<T> {
         this.template = template;
     }
 
-    public String[] getScripts() {
-        return scripts;
+    public String getScript() {
+        return script;
     }
 
-    public void setScripts(String[] scripts) {
-        this.scripts = scripts;
+    public void setScript(String scripts) {
+        this.script = scripts;
     }
 }

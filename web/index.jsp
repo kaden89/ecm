@@ -208,6 +208,22 @@
                 console.log('Clicked button');
             }
 
+            function foo(item) {
+                var i = item;
+                var widget = new formsWidget({
+                    model: item
+                });
+                model = widget.get("model");
+                var tabContainer = Registry.byId("TabContainer");
+                var pane = new ContentPane({
+                    title: item.name, content: widget, closable: true, onClose: function () {
+                        return confirm("Do you really want to Close this?");
+                    }
+                });
+                tabContainer.addChild(pane);
+                tabContainer.selectChild(pane);
+                parser.parse(Dom.byId("personDiv"+item.id));
+            }
             function setupTrees() {
                 var personStore = new JsonRest({
                     target: "/ecm/rest/employees/tree",
@@ -234,7 +250,8 @@
                 });
 
                 tree = new Tree({
-                    model: model
+                    model: model,
+                    onDblClick: foo
                 }, "personTree"); // make sure you have a target HTML element with this id
                 tree.startup();
 

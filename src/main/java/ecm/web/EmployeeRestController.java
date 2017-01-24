@@ -23,22 +23,8 @@ import java.util.List;
  * Created by dkarachurin on 12.01.2017.
  */
 @Path(value = EmployeeRestController.REST_URL)
-public class EmployeeRestController {
+public class EmployeeRestController extends AbstractRestController{
     static final String REST_URL = "/employees";
-    //Glassfish can't correctly marshall generics, have to use GSON for it.
-    private Gson gson = new Gson();
-
-    @Inject
-    private GenericDAO<Person> personDAO;
-
-    @Inject
-    private GenericDAO<Outgoing> outgoingDAO;
-
-    @Inject
-    private GenericDAO<Incoming> incomingDAO;
-
-    @Inject
-    private GenericDAO<Task> taskDAO;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
