@@ -1,16 +1,17 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/dojo.js' data-dojo-config="async: true, parseOnLoad: true"></script>
-    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.1/dijit/themes/claro/claro.css">
+    <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/dojo.js'
+            data-dojo-config="async: true, parseOnLoad: true"></script>
+    <link rel="stylesheet" type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.1/dijit/themes/claro/claro.css">
     <link rel="stylesheet" type="text/css" href="resources/css/main.css">
     <link rel="stylesheet" type="text/css" href="http://cdn.rawgit.com/oria/gridx/1.3/resources/claro/Gridx.css">
 
-    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.1/dijit/themes/claro/document.css">
-
+    <link rel="stylesheet" type="text/css"
+          href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.1/dijit/themes/claro/document.css">
 
 
     <script type='text/javascript'>
@@ -50,9 +51,13 @@
             "dojo/request/xhr",
             "dojox/image/Lightbox",
             "dojo/dom",
+            "dojo/store/JsonRest",
+            "dijit/Tree",
+            "dijit/tree/ObjectStoreModel",
             /*'dojo/store/Memory',*/
-            "dojo/domReady!"], function(declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults,Memory,SingleSort, JsonRest, Bar, Toolbar, Button,
-                                        RowHeader, Row, IndirectSelect, Dialog, Registry,query, Dom, formsWidget, parser, xhr, Lightbox, dom) {
+            "dojo/domReady!"], function (declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults, Memory, SingleSort, JsonRest, Bar, Toolbar, Button,
+                                         RowHeader, Row, IndirectSelect, Dialog, Registry, query, Dom, formsWidget, parser, xhr, Lightbox, dom, JsonRest,
+                                         Tree, ObjectStoreModel) {
             var restURL = 'http://localhost:8080/ecm/rest/employees';
             var store = new JsonRest({
                 idProperty: 'id',
@@ -71,19 +76,19 @@
 
             var toolbar = new Toolbar({}, "toolbar");
             var createButton = new Button({
-                        label:"Create",
-                iconClass:"dijitEditorIcon dijitEditorIconPaste",
-                onClick:createNewTab
+                label: "Create",
+                iconClass: "dijitEditorIcon dijitEditorIconPaste",
+                onClick: createNewTab
             });
             var editButton = new Button({
-                label:"Edit",
-                iconClass:"dijitIcon dijitIconEdit",
-                onClick:edit
+                label: "Edit",
+                iconClass: "dijitIcon dijitIconEdit",
+                onClick: edit
             });
             var deleteButton = new Button({
-                label:"Delete",
-                iconClass:"dijitEditorIcon dijitEditorIconDelete",
-                onClick:deleteSelected
+                label: "Delete",
+                iconClass: "dijitEditorIcon dijitEditorIconDelete",
+                onClick: deleteSelected
             });
             toolbar.addChild(createButton);
             toolbar.addChild(deleteButton);
@@ -104,7 +109,7 @@
                     {
                         moduleClass: SingleSort,
                         //Declare initialOrder as module parameter:
-                        initialOrder: { colId: 'firstname', descending: true }
+                        initialOrder: {colId: 'firstname', descending: true}
                     },
                     Bar,
                     RowHeader,
@@ -116,14 +121,15 @@
 
             grid.startup();
 
-//            parser.parse();
+            setupTrees();
+
 
             function deleteSelected() {
                 // Get all selected items from the Grid:
                 var items = grid.select.row.getSelected();
-                if(items.length){
-                    dojo.forEach(items, function(selectedItem){
-                        if(selectedItem !== null){
+                if (items.length) {
+                    dojo.forEach(items, function (selectedItem) {
+                        if (selectedItem !== null) {
                             grid.store.remove(selectedItem).then(success, error);
                             grid.model.clearCache();
                             grid.body.refresh();
@@ -179,12 +185,20 @@
             }
 
             function createNewTab() {
-                var widget = new formsWidget({ model:{firstName:"firstname", surname:"surname", patronymic: "patronymic"}});
+                var widget = new formsWidget({
+                    model: {
+                        firstName: "firstname",
+                        surname: "surname",
+                        patronymic: "patronymic"
+                    }
+                });
                 model = widget.get("model");
                 var tabContainer = Registry.byId("TabContainer");
-                var pane = new ContentPane({ title:"Person",  content: widget, closable: true, onClose: function(){
-                    return confirm("Do you really want to Close this?");
-                }});
+                var pane = new ContentPane({
+                    title: "Person", content: widget, closable: true, onClose: function () {
+                        return confirm("Do you really want to Close this?");
+                    }
+                });
                 tabContainer.addChild(pane);
                 tabContainer.selectChild(pane);
                 parser.parse(Dom.byId("personDiv"));
@@ -193,6 +207,68 @@
             function myButtonHandler() {
                 console.log('Clicked button');
             }
+
+            function setupTrees() {
+                var personStore = new JsonRest({
+                    target: "/ecm/rest/employees/tree",
+                    idAttribute:"surname",
+                    mayHaveChildren: function(object){
+                        return "children" in object;
+                    },
+                    getChildren: function(object){
+                        return this.get("").then(function(fullObject){
+                            return fullObject.children;
+                        });
+                    }
+
+                });
+
+                model = new ObjectStoreModel({
+                    store: personStore,
+                    getRoot: function(onItem){
+                        this.store.get("").then(onItem);
+                    },
+                    mayHaveChildren: function(object){
+                        return "children" in object;
+                    }
+                });
+
+                tree = new Tree({
+                    model: model
+                }, "personTree"); // make sure you have a target HTML element with this id
+                tree.startup();
+
+
+
+                var documentsStore = new JsonRest({
+                    target: "/ecm/rest/documents/tree",
+                    idAttribute:"id",
+                    mayHaveChildren: function(object){
+                        return "haveChildren" in object;
+                    },
+                    getChildren: function(object){
+                        return this.get(object.id).then(function(fullObject){
+                            return fullObject.children;
+                        });
+                    }
+
+                });
+
+                documentsModel = new ObjectStoreModel({
+                    store: documentsStore,
+                    getRoot: function(onItem){
+                        this.store.get("").then(onItem);
+                    },
+                    mayHaveChildren: function(object){
+                        return "haveChildren" in object;
+                    }
+                });
+
+                documentsTree = new Tree({
+                    model: documentsModel
+                }, "documentsTree"); // make sure you have a target HTML element with this id
+                documentsTree.startup();
+            }
         });
     </script>
 
@@ -200,11 +276,17 @@
 </head>
 
 
-
 <body class="claro">
-<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'" style="width: 100%; height:100%;">
-    <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left', splitter: true">
-        Sidebar content (left)
+<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'"
+     style="width: 100%; height:100%;">
+    <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left', splitter: true" style="width: 15%">
+
+        <div data-dojo-type="dijit/layout/ContentPane" style="height: 35%">
+            <div id="personTree"></div>
+        </div>
+        <div data-dojo-type="dijit/layout/ContentPane" style="height: 60%">
+            <div id="documentsTree"></div>
+        </div>
     </div>
     <div data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region:'center', tabStrip:true" id="TabContainer">
         <div data-dojo-type="dijit/layout/ContentPane" title="Welcom">

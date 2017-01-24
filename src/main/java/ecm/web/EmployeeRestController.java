@@ -1,27 +1,20 @@
 package ecm.web;
 
+import com.google.gson.Gson;
 import ecm.dao.GenericDAO;
-import ecm.dao.TaskDaoJPA;
 import ecm.model.*;
+import ecm.util.TreeNode;
 import ecm.util.exceptions.HasLinksException;
-import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.hibernate.exception.ConstraintViolationException;
-import sun.misc.IOUtils;
 
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.mail.internet.MimeMultipart;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.TransactionalException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
@@ -32,6 +25,8 @@ import java.util.List;
 @Path(value = EmployeeRestController.REST_URL)
 public class EmployeeRestController {
     static final String REST_URL = "/employees";
+    //Glassfish can't correctly marshall generics, have to use GSON for it.
+    private Gson gson = new Gson();
 
     @Inject
     private GenericDAO<Person> personDAO;
@@ -53,6 +48,15 @@ public class EmployeeRestController {
         int size = employees.getEntity().size();
         //TODO Paging need to implementing
         return Response.ok(employees).header( "Content-Range" , "items 0-"+size+"/"+size).build();
+    }
+
+    @GET
+    @Path("/tree")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEmployeeRoot(){
+        TreeNode<Person> root = new TreeNode<>("Employees", "root", personDAO.findAll());
+        String jsonInString = gson.toJson(root);
+        return Response.ok(jsonInString).build();
     }
 
     @GET

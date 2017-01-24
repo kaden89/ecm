@@ -28,6 +28,8 @@ import java.util.Scanner;
 public class WidgetRestController {
     static final String REST_URL = "/widgets";
     private ClassLoader classLoader = getClass().getClassLoader();
+    //Glassfish can't correctly marshall generics, have to use GSON for it.
+    private Gson gson = new Gson();
 
     @Inject
     private GenericDAO<Person> personDAO;
@@ -57,8 +59,6 @@ public class WidgetRestController {
         WidgetResponse response = new WidgetResponse<Person>();
         response.setTemplate(readFile("/html/person.html"));
         response.setModel(personDAO.find(employeeId));
-
-        Gson gson = new Gson();
         String jsonInString = gson.toJson(response);
 
         return Response.ok(jsonInString).build();

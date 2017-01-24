@@ -1,10 +1,12 @@
 package ecm.model;
 
+import com.google.gson.annotations.SerializedName;
 import ecm.dao.Storable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.FormParam;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.time.LocalDate;
@@ -24,6 +26,9 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     @Lob
     private byte[] photo;
     private LocalDate birthday;
+    @Transient
+    @SerializedName("name")
+    private String fullName;
 
     public Person() {
     }
@@ -35,6 +40,11 @@ public class Person extends Staff implements Comparable<Person>, Storable{
         this.position = position;
         this.photo = photo;
         this.birthday = birthday;
+    }
+
+    @PostLoad
+    private void setFullName() {
+        this.fullName = toString();
     }
 
     public String getFirstName() {
@@ -84,6 +94,14 @@ public class Person extends Staff implements Comparable<Person>, Storable{
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public String getFullName() {
+        return this.fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     @Override

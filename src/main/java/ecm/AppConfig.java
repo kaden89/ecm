@@ -1,5 +1,6 @@
 package ecm;
 
+import ecm.web.DocumentsRestController;
 import ecm.web.EmployeeRestController;
 import ecm.web.WidgetRestController;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
@@ -18,6 +19,7 @@ public class AppConfig extends Application {
     public Set<Class<?>> getClasses() {
         final Set<Class<?>> classes = new HashSet<Class<?>>();
         classes.add(EmployeeRestController.class);
+        classes.add(DocumentsRestController.class);
         classes.add(WidgetRestController.class);
         classes.add(MultiPartFeature.class);
         return classes;
