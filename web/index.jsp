@@ -178,7 +178,7 @@
                         });
                         tabContainer.addChild(pane);
                         tabContainer.selectChild(pane);
-                        parser.parse(Dom.byId("personDiv"));
+                        parser.parse(Dom.byId("personBorderContainer"+model.id));
                     });
 
                 }
@@ -201,7 +201,7 @@
                 });
                 tabContainer.addChild(pane);
                 tabContainer.selectChild(pane);
-                parser.parse(Dom.byId("personDiv"));
+                parser.parse(Dom.byId("personBorderContainer"+model.id));
             }
 
             function myButtonHandler() {
@@ -222,7 +222,7 @@
                 });
                 tabContainer.addChild(pane);
                 tabContainer.selectChild(pane);
-                parser.parse(Dom.byId("personDiv"+item.id));
+                parser.parse(Dom.byId("personBorderContainer"+model.id));
             }
             function setupTrees() {
                 var personStore = new JsonRest({

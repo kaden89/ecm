@@ -15,8 +15,10 @@ define([
     "dijit/registry",
     "dojox/image/Lightbox",
     "dojo/dom",
-    "dojo/dom-attr"
-], function(declare, _Widget, _TemplatedMixin, template, Toolbar, Button, Stateful, declare, request, domForm, registry, Lightbox, dom, domAttr){
+    "dojo/dom-attr",
+    "dojo/query",
+
+], function(declare, _Widget, _TemplatedMixin, template, Toolbar, Button, Stateful, declare, request, domForm, registry, Lightbox, dom, domAttr, query){
     return declare([_Widget, _TemplatedMixin], {
         templateString: template,
         _setModel: function(model){
@@ -25,14 +27,13 @@ define([
         },
         startup: function(){
 
-            var toolbarNode = dom.byId("toolbar");
-            var rootDiv = dom.byId("personDiv");
-            var personForm = dom.byId("personForm");
-            domAttr.set(toolbarNode, "id", "toolbar"+model.id)
-            domAttr.set(rootDiv, "id", "personDiv"+model.id)
-            domAttr.set(personForm, "id", "personForm"+model.id)
+            query(".toChange").forEach(function(node){
+                var nodeToChange = dom.byId(node.id);
+                domAttr.set(nodeToChange, "id", node.id+model.id);
+            });
 
 
+            var toolbarNode = dom.byId("toolbar"+model.id);
             var toolbar = new Toolbar({}, toolbarNode);
             var createButton = new Button({
                 label:"Save",
@@ -53,13 +54,13 @@ define([
 
             toolbar.startup();
 
-            var node = dom.byId("avatar");
-            domAttr.set(node,"src", "data:image/png;base64, "+model.photo);
+            var node = dom.byId("avatar"+model.id);
+            // domAttr.set(node,"src", "data:image/png;base64, "+model.photo);
 
             function save() {
-                var formObj = domForm.toObject("personForm");
-                var widget = registry.byId("photo");
-                var v = dom.byId("photo");
+                var formObj = domForm.toObject("personForm"+model.id);
+                var widget = registry.byId("photo"+model.id);
+                var v = dom.byId("photo"+model.id);
                 var photo =  domAttr.get(node,"src").replace("data:image/png;base64, ", "");
                 // var photo = widget.getFileList()[0];
 
