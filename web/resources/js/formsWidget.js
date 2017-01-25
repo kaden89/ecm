@@ -3,37 +3,47 @@
  */
 define([
     "dojo/_base/declare",
-    "dijit/_Widget",
     "dijit/_TemplatedMixin",
-    "dojo/text!/ecm/resources/html/person.html",
+    "dijit/_WidgetsInTemplateMixin",
+    "dijit/_WidgetBase",
+    "dojo/Stateful",
+    "dojo/dom",
     "dijit/Toolbar",
     "dijit/form/Button",
-    "dojo/Stateful",
-    "dojo/_base/declare",
-    "dojo/request",
     "dojo/dom-form",
-    "dijit/registry",
-    "dojox/image/Lightbox",
-    "dojo/dom",
     "dojo/dom-attr",
-    "dojo/query",
+    "dijit/registry",
+    "dojo/request",
+    "dijit/form/Form",
+    "dojox/mvc/at",
+    "dojo/on",
+    "dojo/require",
+    "dijit/layout/ContentPane",
+    "dijit/layout/BorderContainer",
+    "dijit/form/TextBox",
+    "dijit/form/ValidationTextBox",
+    "dijit/form/DateTextBox",
+    "dojox/form/Uploader",
+    "dojox/form/uploader/FileList",
+    "dojox/mvc/Output"
 
-], function(declare, _Widget, _TemplatedMixin, template, Toolbar, Button, Stateful, declare, request, domForm, registry, Lightbox, dom, domAttr, query){
-    return declare([_Widget, _TemplatedMixin], {
-        templateString: template,
-        _setModel: function(model){
 
-            this._set("model", new Stateful(model));
-        },
+], function(declare, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, registry, request){
+    return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+        model: null,
+        // _setModel: function(model){
+        //
+        //     this._set("model", new Stateful(model));
+        // },
+        constructor: function(args) {
+            this.templateString = args.template;
+            this.model = new Stateful(args.entity);
+        }
+        ,
         startup: function(){
+            this.inherited(arguments);
 
-            query(".toChange").forEach(function(node){
-                var nodeToChange = dom.byId(node.id);
-                domAttr.set(nodeToChange, "id", node.id+model.id);
-            });
-
-
-            var toolbarNode = dom.byId("toolbar"+model.id);
+            var toolbarNode = dom.byId("toolbar");
             var toolbar = new Toolbar({}, toolbarNode);
             var createButton = new Button({
                 label:"Save",
@@ -53,15 +63,14 @@ define([
             toolbar.addChild(closeButton);
 
             toolbar.startup();
-
-            var node = dom.byId("avatar"+model.id);
-            // domAttr.set(node,"src", "data:image/png;base64, "+model.photo);
-
+            //
+            //     var node = dom.byId("avatar"+model.id);
+            //     // domAttr.set(node,"src", "data:image/png;base64, "+model.photo);
+            //
             function save() {
-                var formObj = domForm.toObject("personForm"+model.id);
-                var widget = registry.byId("photo"+model.id);
-                var v = dom.byId("photo"+model.id);
-                var photo =  domAttr.get(node,"src").replace("data:image/png;base64, ", "");
+                var formObj = domForm.toObject("personForm");
+                var avatar = dom.byId("avatar");
+                var photo =  domAttr.get(avatar,"src").replace("data:image/png;base64, ", "");
                 // var photo = widget.getFileList()[0];
 
                 formObj.photo = photo;
@@ -74,9 +83,23 @@ define([
                     console.log("The server returned: ", text);
                 });
             }
-        },
-        baseClass: "formsWidget"
-        // postCreate: function() {
+            // parser.parse(dom.byId("personDiv"+model.id));
+        }
+        //
+        //     query(".toChange").forEach(function(node){
+        //         var nodeToChange = dom.byId(node.id);
+        //         domAttr.set(nodeToChange, "id", node.id+model.id);
+        //     });
+        //
+        //
+
+
+        ,
+        baseClass: "formsWidget",
+
+        postCreate: function() {
+            var a = 1;
+        }
         //     switch(this.alertType) // обращение к переменой в теле виджета.
         //     {
         //         case “informing”: {

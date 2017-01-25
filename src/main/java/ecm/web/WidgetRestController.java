@@ -45,7 +45,7 @@ public class WidgetRestController extends AbstractRestController{
     public Response getEmployeeTemplate(@PathParam("id") int employeeId){
         WidgetResponse response = new WidgetResponse<Person>();
         response.setTemplate(readFile("/html/person.html"));
-        response.setModel(personDAO.find(employeeId));
+        response.setEntity(personDAO.find(employeeId));
         response.setScript(readFile("/js/person.js"));
         String jsonInString = gson.toJson(response);
 

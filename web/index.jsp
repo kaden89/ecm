@@ -46,7 +46,6 @@
             "dijit/registry",
             "dojo/query",
             "dojo/dom",
-            "/ecm/resources/js/formsWidget.js",
             "dojo/parser",
             "dojo/request/xhr",
             "dojox/image/Lightbox",
@@ -54,10 +53,13 @@
             "dojo/store/JsonRest",
             "dijit/Tree",
             "dijit/tree/ObjectStoreModel",
+            "dojo/Stateful",
+            "dojox/mvc/at",
+            "/ecm/resources/js/formsWidget.js",
             /*'dojo/store/Memory',*/
             "dojo/domReady!"], function (declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults, Memory, SingleSort, JsonRest, Bar, Toolbar, Button,
-                                         RowHeader, Row, IndirectSelect, Dialog, Registry, query, Dom, formsWidget, parser, xhr, Lightbox, dom, JsonRest,
-                                         Tree, ObjectStoreModel) {
+                                         RowHeader, Row, IndirectSelect, Dialog, Registry, query, Dom, parser, xhr, Lightbox, dom, JsonRest,
+                                         Tree, ObjectStoreModel, Stateful, at, formsWidget) {
             var restURL = 'http://localhost:8080/ecm/rest/employees';
             var store = new JsonRest({
                 idProperty: 'id',
@@ -178,7 +180,7 @@
                         });
                         tabContainer.addChild(pane);
                         tabContainer.selectChild(pane);
-                        parser.parse(Dom.byId("personBorderContainer"+model.id));
+//                        parser.parse(Dom.byId("personBorderContainer"+model.id));
                     });
 
                 }
@@ -186,11 +188,10 @@
 
             function createNewTab() {
                 var widget = new formsWidget({
-                    model: {
-                        firstName: "firstname",
+                        entity: {},
                         surname: "surname",
                         patronymic: "patronymic"
-                    }
+
                 });
                 model = widget.get("model");
                 var tabContainer = Registry.byId("TabContainer");
@@ -201,7 +202,7 @@
                 });
                 tabContainer.addChild(pane);
                 tabContainer.selectChild(pane);
-                parser.parse(Dom.byId("personBorderContainer"+model.id));
+//                parser.parse(Dom.byId("personDiv"));
             }
 
             function myButtonHandler() {
@@ -209,20 +210,30 @@
             }
 
             function foo(item) {
-                var i = item;
-                var widget = new formsWidget({
-                    model: item
+
+                xhr("/ecm/rest/widgets/person/"+item.id, {
+                    handleAs: "json"
+                }).then(function(data){
+                    var widget  = new formsWidget(data);
+
+                    var tabContainer = Registry.byId("TabContainer");
+                    var pane = new ContentPane({
+                        title: item.name, closable: true, onClose: function () {
+                            return confirm("Do you really want to Close this?");
+                        }
+                    });
+
+                    tabContainer.addChild(pane);
+                    tabContainer.selectChild(pane);
+                    pane.setContent(widget);
+
+                }, function(err){
+                    console.log(err);
+                }, function(evt){
+                    // Handle a progress event from the request if the
+                    // browser supports XHR2
                 });
-                model = widget.get("model");
-                var tabContainer = Registry.byId("TabContainer");
-                var pane = new ContentPane({
-                    title: item.name, content: widget, closable: true, onClose: function () {
-                        return confirm("Do you really want to Close this?");
-                    }
-                });
-                tabContainer.addChild(pane);
-                tabContainer.selectChild(pane);
-                parser.parse(Dom.byId("personBorderContainer"+model.id));
+
             }
             function setupTrees() {
                 var personStore = new JsonRest({
@@ -309,7 +320,9 @@
         <div data-dojo-type="dijit/layout/ContentPane" title="Welcom">
             <div id='gridContainer'></div>
         </div>
-        <div data-dojo-type="dijit/layout/ContentPane" title="tab #2">tab pane #2</div>
+        <div data-dojo-type="dijit/layout/ContentPane" title="tab #2">
+            <div id="test"></div>
+        </div>
     </div>
 </div>
 

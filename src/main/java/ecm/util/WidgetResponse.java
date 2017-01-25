@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.*;
 
 public class WidgetResponse<T> {
 
-    private T model;
+    private T entity;
     private String template;
     private String script;
 
@@ -19,17 +19,17 @@ public class WidgetResponse<T> {
     }
 
     public WidgetResponse(T model, String template, String script) {
-        this.model = model;
+        this.entity = model;
         this.template = template;
         this.script = script;
     }
 
-    public T getModel() {
-        return model;
+    public T getEntity() {
+        return entity;
     }
 
-    public void setModel(T model) {
-        this.model = model;
+    public void setEntity(T model) {
+        this.entity = model;
     }
 
     public String getTemplate() {
