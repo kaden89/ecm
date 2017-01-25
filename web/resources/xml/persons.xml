@@ -5,6 +5,7 @@
 			<patronymic>Ivanovich</patronymic>
 			<position>engineer</position>
 			<surname>Ivanov</surname>
+			<birthday>2017-01-01</birthday>
 	</person>
 	<person>
 			<firstName>Petr</firstName>

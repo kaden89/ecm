@@ -70,10 +70,12 @@ define([
             function save() {
                 var formObj = domForm.toObject("personForm");
                 var avatar = dom.byId("avatar");
+                var uploader = registry.byId("photo");
+                var file = uploader.getFileList()[0];
                 var photo =  domAttr.get(avatar,"src").replace("data:image/png;base64, ", "");
                 // var photo = widget.getFileList()[0];
 
-                formObj.photo = photo;
+                formObj.photo = file;
                 request.put("http://localhost:8080/ecm/rest/employees/"+formObj.id, {
                     data: formObj,
                     headers: {

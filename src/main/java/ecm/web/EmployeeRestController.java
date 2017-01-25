@@ -33,7 +33,8 @@ public class EmployeeRestController extends AbstractRestController{
         };
         int size = employees.getEntity().size();
         //TODO Paging need to implementing
-        return Response.ok(employees).header( "Content-Range" , "items 0-"+size+"/"+size).build();
+        String jsonInString = gson.toJson(personDAO.findAll());
+        return Response.ok(toJson(personDAO.findAll())).header( "Content-Range" , "items 0-"+size+"/"+size).build();
     }
 
     @GET
