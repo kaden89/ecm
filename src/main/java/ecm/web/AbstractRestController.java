@@ -7,6 +7,7 @@ import ecm.model.Incoming;
 import ecm.model.Outgoing;
 import ecm.model.Person;
 import ecm.model.Task;
+import ecm.util.xml.ByteArrayAdapter;
 import ecm.util.xml.LocalDateAdapter;
 
 import javax.inject.Inject;
@@ -22,7 +23,8 @@ import java.time.LocalDateTime;
 public class AbstractRestController {
 
     //Glassfish can't correctly marshall generics, have to use GSON for it, with LocalDate adapter.
-    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, (JsonSerializer<LocalDate>) (localDate, type, jsonSerializationContext) -> new JsonPrimitive(localDate.toString())).create();
+    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, (JsonSerializer<LocalDate>) (localDate, type, jsonSerializationContext) -> new JsonPrimitive(localDate.toString())).
+            registerTypeAdapter(byte[].class, new ByteArrayAdapter()).create();
 
     @Inject
     GenericDAO<Person> personDAO;

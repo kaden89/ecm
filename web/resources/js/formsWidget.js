@@ -43,6 +43,9 @@ define([
         startup: function(){
             this.inherited(arguments);
 
+            var avatar = dom.byId("avatar");
+            domAttr.set(avatar,"src","data:image/png;base64, "+this.model.photo);
+
             var toolbarNode = dom.byId("toolbar");
             var toolbar = new Toolbar({}, toolbarNode);
             var createButton = new Button({
@@ -68,22 +71,10 @@ define([
             //     // domAttr.set(node,"src", "data:image/png;base64, "+model.photo);
             //
             function save() {
-                var formObj = domForm.toObject("personForm");
-                var avatar = dom.byId("avatar");
-                var uploader = registry.byId("photo");
-                var file = uploader.getFileList()[0];
-                var photo =  domAttr.get(avatar,"src").replace("data:image/png;base64, ", "");
-                // var photo = widget.getFileList()[0];
+                var form = registry.byId("personForm");
 
-                formObj.photo = file;
-                request.put("http://localhost:8080/ecm/rest/employees/"+formObj.id, {
-                    data: formObj,
-                    headers: {
-                        "X-Something": "A value"
-                    }
-                }).then(function(text){
-                    console.log("The server returned: ", text);
-                });
+                form.submit();
+
             }
             // parser.parse(dom.byId("personDiv"+model.id));
         }

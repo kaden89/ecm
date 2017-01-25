@@ -28,7 +28,7 @@
                 <!--<script type="dojo/require">at: "dojox/mvc/at"</script>-->
                 <div data-dojo-type="dijit/form/Form" class="toChange" id="personForm" data-dojo-id="personForm"
                      data-dojo-props="region:'right'"
-                     encType="application/x-www-form-urlencoded" action="/ecm/rest/employees" method="post"
+                     encType="multipart/form-data" action="/ecm/rest/employees" method="post"
                      style="border: 0px">
                     <script type="dojo/on" data-dojo-event="reset">
                     return confirm('Press OK to reset widget values');
@@ -153,8 +153,8 @@
 
 
                     <!--<button data-dojo-type="dijit/form/Button" type="button" onClick="console.log(myForm.getValues())">Get Values from form!</button>-->
-                    <button data-dojo-type="dijit/form/Button" type="submit" name="submitButton" value="Submit">Submit
-                    </button>
+                    <!--<button data-dojo-type="dijit/form/Button" type="submit" name="submitButton" value="Submit">Submit-->
+                    <!--</button>-->
                     <!--<button data-dojo-type="dijit/form/Button" type="reset">Reset</button>-->
                     <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
                     </div>

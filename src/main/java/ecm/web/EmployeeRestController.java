@@ -110,7 +110,8 @@ public class EmployeeRestController extends AbstractRestController{
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createEmployee(@FormDataParam("uploadedfile") File stream,
+    public Response createEmployee(@FormDataParam("id") int personId,
+                                   @FormDataParam("uploadedfile") File stream,
                                    @FormDataParam("firstname") String firstname,
                                    @FormDataParam("surname") String surname,
                                    @FormDataParam("patronymic") String patronymic,
@@ -124,22 +125,27 @@ public class EmployeeRestController extends AbstractRestController{
         }
 
         Person person = new Person(firstname, surname, patronymic, position, photo, LocalDate.parse(birthday));
-        person = personDAO.save(person);
-
+        if (personId==0) {
+            person = personDAO.save(person);
+        }
+        else {
+            person.setId(personId);
+            personDAO.update(person);
+        }
         return Response.ok(person).build();
     }
 
     @PUT
     @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateEmployee(@PathParam("id") int personId,
-                                   @FormParam("firstname") String firstname,
-                                   @FormParam("surname") String surname,
-                                   @FormParam("patronymic") String patronymic,
-                                   @FormParam("position") String position,
-                                   @FormParam("birthday") String birthday,
-                                   @FormParam("photo") String photo){
+    public Response updateEmployee(@FormDataParam("id") int personId,
+                                   @FormDataParam("photo") File stream,
+                                   @FormDataParam("firstname") String firstname,
+                                   @FormDataParam("surname") String surname,
+                                   @FormDataParam("patronymic") String patronymic,
+                                   @FormDataParam("position") String position,
+                                   @FormDataParam("birthday") String birthday){
         //log.info("update organization "+organization+" with id "+organizationId);
         Person updated = new Person(firstname, surname, patronymic, position, null, LocalDate.parse(birthday));
         updated.setId(personId);
