@@ -1,9 +1,6 @@
 package ecm.model;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 /**
  * Created by dkarachurin on 25.01.2017.
@@ -11,17 +8,17 @@ import javax.persistence.OneToOne;
 @Entity
 public class Image {
     @Id
+    @GeneratedValue(strategy=GenerationType.TABLE)
     private Integer id;
     @OneToOne
     private Person owner;
-
+    @Lob
     private byte[] image;
 
     public Image() {
     }
 
-    public Image(Integer id, Person owner, byte[] image) {
-        this.id = id;
+    public Image(Person owner, byte[] image) {
         this.owner = owner;
         this.image = image;
     }

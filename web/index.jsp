@@ -70,7 +70,7 @@
             //create structure......
             var columns = [
                 {id: 'id', field: 'id', name: 'id'},
-                {id: 'firstname', field: 'firstName', name: 'Firstname'},
+                {id: 'firstname', field: 'firstname', name: 'Firstname'},
                 {id: 'surname', field: 'surname', name: 'Surname'},
                 {id: 'patronymic', field: 'patronymic', name: 'Patronymic'},
                 {id: 'position', field: 'position', name: 'Position'}
@@ -178,6 +178,7 @@
                                 return confirm("Do you really want to Close this?");
                             }
                         });
+                        pane.set("id", data.id);
                         tabContainer.addChild(pane);
                         tabContainer.selectChild(pane);
 //                        parser.parse(Dom.byId("personBorderContainer"+model.id));
@@ -200,6 +201,7 @@
                         return confirm("Do you really want to Close this?");
                     }
                 });
+                pane.set("id", "personPane_"+model.id);
                 tabContainer.addChild(pane);
                 tabContainer.selectChild(pane);
 //                parser.parse(Dom.byId("personDiv"));
@@ -222,7 +224,7 @@
                             return confirm("Do you really want to Close this?");
                         }
                     });
-
+                    pane.set("id", "personPane_"+data.entity.id);
                     tabContainer.addChild(pane);
                     tabContainer.selectChild(pane);
                     pane.setContent(widget);

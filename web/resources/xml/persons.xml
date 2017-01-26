@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <persons>
 	<person>
-			<firstName>Ivan</firstName>
+			<firstname>Ivan</firstname>
 			<patronymic>Ivanovich</patronymic>
 			<position>engineer</position>
 			<surname>Ivanov</surname>
 			<birthday>2017-01-01</birthday>
 	</person>
 	<person>
-			<firstName>Petr</firstName>
+			<firstname>Petr</firstname>
 			<patronymic>Petrovich</patronymic>
 			<position>manager</position>
 			<surname>Petrov</surname>
 	</person>
 	<person>
 
-			<firstName>Ivan</firstName>
+			<firstname>Ivan</firstname>
 			<patronymic>Vasilievich</patronymic>
 			<position>clerk</position>
 			<surname>Petrov</surname>
 	</person>
 	<person>
 
-			<firstName>Nikolay</firstName>
+			<firstname>Nikolay</firstname>
 			<patronymic>Nikolaevich</patronymic>
 			<position>security</position>
 			<surname>Nikolaev</surname>
 	</person>
 	<person>
 
-			<firstName>Vasya</firstName>
+			<firstname>Vasya</firstname>
 			<patronymic>Vasilievich</patronymic>
 			<position>tester</position>
 			<surname>Vasiliev</surname>
 	</person>
 	<person>
 
-			<firstName>Petr</firstName>
+			<firstname>Petr</firstname>
 			<patronymic>Vasilievich</patronymic>
 			<position>cleaner</position>
 			<surname>Vasiliev</surname>

@@ -93,20 +93,16 @@ public class EmployeeRestController extends AbstractRestController{
         return Response.ok(data).build();
     }
 
-//    @POST
-//    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public WidgetResponse createEmployee2(@FormParam("firstname") String firstname,
-//                                    @FormParam("surname") String surname,
-//                                    @FormParam("patronymic") String patronymic,
-//                                    @FormParam("position") String position,
-//                                    @FormParam("birthday") String birthday){
-//
-//
-//        Person person = new Person(firstname, surname, patronymic, position, null, LocalDate.parse(birthday));
-//        person = personDAO.save(person);
-//        return WidgetResponse.ok(person).build();
-//    }
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateEmployee(@PathParam("id") int id, Person person){
+        person.setId(id);
+        Person updated = personDAO.update(person);
+        return Response.ok(updated).build();
+    }
+
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
@@ -136,22 +132,6 @@ public class EmployeeRestController extends AbstractRestController{
         return Response.ok(person).build();
     }
 
-    @PUT
-    @Path("/{id}")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateEmployee(@FormDataParam("id") int personId,
-                                   @FormDataParam("photo") File stream,
-                                   @FormDataParam("firstname") String firstname,
-                                   @FormDataParam("surname") String surname,
-                                   @FormDataParam("patronymic") String patronymic,
-                                   @FormDataParam("position") String position,
-                                   @FormDataParam("birthday") String birthday){
-        //log.info("update organization "+organization+" with id "+organizationId);
-        Person updated = new Person(firstname, surname, patronymic, position, null, LocalDate.parse(birthday));
-        updated.setId(personId);
-        return Response.ok(personDAO.update(updated)).build();
-    }
 
 
     @DELETE
@@ -171,11 +151,50 @@ public class EmployeeRestController extends AbstractRestController{
         return Response.ok().build();
     }
 
-//    @GET
-//    @Path("/delete")
-//    public void delete(){
-//        incomingDAO.deleteAll();
-//        outgoingDAO.deleteAll();
-//        taskDAO.deleteAll();
-//    }
+    @GET
+    @Path("/{id}/photo")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPhoto(@PathParam("id") int ownerId){
+       return Response.ok(imageDAO.findByOwnerId(ownerId)).build();
+    }
+
+    @POST
+    @Path("/{id}/photo")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response uploadPhoto(@PathParam("id") int ownerId,  @FormDataParam("uploadedfile") File photo){
+        byte[] bytes = null;
+        Image result = null;
+        try {
+            bytes = Files.readAllBytes(Paths.get(photo.getPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Image image = imageDAO.findByOwnerId(ownerId);
+        if (image==null){
+            result = imageDAO.save(new Image(personDAO.find(ownerId), bytes));
+        }
+        else {
+            image.setImage(bytes);
+            result = imageDAO.update(image);
+        }
+
+       return Response.ok(result).build();
+    }
+    @PUT
+    @Path("/{id}/photo")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePhoto(@PathParam("id") int ownerId,  @FormDataParam("uploadedfile") File photo){
+        byte[] bytes = null;
+
+        try {
+            bytes = Files.readAllBytes(Paths.get(photo.getPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Image image = imageDAO.findByOwnerId(ownerId);
+        image.setImage(bytes);
+       return Response.ok(imageDAO.update(image)).build();
+    }
 }

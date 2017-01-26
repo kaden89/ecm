@@ -3,6 +3,7 @@ package ecm.web;
 
 import com.google.gson.*;
 import ecm.dao.GenericDAO;
+import ecm.dao.ImageDaoJPA;
 import ecm.model.Incoming;
 import ecm.model.Outgoing;
 import ecm.model.Person;
@@ -37,6 +38,10 @@ public class AbstractRestController {
 
     @Inject
     GenericDAO<Task> taskDAO;
+
+    @Inject
+    ImageDaoJPA imageDAO;
+
 
     String toJson(Object obj){
         return gson.toJson(obj);

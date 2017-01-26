@@ -5,14 +5,9 @@ import ecm.dao.Storable;
 import ecm.util.xml.LocalDateAdapter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.FormParam;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Created by dkarachurin on 09.01.2017.
@@ -21,7 +16,7 @@ import java.util.List;
 @Entity
 public class Person extends Staff implements Comparable<Person>, Storable{
 
-    private String firstName;
+    private String firstname;
     private String surname;
     private String patronymic;
     private String position;
@@ -37,7 +32,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     }
 
     public Person(String firstName, String surname, String patronymic, String position, byte[] photo, LocalDate birthday) {
-        this.firstName = firstName;
+        this.firstname = firstName;
         this.surname = surname;
         this.patronymic = patronymic;
         this.position = position;
@@ -50,12 +45,12 @@ public class Person extends Staff implements Comparable<Person>, Storable{
         this.fullName = toString();
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstName) {
+        this.firstname = firstName;
     }
 
     public String getSurname() {
@@ -109,7 +104,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
 
     @Override
     public String toString() {
-        return firstName  +
+        return firstname +
                 " " + surname +
                 " " + patronymic;
     }
