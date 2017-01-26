@@ -43,11 +43,17 @@ define([
         startup: function(){
             this.inherited(arguments);
 
-            var avatar = dom.byId("avatar");
-            domAttr.set(avatar,"src","data:image/png;base64, "+this.model.photo);
+            // var id = this.model.id;
+            // var form = registry.byId("personForm");
+            // form.id = form.id+id;
 
-            var toolbarNode = dom.byId("toolbar");
-            var toolbar = new Toolbar({}, toolbarNode);
+
+            // var avatar = dom.byId("avatar");
+            // domAttr.set(avatar,"src","data:image/png;base64, "+this.model.photo);
+
+
+
+            var toolbar = this.toolbar;
             var createButton = new Button({
                 label:"Save",
                 iconClass:"dijitEditorIcon dijitEditorIconSave",
@@ -67,16 +73,12 @@ define([
 
             toolbar.startup();
             //
-            //     var node = dom.byId("avatar"+model.id);
-            //     // domAttr.set(node,"src", "data:image/png;base64, "+model.photo);
+                var avatar = this.avatar;
+                domAttr.set(avatar,"src", "data:image/png;base64, "+ this.model.photo);
             //
             function save() {
-                var form = registry.byId("personForm");
-
-                form.submit();
-
+               dijit.getEnclosingWidget(this.domNode.parentNode.parentNode).form.submit();
             }
-            // parser.parse(dom.byId("personDiv"+model.id));
         }
         //
         //     query(".toChange").forEach(function(node){

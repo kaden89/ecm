@@ -111,15 +111,16 @@ public class EmployeeRestController extends AbstractRestController{
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createEmployee(@FormDataParam("id") int personId,
-                                   @FormDataParam("uploadedfile") File stream,
+                                   @FormDataParam("uploadedfile") File file,
                                    @FormDataParam("firstname") String firstname,
                                    @FormDataParam("surname") String surname,
                                    @FormDataParam("patronymic") String patronymic,
                                    @FormDataParam("position") String position,
                                    @FormDataParam("birthday") String birthday){
         byte[] photo = null;
+
         try {
-            photo = Files.readAllBytes(Paths.get(stream.getPath()));
+            photo = Files.readAllBytes(Paths.get(file.getPath()));
         } catch (IOException e) {
             e.printStackTrace();
         }

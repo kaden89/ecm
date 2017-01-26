@@ -5,10 +5,12 @@ import ecm.model.Outgoing;
 import ecm.model.Person;
 import ecm.model.Task;
 
+import javax.annotation.Resource;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.transaction.Transactional;
+import javax.transaction.*;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
@@ -18,4 +20,5 @@ import java.util.List;
 @Singleton
 @Transactional
 public class PersonDaoJPA extends GenericDaoJpa<Person>{
+
 }
