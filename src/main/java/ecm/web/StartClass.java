@@ -65,7 +65,7 @@ public class StartClass implements ServletContextListener {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        Person test = new Person("test", "test", "testovich", "ttt", new byte[0], LocalDate.now());
+        Person test = new Person("test", "test", "testovich", "ttt",  LocalDate.now());
         personDAO.save(test);
 //        createJSON();
     }

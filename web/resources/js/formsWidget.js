@@ -90,7 +90,7 @@ define([
                 url: '/ecm/rest/employees/'+ someId+'/photo',
                 name: "file",
                 onComplete:  lang.hitch(this, function(file) {
-                    domAttr.set(this.avatar, "src", "data:image/png;base64, " + file.image);
+                        domAttr.set(this.avatar, "src", "data:image/png;base64, " + file.image);
                 })
             }).placeAt(form);
 
@@ -110,26 +110,6 @@ define([
             up.startup();
             list.startup();
 
-            // var uploadButton = this.uploadButton;
-            function uploadImage() {
-                var currentPane = dijit.byId("personPane_"+this.model.id);
-                var file = currentPane.uploader.getFileList()[0];
-                xhr("/ecm/rest/employees/" + id + "/photo", {
-                    handleAs: "json",
-                    method: "post",
-                    data: file,
-                    headers: { "Content-Type": "multipart/form-data", "Accept": "application/json" }
-                }).then(function (data) {
-                    domAttr.set(avatar, "src", "data:image/png;base64, " + data.image);
-                }, function (err) {
-                    // Handle the error condition
-                }, function (evt) {
-                    // Handle a progress event from the request if the
-                    // browser supports XHR2
-                });
-            }
-            // uploadButton.on('click', uploadImage);
-
 
             var avatar = this.avatar;
             loadPhoto(this.model.id, avatar);
@@ -139,7 +119,9 @@ define([
                     handleAs: "json",
                     method: "get"
                 }).then(function (data) {
-                    domAttr.set(avatar, "src", "data:image/png;base64, " + data.image);
+                    if (data.image!= undefined) {
+                        domAttr.set(avatar, "src", "data:image/png;base64, " + data.image);
+                    }
                 }, function (err) {
                     // Handle the error condition
                 }, function (evt) {

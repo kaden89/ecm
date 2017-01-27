@@ -1,11 +1,13 @@
 package ecm.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import ecm.dao.Storable;
 import ecm.util.xml.LocalDateAdapter;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
@@ -20,8 +22,10 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     private String surname;
     private String patronymic;
     private String position;
-    @Lob
-    private byte[] photo;
+    @XmlTransient
+    @GsonExclude
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "owner")
+    private Image photo;
     @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate birthday;
     @Transient
@@ -31,12 +35,11 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     public Person() {
     }
 
-    public Person(String firstName, String surname, String patronymic, String position, byte[] photo, LocalDate birthday) {
+    public Person(String firstName, String surname, String patronymic, String position, LocalDate birthday) {
         this.firstname = firstName;
         this.surname = surname;
         this.patronymic = patronymic;
         this.position = position;
-        this.photo = photo;
         this.birthday = birthday;
     }
 
@@ -77,15 +80,6 @@ public class Person extends Staff implements Comparable<Person>, Storable{
         this.position = position;
     }
 
-
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
-    }
-
     public LocalDate getBirthday() {
         return birthday;
     }
@@ -100,6 +94,14 @@ public class Person extends Staff implements Comparable<Person>, Storable{
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public Image getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Image photo) {
+        this.photo = photo;
     }
 
     @Override

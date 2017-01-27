@@ -33,8 +33,8 @@ public class EmployeeRestController extends AbstractRestController{
         };
         int size = employees.getEntity().size();
         //TODO Paging need to implementing
-        String jsonInString = gson.toJson(personDAO.findAll());
-        return Response.ok(toJson(personDAO.findAll())).header( "Content-Range" , "items 0-"+size+"/"+size).build();
+//        String jsonInString = gson.toJson(personDAO.findAll());
+        return Response.ok(employees).header( "Content-Range" , "items 0-"+size+"/"+size).build();
     }
 
     @GET
@@ -107,21 +107,13 @@ public class EmployeeRestController extends AbstractRestController{
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createEmployee(@FormDataParam("id") int personId,
-                                   @FormDataParam("uploadedfile") File file,
                                    @FormDataParam("firstname") String firstname,
                                    @FormDataParam("surname") String surname,
                                    @FormDataParam("patronymic") String patronymic,
                                    @FormDataParam("position") String position,
                                    @FormDataParam("birthday") String birthday){
-        byte[] photo = null;
 
-        try {
-            photo = Files.readAllBytes(Paths.get(file.getPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Person person = new Person(firstname, surname, patronymic, position, photo, LocalDate.parse(birthday));
+        Person person = new Person(firstname, surname, patronymic, position, LocalDate.parse(birthday));
         if (personId==0) {
             person = personDAO.save(person);
         }
@@ -164,7 +156,7 @@ public class EmployeeRestController extends AbstractRestController{
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadPhoto(@PathParam("id") int ownerId,  @FormDataParam("files[]") File photo){
         byte[] bytes = null;
-        Image result = null;
+        Image result;
         try {
             bytes = Files.readAllBytes(Paths.get(photo.getPath()));
         } catch (IOException e) {
@@ -180,21 +172,5 @@ public class EmployeeRestController extends AbstractRestController{
         }
 
        return Response.ok(result).build();
-    }
-    @PUT
-    @Path("/{id}/photo")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePhoto(@PathParam("id") int ownerId,  @FormDataParam("uploadedfiles") File photo){
-        byte[] bytes = null;
-
-        try {
-            bytes = Files.readAllBytes(Paths.get(photo.getPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Image image = imageDAO.findByOwnerId(ownerId);
-        image.setImage(bytes);
-       return Response.ok(imageDAO.update(image)).build();
     }
 }

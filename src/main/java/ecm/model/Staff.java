@@ -1,5 +1,7 @@
 package ecm.model;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,11 +17,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 public abstract class Staff {
     @Id
     @GeneratedValue(strategy=GenerationType.TABLE)
-//    @SequenceGenerator(
-//            name="staff_seq",
-//            sequenceName="staff_sequence",
-//            allocationSize=20
-//    )
+    @Expose
     private Integer id;
 
     public Staff() {

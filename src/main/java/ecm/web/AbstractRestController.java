@@ -4,10 +4,7 @@ package ecm.web;
 import com.google.gson.*;
 import ecm.dao.GenericDAO;
 import ecm.dao.ImageDaoJPA;
-import ecm.model.Incoming;
-import ecm.model.Outgoing;
-import ecm.model.Person;
-import ecm.model.Task;
+import ecm.model.*;
 import ecm.util.xml.ByteArrayAdapter;
 import ecm.util.xml.LocalDateAdapter;
 
@@ -25,7 +22,7 @@ public class AbstractRestController {
 
     //Glassfish can't correctly marshall generics, have to use GSON for it, with LocalDate adapter.
     Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, (JsonSerializer<LocalDate>) (localDate, type, jsonSerializationContext) -> new JsonPrimitive(localDate.toString())).
-            registerTypeAdapter(byte[].class, new ByteArrayAdapter()).create();
+            registerTypeAdapter(byte[].class, new ByteArrayAdapter()).setExclusionStrategies(new GsonExclusionStrategy()).create();
 
     @Inject
     GenericDAO<Person> personDAO;
