@@ -83,39 +83,26 @@ define([
                 enctype: 'multipart/form-data',
                 class: 'Uploader'
             }, this.uploader);
-            //
-            //
-            // var up = new Uploader({
-            //     label: 'Pick files',
-            //     multiple: true,
-            //     url: '/ecm/rest/employees/'+ someId+'/photo'
-            // }).placeAt(form);
-            //
-            // var list = new FileList({
-            //     uploader: up
-            // }).placeAt(form);
+
+            var up = new Uploader({
+                label: 'Pick photo',
+                multiple: true,
+                url: '/ecm/rest/employees/'+ someId+'/photo',
+                name: "file",
+                onComplete:  lang.hitch(this, function(file) {
+                    domAttr.set(this.avatar, "src", "data:image/png;base64, " + file.image);
+                })
+            }).placeAt(form);
+
+            var list = new FileList({
+                uploader: up
+            }).placeAt(form);
 
             var btn = new Button({
                 label: 'upload',
-                onClick: lang.hitch(this, function() {
-                    // var file = up.getFileList()[0];
-                    // var formData = new FormData();
-                    // formData.append("uploadedfile", file);
-                    var formJson = domForm.toJson(this.uploadedform);
-                    xhr(up.get("url"), {
-                        handleAs: "json",
-                        method: "post",
-                        data: formJson
-
-                    }).then(function (data) {
-                        domAttr.set(avatar, "src", "data:image/png;base64, " + data.image);
-                    }, function (err) {
-                        // Handle the error condition
-                    }, function (evt) {
-                        // Handle a progress event from the request if the
-                        // browser supports XHR2
-                    });
-                })
+                onClick: function() {
+                    up.upload();
+                }
             }).placeAt(form);
 
 

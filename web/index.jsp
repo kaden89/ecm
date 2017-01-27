@@ -211,23 +211,29 @@
                 console.log('Clicked button');
             }
 
-            function foo(item) {
+            function openTab(item) {
 
                 xhr("/ecm/rest/widgets/person/"+item.id, {
                     handleAs: "json"
                 }).then(function(data){
                     var widget  = new formsWidget(data);
-
                     var tabContainer = Registry.byId("TabContainer");
+                    var id = data.entity.id;
+                    var pane = Registry.byId("personPane_"+id);
+                    if (pane != undefined){
+                        tabContainer.selectChild(pane);
+                        return;
+                    }
                     var pane = new ContentPane({
                         title: item.name, closable: true, onClose: function () {
                             return confirm("Do you really want to Close this?");
                         }
                     });
-                    pane.set("id", "personPane_"+data.entity.id);
+                    pane.set("id", "personPane_"+id);
                     tabContainer.addChild(pane);
                     tabContainer.selectChild(pane);
                     pane.setContent(widget);
+                    Registry.add(pane);
 
                 }, function(err){
                     console.log(err);
@@ -264,7 +270,7 @@
 
                 tree = new Tree({
                     model: model,
-                    onDblClick: foo
+                    onDblClick: openTab
                 }, "personTree"); // make sure you have a target HTML element with this id
                 tree.startup();
 

@@ -12,6 +12,7 @@
 			<patronymic>Petrovich</patronymic>
 			<position>manager</position>
 			<surname>Petrov</surname>
+			<birthday>2017-01-01</birthday>
 	</person>
 	<person>
 
@@ -19,6 +20,7 @@
 			<patronymic>Vasilievich</patronymic>
 			<position>clerk</position>
 			<surname>Petrov</surname>
+			<birthday>2017-01-01</birthday>
 	</person>
 	<person>
 
@@ -26,6 +28,7 @@
 			<patronymic>Nikolaevich</patronymic>
 			<position>security</position>
 			<surname>Nikolaev</surname>
+			<birthday>2017-01-01</birthday>
 	</person>
 	<person>
 
@@ -33,6 +36,7 @@
 			<patronymic>Vasilievich</patronymic>
 			<position>tester</position>
 			<surname>Vasiliev</surname>
+			<birthday>2017-01-01</birthday>
 	</person>
 	<person>
 
@@ -40,6 +44,7 @@
 			<patronymic>Vasilievich</patronymic>
 			<position>cleaner</position>
 			<surname>Vasiliev</surname>
+			<birthday>2017-01-01</birthday>
 	</person>
 </persons>
 
