@@ -99,7 +99,7 @@
             });
             toolbar.addChild(createButton);
             toolbar.addChild(deleteButton);
-            toolbar.addChild(editButton);
+//            toolbar.addChild(editButton);
             toolbar.startup();
 
             //Create grid widget.
@@ -108,6 +108,7 @@
                 cacheClass: Cache,
                 store: store,
                 structure: columns,
+                selectRowMultiple: false,
                 barTop: [
                     toolbar
                 ],
@@ -126,6 +127,7 @@
             });
             grid.placeAt('gridContainer');
 
+            grid.connect(grid, "onRowDblClick", openTab);
             grid.startup();
 
             setupTrees();
@@ -242,8 +244,14 @@
             }
 
             function openTab(item) {
-
-                xhr("/ecm/rest/widgets/person/"+item.id, {
+                var id;
+                if(item.target){
+                    id = item.rowId;
+                }
+                else{
+                    id = item.id
+                }
+                xhr("/ecm/rest/widgets/person/"+id, {
                     handleAs: "json"
                 }).then(function(data){
                     var widget  = new formsWidget(data);
@@ -255,7 +263,7 @@
                         return;
                     }
                     var pane = new ContentPane({
-                        title: item.fullName, closable: true, onClose: function () {
+                        title: data.entity.name, closable: true, onClose: function () {
                             return confirm("Do you really want to Close this?");
                         }
                     });
@@ -316,7 +324,11 @@
 
                 tree = new Tree({
                     model: model,
-                    onDblClick: openTab
+                    onDblClick: openTab,
+                    onLoad: function () {
+                        tree.rootNode.set("label", "Employees");
+                        var i ;
+                    }
                 }, "personTree"); // make sure you have a target HTML element with this id
                 tree.startup();
 
@@ -373,7 +385,7 @@
         </div>
     </div>
     <div data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region:'center', tabStrip:true" id="TabContainer">
-        <div data-dojo-type="dijit/layout/ContentPane" title="Welcom">
+        <div data-dojo-type="dijit/layout/ContentPane" title="Welcom" id="WelcomPane">
             <div id='gridContainer'></div>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" title="tab #2">

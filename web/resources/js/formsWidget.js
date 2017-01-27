@@ -71,7 +71,8 @@ define([
             });
             var closeButton = new Button({
                 label: "Close",
-                iconClass: "dijitEditorIcon dijitEditorIconCancel"
+                iconClass: "dijitEditorIcon dijitEditorIconCancel",
+                onClick:  lang.hitch(this, close)
             });
             toolbar.addChild(createButton);
             toolbar.addChild(deleteButton);
@@ -128,6 +129,14 @@ define([
                     // Handle a progress event from the request if the
                     // browser supports XHR2
                 });
+            }
+
+            function close() {
+                var tabPane = registry.byId("TabContainer");
+                var pane = registry.byId("personPane_"+this.model.id);
+                tabPane.removeChild(pane);
+                tabPane.selectChild(registry.byId("WelcomPane"));
+                pane.destroy();
             }
 
             function save() {
