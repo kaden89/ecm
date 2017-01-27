@@ -86,7 +86,7 @@ define([
             }, this.uploader);
 
             var up = new Uploader({
-                label: 'Pick photo',
+                label: 'Select photo',
                 multiple: true,
                 url: '/ecm/rest/employees/'+ someId+'/photo',
                 name: "file",
@@ -100,7 +100,7 @@ define([
             }).placeAt(form);
 
             var btn = new Button({
-                label: 'upload',
+                label: 'Upload',
                 onClick: function() {
                     up.upload();
                 }
