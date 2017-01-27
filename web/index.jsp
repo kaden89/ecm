@@ -56,16 +56,20 @@
             "dojo/Stateful",
             "dojox/mvc/at",
             "/ecm/resources/js/formsWidget.js",
+            "dojo/store/Observable",
             /*'dojo/store/Memory',*/
             "dojo/domReady!"], function (declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults, Memory, SingleSort, JsonRest, Bar, Toolbar, Button,
                                          RowHeader, Row, IndirectSelect, Dialog, Registry, query, Dom, parser, xhr, Lightbox, dom, JsonRest,
-                                         Tree, ObjectStoreModel, Stateful, at, formsWidget) {
+                                         Tree, ObjectStoreModel, Stateful, at, formsWidget, Observable) {
             var restURL = 'http://localhost:8080/ecm/rest/employees';
             var store = new JsonRest({
                 idProperty: 'id',
-                target: restURL
+                target: restURL,
+                getChildren: function(object){
+                    return object;
+                }
             });
-
+            store = new Observable(store);
 
             //create structure......
             var columns = [
@@ -134,18 +138,32 @@
                     dojo.forEach(items, function (selectedItem) {
                         if (selectedItem !== null) {
                             grid.store.remove(selectedItem).then(success, error);
-                            grid.model.clearCache();
-                            grid.body.refresh();
+
+
+
+//                            grid.model.clearCache();
+//                            grid.body.refresh();
                         }
                     });
-//                    var args = {onError: function() {alert('error!');}};
-//                    grid.store.add(args);
-
                 }
             }
 
             function success() {
-                console.log("succes");
+                tree.dndController.selectNone();
+                tree.model.store.clearOnClose = true;
+                tree._itemNodesMap = {};
+                tree.rootNode.state = "UNCHECKED";
+                tree.model.childrenCache = null;
+
+                // Destroy the widget
+                tree.rootNode.destroyRecursive();
+
+                // Recreate the model, (with the model again)
+                tree.model.constructor(dijit.byId("personTree").model);
+
+                // Rebuild the tree
+                tree.postMixInProperties();
+                tree._load();
             }
 
             function error(err) {
@@ -189,23 +207,34 @@
             }
 
             function createNewTab() {
-                var widget = new formsWidget({
-                        entity: {},
-                        surname: "surname",
-                        patronymic: "patronymic"
-
-                });
-                model = widget.get("model");
-                var tabContainer = Registry.byId("TabContainer");
-                var pane = new ContentPane({
-                    title: "Person", content: widget, closable: true, onClose: function () {
-                        return confirm("Do you really want to Close this?");
+                xhr("/ecm/rest/widgets/person/", {
+                    handleAs: "json"
+                }).then(function(data){
+                    var widget  = new formsWidget(data);
+                    var tabContainer = Registry.byId("TabContainer");
+                    var id = data.entity.id;
+                    var pane = Registry.byId("newPersonPane_");
+                    if (pane != undefined){
+                        tabContainer.selectChild(pane);
+                        return;
                     }
+                    var pane = new ContentPane({
+                        title: "New person", closable: true, onClose: function () {
+                            return confirm("Do you really want to Close this?");
+                        }
+                    });
+                    pane.set("id", "newPersonPane_");
+                    tabContainer.addChild(pane);
+                    tabContainer.selectChild(pane);
+                    pane.setContent(widget);
+                    Registry.add(pane);
+
+                }, function(err){
+                    console.log(err);
+                }, function(evt){
+                    // Handle a progress event from the request if the
+                    // browser supports XHR2
                 });
-                pane.set("id", "personPane_"+model.id);
-                tabContainer.addChild(pane);
-                tabContainer.selectChild(pane);
-//                parser.parse(Dom.byId("personDiv"));
             }
 
             function myButtonHandler() {
@@ -226,7 +255,7 @@
                         return;
                     }
                     var pane = new ContentPane({
-                        title: item.name, closable: true, onClose: function () {
+                        title: item.fullName, closable: true, onClose: function () {
                             return confirm("Do you really want to Close this?");
                         }
                     });
@@ -245,28 +274,44 @@
 
             }
             function setupTrees() {
-                var personStore = new JsonRest({
-                    target: "/ecm/rest/employees/tree",
-                    idAttribute:"surname",
-                    mayHaveChildren: function(object){
-                        return "children" in object;
-                    },
-                    getChildren: function(object){
-                        return this.get("").then(function(fullObject){
-                            return fullObject.children;
-                        });
-                    }
+//                var personStore = new JsonRest({
+//                    target: "/ecm/rest/employees/tree",
+//                    idAttribute:"surname",
+//                    mayHaveChildren: function(object){
+//                        return "children" in object;
+//                    },
+//                    getChildren: function(object){
+//                        return this.get("").then(function(fullObject){
+//                            return fullObject.children;
+//                        });
+//                    }
+//
+//                });
+//                personStore = new Observable(personStore);
 
+                var restURL = 'http://localhost:8080/ecm/rest/employees';
+                var personStore = new JsonRest({
+                    idAttribute:"surname",
+                    target: restURL,
+                    getChildren: function(object){
+                        console.dir(object);
+//                        return this.query({parent: object.id});
+                        return object;
+                    }
                 });
+                personStore = new Observable(personStore);
+
 
                 model = new ObjectStoreModel({
-                    store: personStore,
+                    store: store,
                     getRoot: function(onItem){
                         this.store.get("").then(onItem);
                     },
                     mayHaveChildren: function(object){
                         return "children" in object;
-                    }
+                    },
+                    getLabel : function(item) {
+                        return item.fullName;}
                 });
 
                 tree = new Tree({
@@ -290,6 +335,8 @@
                     }
 
                 });
+
+                documentsStore = new Observable(documentsStore);
 
                 documentsModel = new ObjectStoreModel({
                     store: documentsStore,

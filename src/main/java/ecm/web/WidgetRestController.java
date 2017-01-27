@@ -36,6 +36,7 @@ public class WidgetRestController extends AbstractRestController{
         WidgetResponse response = new WidgetResponse();
         response.setTemplate(readFile("/html/person.html"));
         response.setScript(readFile("/js/person.js"));
+        response.setEntity(new Person());
         return Response.ok(response).build();
     }
 
