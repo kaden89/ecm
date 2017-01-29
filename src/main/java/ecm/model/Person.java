@@ -1,8 +1,8 @@
 package ecm.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import ecm.dao.Storable;
+import ecm.util.xml.GsonExclude;
 import ecm.util.xml.LocalDateAdapter;
 
 import javax.persistence.*;

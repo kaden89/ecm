@@ -1,4 +1,4 @@
-package ecm.model;
+package ecm.util.xml;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;

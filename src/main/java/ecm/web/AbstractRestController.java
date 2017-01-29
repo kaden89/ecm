@@ -6,14 +6,10 @@ import ecm.dao.GenericDAO;
 import ecm.dao.ImageDaoJPA;
 import ecm.model.*;
 import ecm.util.xml.ByteArrayAdapter;
-import ecm.util.xml.LocalDateAdapter;
+import ecm.util.xml.GsonExclusionStrategy;
 
 import javax.inject.Inject;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
-import java.lang.reflect.Type;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * Created by dkarachurin on 24.01.2017.
