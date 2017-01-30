@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.transaction.*;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,10 +35,17 @@ public class PersonDaoJPA extends GenericDaoJpa<Person>{
     }
 
     private void checkAvailabilityOfDocumentsByAuthorId(int id){
-        List<Outgoing> outgoings = outgoingDAO.findAllByAuthorId(id);
-        List<Incoming> incomings = incomingDAO.findAllByAuthorId(id);
-        List<Task> tasks = taskDAO.findAllByAuthorId(id);
-        boolean haveDocuments = outgoings.size() != 0 || incomings.size() != 0 || tasks.size() != 0;
-        if (haveDocuments) throw new HasLinksException("Cannot delete Person with id = "+id + ".He has some documents!");
+        List<Document> all = new ArrayList<>();
+        all.addAll(outgoingDAO.findAllByAuthorId(id));
+        all.addAll(incomingDAO.findAllByAuthorId(id));
+        all.addAll(taskDAO.findAllByAuthorId(id));
+
+        boolean haveDocuments = all.size() != 0;
+        StringBuilder builder = new StringBuilder("Cannot delete "+find(id).toString() + ". He has next documents:");
+        for (Document document : all) {
+            builder.append(System.lineSeparator());
+            builder.append(document.getName());
+        }
+        if (haveDocuments) throw new HasLinksException(builder.toString());
     }
 }

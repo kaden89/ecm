@@ -57,19 +57,35 @@
             "dojox/mvc/at",
             "/ecm/resources/js/formsWidget.js",
             "dojo/store/Observable",
+            "dijit/ConfirmDialog",
             /*'dojo/store/Memory',*/
             "dojo/domReady!"], function (declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults, Memory, SingleSort, JsonRest, Bar, Toolbar, Button,
                                          RowHeader, Row, IndirectSelect, Dialog, Registry, query, Dom, parser, xhr, Lightbox, dom, JsonRest,
-                                         Tree, ObjectStoreModel, Stateful, at, formsWidget, Observable) {
-            var restURL = 'http://localhost:8080/ecm/rest/employees';
-            var store = new JsonRest({
+                                         Tree, ObjectStoreModel, Stateful, at, formsWidget, Observable, ConfirmDialog) {
+            var restURL = 'http://localhost:8080/ecm/rest/employees/';
+            var personTreeStore = new JsonRest({
+                idProperty: 'id',
+                target: restURL+"personTree",
+                mayHaveChildren: function(object){
+                    return "haveChildren" in object;
+                },
+                getChildren: function(object){
+                    return this.get(object.id).then(function(fullObject){
+                        return fullObject.children;
+                    });
+                }
+            });
+            personTreeStore = new Observable(personTreeStore);
+
+            var personStore = new JsonRest({
                 idProperty: 'id',
                 target: restURL,
                 getChildren: function(object){
                     return object;
                 }
             });
-            store = new Observable(store);
+            personStore = new Observable(personStore);
+
 
             //create structure......
             var columns = [
@@ -106,7 +122,7 @@
             var grid = GridX({
                 id: 'grid',
                 cacheClass: Cache,
-                store: store,
+                store: personStore,
                 structure: columns,
                 selectRowMultiple: false,
                 barTop: [
@@ -134,20 +150,26 @@
 
 
             function deleteSelected() {
-                // Get all selected items from the Grid:
-                var items = grid.select.row.getSelected();
-                if (items.length) {
-                    dojo.forEach(items, function (selectedItem) {
-                        if (selectedItem !== null) {
-                            grid.store.remove(selectedItem).then(success, error);
+                        var items = grid.select.row.getSelected();
+                        if (items.length) {
+                            dojo.forEach(items, function (selectedItem) {
+                                if (selectedItem !== null) {
+                                    deleteDialog = new ConfirmDialog({
+                                        title: "Delete",
+                                        content: "Are you sure that you want to delete person with id "+selectedItem+"?",
+                                        style: "width: 300px",
+                                        onCancel: function () {
+                                            return;
+                                        },
+                                        onExecute: function () {
+                                            grid.store.remove(selectedItem).then(success, error);
+                                        }
 
-
-
-//                            grid.model.clearCache();
-//                            grid.body.refresh();
+                                    });
+                                    deleteDialog.show();
+                                }
+                            });
                         }
-                    });
-                }
             }
 
             function success() {
@@ -191,7 +213,7 @@
                     xhr(restURL + "/" + id, {
                         handleAs: "json"
                     }).then(function (data) {
-                        var widget = new formsWidget({model: data}, store);
+                        var widget = new formsWidget({model: data}, personStore);
                         model = widget.get("model");
                         var tabContainer = Registry.byId("TabContainer");
                         var pane = new ContentPane({
@@ -212,7 +234,7 @@
                 xhr("/ecm/rest/widgets/person/", {
                     handleAs: "json"
                 }).then(function(data){
-                    var widget  = new formsWidget(data, store);
+                    var widget  = new formsWidget(data, personStore);
                     var tabContainer = Registry.byId("TabContainer");
                     var id = data.entity.id;
                     var pane = Registry.byId("newPersonPane_");
@@ -221,7 +243,7 @@
                         return;
                     }
                     var pane = new ContentPane({
-                        title: "New person", closable: true, onClose: function () {
+                        title: "New person (Unsaved)", closable: true, onClose: function () {
                             return confirm("Do you really want to Close this?");
                         }
                     });
@@ -245,23 +267,26 @@
 
             function openTab(item) {
                 var id;
+                //Check if we are from Grid
                 if(item.target){
                     id = item.rowId;
                 }
                 else{
                     id = item.id
                 }
+                //if the tab is already open, switch on it
+                var tabContainer = Registry.byId("TabContainer");
+                var pane = Registry.byId("personPane_"+id);
+                if (pane != undefined){
+                    tabContainer.selectChild(pane);
+                    return;
+                }
+
                 xhr("/ecm/rest/widgets/person/"+id, {
                     handleAs: "json"
                 }).then(function(data){
-                    var widget  = new formsWidget(data, store);
-                    var tabContainer = Registry.byId("TabContainer");
+                    var widget  = new formsWidget(data, personStore);
                     var id = data.entity.id;
-                    var pane = Registry.byId("personPane_"+id);
-                    if (pane != undefined){
-                        tabContainer.selectChild(pane);
-                        return;
-                    }
                     var pane = new ContentPane({
                         title: data.entity.name, closable: true, onClose: function () {
                             return confirm("Do you really want to Close this?");
@@ -282,20 +307,7 @@
 
             }
             function setupTrees() {
-//                var personStore = new JsonRest({
-//                    target: "/ecm/rest/employees/tree",
-//                    idAttribute:"surname",
-//                    mayHaveChildren: function(object){
-//                        return "children" in object;
-//                    },
-//                    getChildren: function(object){
-//                        return this.get("").then(function(fullObject){
-//                            return fullObject.children;
-//                        });
-//                    }
-//
-//                });
-//                personStore = new Observable(personStore);
+
 
                 var restURL = 'http://localhost:8080/ecm/rest/employees';
                 var personStore = new JsonRest({
@@ -311,7 +323,7 @@
 
 
                 model = new ObjectStoreModel({
-                    store: store,
+                    store: personTreeStore,
                     getRoot: function(onItem){
                         this.store.get("").then(onItem);
                     },
@@ -319,16 +331,12 @@
                         return "children" in object;
                     },
                     getLabel : function(item) {
-                        return item.fullName;}
+                        return item.name;}
                 });
 
                 tree = new Tree({
                     model: model,
-                    onDblClick: openTab,
-                    onLoad: function () {
-                        tree.rootNode.set("label", "Employees");
-                        var i ;
-                    }
+                    onDblClick: openTab
                 }, "personTree"); // make sure you have a target HTML element with this id
                 tree.startup();
 
@@ -396,10 +404,3 @@
 
 </body>
 </html>
-
-<%--html, body {--%>
-<%--height: 100%;--%>
-<%--margin: 0;--%>
-<%--overflow: hidden;--%>
-<%--padding: 0;--%>
-<%--}--%>

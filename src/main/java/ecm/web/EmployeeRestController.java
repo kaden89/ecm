@@ -38,9 +38,11 @@ public class EmployeeRestController extends AbstractRestController{
     }
 
     @GET
-    @Path("/personRoot")
-    public String getPersonRoot(){
-        return "Employees";
+    @Path("/personTree")
+    public Response getPersonRoot(){
+        TreeNode<Person> root = new TreeNode<>("Employees", "", personDAO.findAll());
+        String jsonInString = gson.toJson(root);
+        return Response.ok(jsonInString).build();
     }
 
     @GET
@@ -110,7 +112,7 @@ public class EmployeeRestController extends AbstractRestController{
     }
 
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Produces(MediaType.APPLICATION_JSON)
     public Response createEmployee(Person person){
         person.setId(null);

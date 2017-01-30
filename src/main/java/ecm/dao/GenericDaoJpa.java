@@ -66,7 +66,6 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
 
     @Override
     public void delete(int id){
-        //TODO сделать проверку на документы для Person
         T entity = find(id);
         entityManager.remove(entity);
     }

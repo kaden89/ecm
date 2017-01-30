@@ -110,7 +110,9 @@ define([
 
 
             var avatar = this.avatar;
-            loadPhoto(this.model.id, avatar);
+            if (!this.isNew){
+                loadPhoto(this.model.id, avatar);
+            }
 
             function loadPhoto(id, avatarNode) {
                 xhr("/ecm/rest/employees/" + id + "/photo", {
@@ -182,7 +184,7 @@ define([
 
             function save() {
                 var form = this.form;
-                form.validate();
+                if (!form.validate()) return;
                 //clone for change birthday to ISO type without time
                 var data =  lang.clone(form.value);
                 data.birthday = locale.format(data.birthday, {datePattern: "yyyy-MM-dd", selector: "date"});
@@ -193,7 +195,11 @@ define([
                 if (this.model.id==undefined){
                     this.store.add(data).then(function(data){
                         this.form.set('value', data);
-                       updateTree()
+                        var pane = registry.byId("newPersonPane_");
+                        pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
+                        // pane.set("id", "personPane_"+data.id);
+                        // this.isNew = false;
+                        updateTree();
                     }.bind(this), function(err){
                         // Handle the error condition
                     }, function(evt){
