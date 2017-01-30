@@ -104,23 +104,11 @@ public class EmployeeRestController extends AbstractRestController{
     }
 
     @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createEmployee(@FormDataParam("id") int personId,
-                                   @FormDataParam("firstname") String firstname,
-                                   @FormDataParam("surname") String surname,
-                                   @FormDataParam("patronymic") String patronymic,
-                                   @FormDataParam("position") String position,
-                                   @FormDataParam("birthday") String birthday){
-
-        Person person = new Person(firstname, surname, patronymic, position, LocalDate.parse(birthday));
-        if (personId==0) {
-            person = personDAO.save(person);
-        }
-        else {
-            person.setId(personId);
-            personDAO.update(person);
-        }
+    public Response createEmployee(Person person){
+        person.setId(null);
+        personDAO.save(person);
         return Response.ok(person).build();
     }
 
@@ -130,16 +118,7 @@ public class EmployeeRestController extends AbstractRestController{
     @Path("/{id}")
     public Response deleteEmployee(@PathParam("id") int personId){
         //log.info("delete organization with id "+organizationId);
-//        incomingDAO.deleteAll();
-//        outgoingDAO.deleteAll();
-//        taskDAO.deleteAll();
-        try {
-            personDAO.delete(personId);
-        }
-        catch (TransactionalException e){
-            if (e.getCause().getCause().getCause() instanceof ConstraintViolationException)
-                throw new HasLinksException("Can't delete person, because he has links to some documents!");
-        }
+        personDAO.delete(personId);
         return Response.ok().build();
     }
 

@@ -21,6 +21,8 @@ define([
     "dojox/form/uploader/plugins/IFrame",
     "dijit/form/Form",
     "dojo/_base/lang",
+    'dojo/_base/json',
+    "dojo/date/locale",
     "dojox/mvc/at",
     "dojo/on",
     "dojo/require",
@@ -35,35 +37,24 @@ define([
 
 
 ], function (declare, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, registry, request, xhr,
-            domConstruct, Uploader, FileList, IFrame, Form, lang) {
+            domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
-        // _setModel: function(model){
-        //
-        //     this._set("model", new Stateful(model));
-        // },
+        isNew: false,
         constructor: function (args) {
             this.templateString = args.template;
             this.model = new Stateful(args.entity);
+            if (args.entity.id == undefined) this.isNew = true;
         }
         ,
         startup: function () {
             this.inherited(arguments);
 
-             var someId = this.model.id;
-            // var form = registry.byId("personForm");
-            // form.id = form.id+id;
-
-
-            // var avatar = dom.byId("avatar");
-            // domAttr.set(avatar,"src","data:image/png;base64, "+this.model.photo);
-
-
             var toolbar = this.toolbar;
             var createButton = new Button({
                 label: "Save",
                 iconClass: "dijitEditorIcon dijitEditorIconSave",
-                onClick: save
+                onClick: lang.hitch(this, save)
             });
             var deleteButton = new Button({
                 label: "Delete",
@@ -133,25 +124,45 @@ define([
 
             function close() {
                 var tabPane = registry.byId("TabContainer");
-                var pane = registry.byId("personPane_"+this.model.id);
+                var pane;
+                if (this.isNew){
+                    pane = registry.byId("newPersonPane_");
+                }
+                else {
+                    pane = registry.byId("personPane_"+this.model.id);
+                }
                 tabPane.removeChild(pane);
                 tabPane.selectChild(registry.byId("WelcomPane"));
                 pane.destroy();
             }
 
             function save() {
-                var currentPane = dijit.getEnclosingWidget(this.domNode.parentNode.parentNode);
-                var form = currentPane.form.domNode;
-                var formObject = domForm.toObject(form);
-                var formJson = domForm.toJson(form);
-                xhr("/ecm/rest/employees/"+formObject.id, {
+                var form = this.form;
+                //clone for change birthday to ISO type without time
+                var data =  lang.clone(form.value);
+                data.birthday = locale.format(data.birthday, {datePattern: "yyyy-MM-dd", selector: "date"});
+                var formJson = dojo.toJson(data);
+                var method = "put";
+                var id;
+                //create new user
+                if (this.model.id==undefined){
+                    method = "post";
+                    id = "";
+                }
+                else {
+                    id = this.model.id;
+                }
+                xhr("/ecm/rest/employees/"+id, {
                     handleAs: "json",
                     data: formJson,
-                    method: "put",
+                    method: method,
                     headers: { "Content-Type": "application/json", "Accept": "application/json" }
                 }).then(function(data){
-                    // Do something with the handled data
-                }, function(err){
+                    this.form.set('value', data);
+                    // if (this.isNew){
+                    //     var pane = registry.byId("newPersonPane_");
+                    // }
+                }.bind(this), function(err){
                     // Handle the error condition
                 }, function(evt){
                     // Handle a progress event from the request if the
@@ -160,14 +171,6 @@ define([
                 // dijit.getEnclosingWidget(this.domNode.parentNode.parentNode).form.submit();
             }
         }
-        //
-        //     query(".toChange").forEach(function(node){
-        //         var nodeToChange = dom.byId(node.id);
-        //         domAttr.set(nodeToChange, "id", node.id+model.id);
-        //     });
-        //
-        //
-
 
         ,
         baseClass: "formsWidget",
