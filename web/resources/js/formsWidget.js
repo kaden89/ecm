@@ -23,6 +23,8 @@ define([
     "dojo/_base/lang",
     'dojo/_base/json',
     "dojo/date/locale",
+    "dijit/ConfirmDialog",
+    "dijit/Dialog",
     "dojox/mvc/at",
     "dojo/on",
     "dojo/require",
@@ -33,17 +35,20 @@ define([
     "dijit/form/DateTextBox",
     "dojox/form/Uploader",
     "dojox/form/uploader/FileList",
-    "dojox/mvc/Output"
+    "dojox/mvc/Output",
+    "/ecm/resources/js/util.js"
 
 
 ], function (declare, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, registry, request, xhr,
-            domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale) {
+            domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
         isNew: false,
-        constructor: function (args) {
+        store: null,
+        constructor: function (args, store) {
             this.templateString = args.template;
             this.model = new Stateful(args.entity);
+            this.store = store;
             if (args.entity.id == undefined) this.isNew = true;
         }
         ,
@@ -58,7 +63,8 @@ define([
             });
             var deleteButton = new Button({
                 label: "Delete",
-                iconClass: "dijitEditorIcon dijitEditorIconDelete"
+                iconClass: "dijitEditorIcon dijitEditorIconDelete",
+                onClick: lang.hitch(this, deletePerson)
             });
             var closeButton = new Button({
                 label: "Close",
@@ -79,7 +85,7 @@ define([
             var up = new Uploader({
                 label: 'Select photo',
                 multiple: true,
-                url: '/ecm/rest/employees/'+ someId+'/photo',
+                url: '/ecm/rest/employees/'+ this.model.id+'/photo',
                 name: "file",
                 onComplete:  lang.hitch(this, function(file) {
                         domAttr.set(this.avatar, "src", "data:image/png;base64, " + file.image);
@@ -136,8 +142,47 @@ define([
                 pane.destroy();
             }
 
+            function deletePerson() {
+                var id = this.model.id;
+                var store = this.store;
+                deleteDialog = new ConfirmDialog({
+                    title: "Delete",
+                    content: "Are you sure that you want to delete "+this.model.name+"?",
+                    style: "width: 300px",
+                    onCancel: function () {
+                        return;
+                    },
+                    onExecute: function () {
+                        store.remove(id).then(success, error);
+                    }
+
+                });
+                deleteDialog.show();
+
+                function success() {
+                    var tabPane = registry.byId("TabContainer");
+                    pane = registry.byId("personPane_"+id);
+                    tabPane.removeChild(pane);
+                    tabPane.selectChild(registry.byId("WelcomPane"));
+                    pane.destroy();
+                    updateTree()
+                }
+
+                function error(err) {
+                    myDialog = new Dialog({
+                        title: "Error!",
+                        content: err.responseText,
+                        style: "width: 300px"
+                    });
+                    console.log("error");
+                    myDialog.show();
+                }
+
+            }
+
             function save() {
                 var form = this.form;
+                form.validate();
                 //clone for change birthday to ISO type without time
                 var data =  lang.clone(form.value);
                 data.birthday = locale.format(data.birthday, {datePattern: "yyyy-MM-dd", selector: "date"});
@@ -146,29 +191,50 @@ define([
                 var id;
                 //create new user
                 if (this.model.id==undefined){
-                    method = "post";
-                    id = "";
+                    this.store.add(data).then(function(data){
+                        this.form.set('value', data);
+                       updateTree()
+                    }.bind(this), function(err){
+                        // Handle the error condition
+                    }, function(evt){
+                        // Handle a progress event from the request if the
+                        // browser supports XHR2
+                    });
                 }
                 else {
-                    id = this.model.id;
+                    this.store.put(data).then(function(data){
+                        this.form.set('value', data);
+                        // if (this.isNew){
+                        //     var pane = registry.byId("newPersonPane_");
+                        // }
+                    }.bind(this), function(err){
+                        // Handle the error condition
+                    }, function(evt){
+                        // Handle a progress event from the request if the
+                        // browser supports XHR2
+                    });
                 }
-                xhr("/ecm/rest/employees/"+id, {
-                    handleAs: "json",
-                    data: formJson,
-                    method: method,
-                    headers: { "Content-Type": "application/json", "Accept": "application/json" }
-                }).then(function(data){
-                    this.form.set('value', data);
-                    // if (this.isNew){
-                    //     var pane = registry.byId("newPersonPane_");
-                    // }
-                }.bind(this), function(err){
-                    // Handle the error condition
-                }, function(evt){
-                    // Handle a progress event from the request if the
-                    // browser supports XHR2
-                });
-                // dijit.getEnclosingWidget(this.domNode.parentNode.parentNode).form.submit();
+
+
+            }
+            function updateTree() {
+                tree = registry.byId('personTree');
+                tree.dndController.selectNone();
+                tree.model.store.clearOnClose = true;
+                tree._itemNodesMap = {};
+                tree.rootNode.state = "UNCHECKED";
+                tree.model.childrenCache = null;
+
+                // Destroy the widget
+                tree.rootNode.destroyRecursive();
+
+                // Recreate the model, (with the model again)
+                tree.model.constructor(dijit.byId("personTree").model);
+
+                // Rebuild the tree
+                tree.postMixInProperties();
+                tree._load();
+                // tree.rootNode.set("label", "Employees");
             }
         }
 

@@ -191,7 +191,7 @@
                     xhr(restURL + "/" + id, {
                         handleAs: "json"
                     }).then(function (data) {
-                        var widget = new formsWidget({model: data});
+                        var widget = new formsWidget({model: data}, store);
                         model = widget.get("model");
                         var tabContainer = Registry.byId("TabContainer");
                         var pane = new ContentPane({
@@ -212,7 +212,7 @@
                 xhr("/ecm/rest/widgets/person/", {
                     handleAs: "json"
                 }).then(function(data){
-                    var widget  = new formsWidget(data);
+                    var widget  = new formsWidget(data, store);
                     var tabContainer = Registry.byId("TabContainer");
                     var id = data.entity.id;
                     var pane = Registry.byId("newPersonPane_");
@@ -254,7 +254,7 @@
                 xhr("/ecm/rest/widgets/person/"+id, {
                     handleAs: "json"
                 }).then(function(data){
-                    var widget  = new formsWidget(data);
+                    var widget  = new formsWidget(data, store);
                     var tabContainer = Registry.byId("TabContainer");
                     var id = data.entity.id;
                     var pane = Registry.byId("personPane_"+id);

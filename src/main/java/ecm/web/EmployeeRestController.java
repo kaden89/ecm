@@ -38,6 +38,12 @@ public class EmployeeRestController extends AbstractRestController{
     }
 
     @GET
+    @Path("/personRoot")
+    public String getPersonRoot(){
+        return "Employees";
+    }
+
+    @GET
     @Path("/tree")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeRoot(){
@@ -103,7 +109,7 @@ public class EmployeeRestController extends AbstractRestController{
         return Response.ok(updated).build();
     }
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createEmployee(Person person){
