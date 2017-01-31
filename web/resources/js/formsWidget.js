@@ -45,10 +45,12 @@ define([
         model: null,
         isNew: false,
         store: null,
+        script: null,
         constructor: function (args, store) {
             this.templateString = args.template;
             this.model = new Stateful(args.entity);
             this.store = store;
+            this.script = args.script;
             if (args.entity.id == undefined) this.isNew = true;
         }
         ,
@@ -64,7 +66,7 @@ define([
             var deleteButton = new Button({
                 label: "Delete",
                 iconClass: "dijitEditorIcon dijitEditorIconDelete",
-                onClick: lang.hitch(this, deletePerson)
+                onClick: lang.hitch(this, remove)
             });
             var closeButton = new Button({
                 label: "Close",
@@ -76,59 +78,6 @@ define([
             toolbar.addChild(closeButton);
             toolbar.startup();
 
-            var form = domConstruct.create('form', {
-                method: 'post',
-                enctype: 'multipart/form-data',
-                class: 'Uploader'
-            }, this.uploader);
-
-            var up = new Uploader({
-                label: 'Select photo',
-                multiple: true,
-                url: '/ecm/rest/employees/'+ this.model.id+'/photo',
-                name: "file",
-                onComplete:  lang.hitch(this, function(file) {
-                        domAttr.set(this.avatar, "src", "data:image/png;base64, " + file.image);
-                })
-            }).placeAt(form);
-
-            var list = new FileList({
-                uploader: up
-            }).placeAt(form);
-
-            var btn = new Button({
-                label: 'Upload',
-                onClick: function() {
-                    up.upload();
-                }
-            }).placeAt(form);
-
-
-            btn.startup();
-            up.startup();
-            list.startup();
-
-
-            var avatar = this.avatar;
-            if (!this.isNew){
-                loadPhoto(this.model.id, avatar);
-            }
-
-            function loadPhoto(id, avatarNode) {
-                xhr("/ecm/rest/employees/" + id + "/photo", {
-                    handleAs: "json",
-                    method: "get"
-                }).then(function (data) {
-                    if (data.image!= undefined) {
-                        domAttr.set(avatar, "src", "data:image/png;base64, " + data.image);
-                    }
-                }, function (err) {
-                    // Handle the error condition
-                }, function (evt) {
-                    // Handle a progress event from the request if the
-                    // browser supports XHR2
-                });
-            }
 
             function close() {
                 var tabPane = registry.byId("TabContainer");
@@ -144,7 +93,7 @@ define([
                 pane.destroy();
             }
 
-            function deletePerson() {
+            function remove() {
                 var id = this.model.id;
                 var store = this.store;
                 deleteDialog = new ConfirmDialog({
@@ -167,7 +116,7 @@ define([
                     tabPane.removeChild(pane);
                     tabPane.selectChild(registry.byId("WelcomPane"));
                     pane.destroy();
-                    updateTree()
+                    updateTree();
                 }
 
                 function error(err) {
@@ -210,9 +159,10 @@ define([
                 else {
                     this.store.put(data).then(function(data){
                         this.form.set('value', data);
-                        // if (this.isNew){
-                        //     var pane = registry.byId("newPersonPane_");
-                        // }
+                        var pane = registry.byId("personPane_"+data.id);
+                        pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
+                        updateTree();
+
                     }.bind(this), function(err){
                         // Handle the error condition
                     }, function(evt){
@@ -240,8 +190,9 @@ define([
                 // Rebuild the tree
                 tree.postMixInProperties();
                 tree._load();
-                // tree.rootNode.set("label", "Employees");
             }
+
+            eval(this.script);
         }
 
         ,
