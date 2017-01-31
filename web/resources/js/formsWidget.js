@@ -84,10 +84,10 @@ define([
                 var tabPane = registry.byId("TabContainer");
                 var pane;
                 if (this.isNew){
-                    pane = registry.byId("newPersonPane_");
+                    pane = registry.byId("newPane_");
                 }
                 else {
-                    pane = registry.byId("personPane_"+this.model.id);
+                    pane = registry.byId("pane_"+this.model.id);
                 }
                 tabPane.removeChild(pane);
                 tabPane.selectChild(registry.byId("WelcomPane"));
@@ -113,7 +113,7 @@ define([
 
                 function success() {
                     var tabPane = registry.byId("TabContainer");
-                    pane = registry.byId("personPane_"+id);
+                    pane = registry.byId("pane_"+id);
                     tabPane.removeChild(pane);
                     tabPane.selectChild(registry.byId("WelcomPane"));
                     pane.destroy();
@@ -145,7 +145,7 @@ define([
                 if (this.model.id==undefined){
                     this.store.add(data).then(function(data){
                         this.form.set('value', data);
-                        var pane = registry.byId("newPersonPane_");
+                        var pane = registry.byId("newPane_");
                         pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
                         // pane.set("id", "personPane_"+data.id);
                         // this.isNew = false;
@@ -160,7 +160,7 @@ define([
                 else {
                     this.store.put(data).then(function(data){
                         this.form.set('value', data);
-                        var pane = registry.byId("personPane_"+data.id);
+                        var pane = registry.byId("pane_"+data.id);
                         pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
                         updateTree();
 

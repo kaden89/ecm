@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="http://cdn.rawgit.com/oria/gridx/1.3/resources/claro/Gridx.css">
 
     <link rel="stylesheet" type="text/css"
-          href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.1/dijit/themes/claro/document.css">
+          href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.1/dijit/themes/claro/entity.css">
 
 
     <script type='text/javascript'>
@@ -237,7 +237,7 @@
                     var widget  = new formsWidget(data, personStore);
                     var tabContainer = Registry.byId("TabContainer");
                     var id = data.entity.id;
-                    var pane = Registry.byId("newPersonPane_");
+                    var pane = Registry.byId("newPane_");
                     if (pane != undefined){
                         tabContainer.selectChild(pane);
                         return;
@@ -247,7 +247,7 @@
                             return confirm("Do you really want to Close this?");
                         }
                     });
-                    pane.set("id", "newPersonPane_");
+                    pane.set("id", "newPane_");
                     tabContainer.addChild(pane);
                     tabContainer.selectChild(pane);
                     pane.setContent(widget);
@@ -276,7 +276,7 @@
                 }
                 //if the tab is already open, switch on it
                 var tabContainer = Registry.byId("TabContainer");
-                var pane = Registry.byId("personPane_"+id);
+                var pane = Registry.byId("pane_"+id);
                 if (pane != undefined){
                     tabContainer.selectChild(pane);
                     return;
@@ -290,7 +290,7 @@
                     var pane = new ContentPane({
                         title: data.entity.name, closable: true
                     });
-                    pane.set("id", "personPane_"+id);
+                    pane.set("id", "pane_"+id);
                     tabContainer.addChild(pane);
                     tabContainer.selectChild(pane);
                     pane.setContent(widget);

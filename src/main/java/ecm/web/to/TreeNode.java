@@ -1,4 +1,4 @@
-package ecm.util;
+package ecm.web.to;
 
 import java.util.List;
 

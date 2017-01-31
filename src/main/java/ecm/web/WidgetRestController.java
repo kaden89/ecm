@@ -1,20 +1,14 @@
 package ecm.web;
 
-import com.google.gson.Gson;
-import ecm.dao.GenericDAO;
 import ecm.model.Incoming;
-import ecm.model.Outgoing;
 import ecm.model.Person;
-import ecm.model.Task;
-import ecm.util.WidgetResponse;
+import ecm.web.to.DocumentWidgetResponse;
+import ecm.web.to.StaffWidgetResponse;
 
-import javax.inject.Inject;
-import javax.json.*;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
@@ -33,7 +27,7 @@ public class WidgetRestController extends AbstractRestController{
     @Path("/person")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNewEmployeeTemplate(){
-        WidgetResponse response = new WidgetResponse<Person>();
+        StaffWidgetResponse response = new StaffWidgetResponse();
         response.setTemplate(readFile("/html/person.html"));
         response.setScript(readFile("/js/person.js"));
         response.setEntity(new Person());
@@ -44,19 +38,19 @@ public class WidgetRestController extends AbstractRestController{
     @Path("/person/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeTemplate(@PathParam("id") int employeeId){
-        WidgetResponse response = new WidgetResponse<Person>();
+        StaffWidgetResponse response = new StaffWidgetResponse();
         response.setTemplate(readFile("/html/person.html"));
         response.setEntity(personDAO.find(employeeId));
         response.setScript(readFile("/js/person.js"));
         String jsonInString = gson.toJson(response);
 
-        return Response.ok(jsonInString).build();
+        return Response.ok(response).build();
     }
     @GET
     @Path("/incoming")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNewIncomingTemplate(){
-        WidgetResponse response = new WidgetResponse<Incoming>();
+        DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/incoming.html"));
         response.setScript(readFile("/js/incoming.js"));
         response.setEntity(new Incoming());
@@ -67,13 +61,12 @@ public class WidgetRestController extends AbstractRestController{
     @Path("/incoming/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getIncomingTemplate(@PathParam("id") int incomingId){
-        WidgetResponse response = new WidgetResponse<Incoming>();
+        DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/incoming.html"));
         response.setEntity(incomingDAO.find(incomingId));
         response.setScript(readFile("/js/incoming.js"));
-        String jsonInString = gson.toJson(response);
 
-        return Response.ok(jsonInString).build();
+        return Response.ok(response).build();
     }
 
 

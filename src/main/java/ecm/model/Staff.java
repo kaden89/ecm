@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
@@ -16,8 +17,9 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @Access(value = AccessType.FIELD)
 public abstract class Staff {
     @Id
-    @GeneratedValue(strategy=GenerationType.TABLE)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Expose
+    @XmlElement(nillable=true)
     private Integer id;
 
     public Staff() {

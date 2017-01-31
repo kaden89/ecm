@@ -19,7 +19,7 @@ public class Incoming extends Document {
     private Person sender;
     @ManyToOne
     private Person recipient;
-    private int referenceNumber;
+    private Integer referenceNumber;
     private LocalDate outboundRegDate;
 
     public Incoming() {

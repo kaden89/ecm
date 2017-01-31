@@ -1,14 +1,10 @@
 package ecm.web;
 
-import com.google.gson.Gson;
-import ecm.dao.GenericDAO;
 import ecm.model.Incoming;
 import ecm.model.Outgoing;
-import ecm.model.Person;
 import ecm.model.Task;
-import ecm.util.TreeNode;
+import ecm.web.to.TreeNode;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;

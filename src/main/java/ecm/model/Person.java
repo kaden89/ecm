@@ -26,7 +26,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     @GsonExclude
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "owner")
     private Image photo;
-    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
+//    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate birthday;
     @Transient
     @SerializedName("name")
