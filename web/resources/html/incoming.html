@@ -37,11 +37,34 @@
                         <label>Author:</label>
                     </td>
                     <td>
-                        <input type="text"
-                               name="author"
+                        <div
                                required="true"
-                               data-dojo-type="dijit/form/ValidationTextBox"
-                               data-dojo-props="value: at(this.model, 'author.firstname')">
+                               data-dojo-attach-point="author"
+                               > </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Sender:</label>
+                    </td>
+                    <td>
+                        <!--<input type="text"-->
+                               <!--name="sender"-->
+                               <!--required="true"-->
+                               <!--data-dojo-type="dijit/form/Select"-->
+                               <!--data-dojo-props="value: at(this.model, 'sender')">-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Recipient:</label>
+                    </td>
+                    <td>
+                        <!--<input type="text"-->
+                               <!--name="recipient"-->
+                               <!--required="true"-->
+                               <!--data-dojo-type="dijit/form/Select"-->
+                               <!--data-dojo-props="value: at(this.model, 'recipient')">-->
                     </td>
                 </tr>
                 <tr>
@@ -70,6 +93,30 @@
                 </tr>
                 <tr>
                     <td>
+                        <label>Reference number:</label>
+                    </td>
+                    <td>
+                        <input type="text"
+                               name="referenceNumber"
+                               required="true"
+                               data-dojo-type="dijit/form/ValidationTextBox"
+                               data-dojo-props="value: at(this.model, 'referenceNumber')">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Outbound reg date:</label>
+                    </td>
+                    <td>
+                        <input type="text"
+                               name="outboundRegDate"
+                               required="true"
+                               data-dojo-type="dijit/form/DateTextBox"
+                               data-dojo-props="value: at(this.model, 'outboundRegDate')">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <label>Text:</label>
                     </td>
                     <td>
@@ -78,6 +125,7 @@
                     </td>
                 </tr>
             </table>
+
 
 
             <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">

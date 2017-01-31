@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <organizations>
     <organization >
-        <fullName>OOO Company</fullName>
+        <name>OOO Company</name>
         <shortName>Company</shortName>
         <manager >
 			<firstName>Ivan</firstName>
@@ -12,7 +12,7 @@
         <contactsTelephones>+7 777 777</contactsTelephones>
     </organization>
 	<organization>
-        <fullName>OOO Sales</fullName>
+        <name>OOO Sales</name>
         <shortName>Sales</shortName>
          <manager >
 			<firstName>Nikolay</firstName>
@@ -23,7 +23,7 @@
         <contactsTelephones>+7 888 888</contactsTelephones>
     </organization>
 	<organization >
-        <fullName>OOO Trade</fullName>
+        <name>OOO Trade</name>
         <shortName>Trade</shortName>
         <manager>
 			<firstName>Petr</firstName>

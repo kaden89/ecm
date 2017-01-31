@@ -42,7 +42,6 @@ public class WidgetRestController extends AbstractRestController{
         response.setTemplate(readFile("/html/person.html"));
         response.setEntity(personDAO.find(employeeId));
         response.setScript(readFile("/js/person.js"));
-        String jsonInString = gson.toJson(response);
 
         return Response.ok(response).build();
     }

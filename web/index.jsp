@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="http://cdn.rawgit.com/oria/gridx/1.3/resources/claro/Gridx.css">
 
     <link rel="stylesheet" type="text/css"
-          href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.1/dijit/themes/claro/entity.css">
+          href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.1/dijit/themes/claro/document.css">
 
 
     <script type='text/javascript'>

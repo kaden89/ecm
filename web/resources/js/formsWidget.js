@@ -26,7 +26,11 @@ define([
     "dijit/ConfirmDialog",
     "dijit/Dialog",
     "dijit/Editor",
+    "dijit/form/Select",
+    "dojo/store/JsonRest",
+    "dijit/form/FilteringSelect",
     "dojox/mvc/at",
+    "dojo/store/Memory",
     "dojo/on",
     "dojo/require",
     "dijit/layout/ContentPane",
@@ -41,7 +45,7 @@ define([
 
 
 ], function (declare, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, registry, request, xhr,
-            domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor) {
+            domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor, Select, JsonRest,FilteringSelect, at, Memory) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
         isNew: false,
@@ -57,6 +61,24 @@ define([
         ,
         startup: function () {
             this.inherited(arguments);
+
+            var restURL = 'http://localhost:8080/ecm/rest/employees/';
+            var personStore = new JsonRest({
+                idProperty: 'id',
+                target: restURL,
+                getChildren: function(object){
+                    return object;
+                }
+            });
+
+
+            var comboBox = new FilteringSelect({
+                store: personStore,
+                searchAttr: "name",
+                autocomplete: true,
+                placeholder: "Select author",
+                value: at(this.model.author, "id")
+            }, this.author);
 
             var toolbar = this.toolbar;
             var createButton = new Button({

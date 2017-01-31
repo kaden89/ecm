@@ -15,6 +15,6 @@ public class LocalDateAdapter extends XmlAdapter<String, LocalDate> {
     }
 
     public String marshal(LocalDate v) throws Exception {
-        return v.toString();
+        return v == null ? "" : v.toString();
     }
 }

@@ -19,7 +19,6 @@ public abstract class Staff {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Expose
-    @XmlElement(nillable=true)
     private Integer id;
 
     public Staff() {

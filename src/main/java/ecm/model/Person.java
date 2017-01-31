@@ -1,6 +1,5 @@
 package ecm.model;
 
-import com.google.gson.annotations.SerializedName;
 import ecm.dao.Storable;
 import ecm.util.xml.GsonExclude;
 import ecm.util.xml.LocalDateAdapter;
@@ -26,11 +25,10 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     @GsonExclude
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "owner")
     private Image photo;
-//    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate birthday;
     @Transient
-    @SerializedName("name")
-    private String fullName;
+    private String name;
 
     public Person() {
     }
@@ -45,7 +43,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
 
     @PostLoad
     private void setFullName() {
-        this.fullName = toString();
+        this.name = toString();
     }
 
     public String getFirstname() {
@@ -88,12 +86,12 @@ public class Person extends Staff implements Comparable<Person>, Storable{
         this.birthday = birthday;
     }
 
-    public String getFullName() {
-        return this.fullName;
+    public String getName() {
+        return this.name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Image getPhoto() {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <departments>
     <department>
-        <fullName>Programmers</fullName>
+        <name>Programmers</name>
         <shortName>Programmers</shortName>
         <manager >
             <firstName>Nikolay</firstName>
@@ -12,7 +12,7 @@
         <contactsTelephones>+7 777 777</contactsTelephones>
     </department>
     <department >
-        <fullName>Administration</fullName>
+        <name>Administration</name>
         <shortName>Administration</shortName>
         <manager >
             <firstName>Vasya</firstName>
@@ -23,7 +23,7 @@
         <contactsTelephones>+7 888 888</contactsTelephones>
     </department>
     <department >
-        <fullName>Testers</fullName>
+        <name>Testers</name>
         <shortName>Testers</shortName>
         <manager >
             <firstName>Petr</firstName>
