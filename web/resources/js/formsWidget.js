@@ -25,6 +25,7 @@ define([
     "dojo/date/locale",
     "dijit/ConfirmDialog",
     "dijit/Dialog",
+    "dijit/Editor",
     "dojox/mvc/at",
     "dojo/on",
     "dojo/require",
@@ -40,7 +41,7 @@ define([
 
 
 ], function (declare, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, registry, request, xhr,
-            domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog) {
+            domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
         isNew: false,

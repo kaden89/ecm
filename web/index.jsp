@@ -288,9 +288,7 @@
                     var widget  = new formsWidget(data, personStore);
                     var id = data.entity.id;
                     var pane = new ContentPane({
-                        title: data.entity.name, closable: true, onClose: function () {
-                            return confirm("Do you really want to Close this?");
-                        }
+                        title: data.entity.name, closable: true
                     });
                     pane.set("id", "personPane_"+id);
                     tabContainer.addChild(pane);
@@ -306,6 +304,8 @@
                 });
 
             }
+
+
             function setupTrees() {
 
 
@@ -369,9 +369,51 @@
                 });
 
                 documentsTree = new Tree({
-                    model: documentsModel
+                    model: documentsModel,
+                    onDblClick: openDocTab
                 }, "documentsTree"); // make sure you have a target HTML element with this id
                 documentsTree.startup();
+
+                function openDocTab(item) {
+                    var id;
+                    //Check if we are from Grid
+                    if(item.target){
+                        id = item.rowId;
+                    }
+                    else{
+                        id = item.id
+                    }
+                    //if the tab is already open, switch on it
+                    var tabContainer = Registry.byId("TabContainer");
+                    var pane = Registry.byId("pane_"+id);
+                    if (pane != undefined){
+                        tabContainer.selectChild(pane);
+                        return;
+                    }
+
+                    xhr("/ecm/rest/widgets/incoming/"+id, {
+                        handleAs: "json"
+                    }).then(function(data){
+                        var widget  = new formsWidget(data, documentsStore);
+                        var id = data.entity.id;
+                        var pane = new ContentPane({
+                            title: data.entity.name, closable: true
+                        });
+                        pane.set("id", "pane_"+id);
+                        tabContainer.addChild(pane);
+                        tabContainer.selectChild(pane);
+                        pane.setContent(widget);
+                        Registry.add(pane);
+
+                    }, function(err){
+                        console.log(err);
+                    }, function(evt){
+                        // Handle a progress event from the request if the
+                        // browser supports XHR2
+                    });
+
+                }
+
             }
         });
     </script>
@@ -395,9 +437,6 @@
     <div data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region:'center', tabStrip:true" id="TabContainer">
         <div data-dojo-type="dijit/layout/ContentPane" title="Welcom" id="WelcomPane">
             <div id='gridContainer'></div>
-        </div>
-        <div data-dojo-type="dijit/layout/ContentPane" title="tab #2">
-            <div id="test"></div>
         </div>
     </div>
 </div>

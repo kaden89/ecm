@@ -3,7 +3,7 @@
     <script type="dojo/require">at: "dojox/mvc/at"</script>
     <div data-dojo-type="dijit/Toolbar" data-dojo-attach-point="toolbar"></div>
     <div id="personDiv">
-        <div  data-dojo-type="dijit/layout/BorderContainer" style="height: 40%">
+        <div data-dojo-type="dijit/layout/BorderContainer" style="height: 40%">
             <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'left'" style="width: 60%">
                 <div data-dojo-type="dijit/layout/ContentPane" style="height: 40%">
                 </div>
@@ -12,19 +12,21 @@
                      style="text-align: center; font-size: large">
                     <span data-dojo-type="dojox/mvc/Output" data-dojo-props="value: at(this.model, 'firstname')"></span>
                     <span data-dojo-type="dojox/mvc/Output" data-dojo-props="value: at(this.model, 'surname')"></span>
-                    <span data-dojo-type="dojox/mvc/Output" data-dojo-props="value: at(this.model, 'patronymic')"></span>
+                    <span data-dojo-type="dojox/mvc/Output"
+                          data-dojo-props="value: at(this.model, 'patronymic')"></span>
                 </div>
             </div>
             <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'right'" style="width: 40%">
-                <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'" >
+                <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
                     <!--<img src="" class="toChange"  style="width: 100%"/>-->
-                    <img src="" class="${baseClass}Image" data-dojo-props="region:'center'" data-dojo-attach-point="avatar"  style="height: 100%"/>
+                    <img src="" class="${baseClass}Image" data-dojo-props="region:'center'"
+                         data-dojo-attach-point="avatar" style="height: 100%"/>
                 </div>
             </div>
             <!--<div data-dojo-type="dijit/form/ValidationTextBox" data-dojo-props="value: at(model, 'firstname')"/>-->
         </div>
         <div data-dojo-type="dijit/layout/BorderContainer" style="height: 50%">
-            <div  data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+            <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
 
                 <!--<script type="dojo/require">at: "dojox/mvc/at"</script>-->
                 <div data-dojo-type="dijit/form/Form"
@@ -34,7 +36,8 @@
                      style="border: 0px">
                     <script type="dojo/on" data-dojo-event="reset">
                     return confirm('Press OK to reset widget values');
-                     </script>
+
+                    </script>
 
                     <script type="dojo/on" data-dojo-event="submit">
                     if(this.validate()){
@@ -44,6 +47,7 @@
                         return false;
                     }
                     return true;
+
                     </script>
                     <table style="border: 1px solid #9f9f9f;" cellspacing="10">
                         <tr>
@@ -125,9 +129,10 @@
                 </div>
 
 
-                <form data-dojo-type="dijit/form/Form" data-dojo-attach-point="uploadedform" enctype="multipart/form-data"  method="post" >
+                <form data-dojo-type="dijit/form/Form" data-dojo-attach-point="uploadedform"
+                      enctype="multipart/form-data" method="post">
                 </form>
-                <div  class="${baseClass}Uploader"  data-dojo-attach-point="uploader"></div>
+                <div class="${baseClass}Uploader" data-dojo-attach-point="uploader"></div>
 
             </div>
 

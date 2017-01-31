@@ -33,7 +33,7 @@ public class WidgetRestController extends AbstractRestController{
     @Path("/person")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNewEmployeeTemplate(){
-        WidgetResponse response = new WidgetResponse();
+        WidgetResponse response = new WidgetResponse<Person>();
         response.setTemplate(readFile("/html/person.html"));
         response.setScript(readFile("/js/person.js"));
         response.setEntity(new Person());
@@ -52,6 +52,30 @@ public class WidgetRestController extends AbstractRestController{
 
         return Response.ok(jsonInString).build();
     }
+    @GET
+    @Path("/incoming")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNewIncomingTemplate(){
+        WidgetResponse response = new WidgetResponse<Incoming>();
+        response.setTemplate(readFile("/html/incoming.html"));
+        response.setScript(readFile("/js/incoming.js"));
+        response.setEntity(new Incoming());
+        return Response.ok(response).build();
+    }
+
+    @GET
+    @Path("/incoming/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getIncomingTemplate(@PathParam("id") int incomingId){
+        WidgetResponse response = new WidgetResponse<Incoming>();
+        response.setTemplate(readFile("/html/incoming.html"));
+        response.setEntity(incomingDAO.find(incomingId));
+        response.setScript(readFile("/js/incoming.js"));
+        String jsonInString = gson.toJson(response);
+
+        return Response.ok(jsonInString).build();
+    }
+
 
     private String readFile(String fileName){
         StringBuilder result = new StringBuilder("");
