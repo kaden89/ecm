@@ -104,7 +104,7 @@ public class EmployeeRestController extends AbstractRestController{
         return Response.ok(updated).build();
     }
 
-    @PUT
+    @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Produces(MediaType.APPLICATION_JSON)
     public Response createEmployee(Person person){

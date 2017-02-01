@@ -294,7 +294,7 @@
                 xhr("/ecm/rest/widgets/person/"+id, {
                     handleAs: "json"
                 }).then(function(data){
-                    var widget  = new formsWidget(data, personStore);
+                    var widget  = new formsWidget(data, personStore, Registry.byId('personTree'));
                     var id = data.entity.id;
                     var pane = new ContentPane({
                         title: data.entity.name, closable: true
@@ -380,6 +380,7 @@
                 documentsTree = new Tree({
                     model: documentsModel,
                     onDblClick: openDocTab
+//                    autoExpand: true
                 }, "documentsTree"); // make sure you have a target HTML element with this id
                 documentsTree.startup();
 
@@ -403,7 +404,7 @@
                     xhr("/ecm/rest/widgets/incoming/"+id, {
                         handleAs: "json"
                     }).then(function(data){
-                        var widget  = new formsWidget(data, incomingsStore);
+                        var widget  = new formsWidget(data, incomingsStore, Registry.byId('documentsTree'));
                         var id = data.entity.id;
                         var pane = new ContentPane({
                             title: data.entity.name, closable: true

@@ -31,6 +31,7 @@ define([
     "dijit/form/FilteringSelect",
     "dojox/mvc/at",
     "dojo/store/Memory",
+    "/ecm/resources/js/LocalDateTextBox.js",
     "dojo/on",
     "dojo/require",
     "dijit/layout/ContentPane",
@@ -45,17 +46,20 @@ define([
 
 
 ], function (declare, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, registry, request, xhr,
-            domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor, Select, JsonRest,FilteringSelect, at, Memory) {
+            domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor, Select, JsonRest,FilteringSelect,
+             at, Memory, UTCDateTextBox) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
         isNew: false,
         store: null,
         script: null,
-        constructor: function (args, store) {
+        tree: null,
+        constructor: function (args, store, tree) {
             this.templateString = args.template;
             this.model = new Stateful(args.entity);
             this.store = store;
             this.script = args.script;
+            this.tree = tree;
             if (args.entity.id == undefined) this.isNew = true;
         }
         ,
@@ -139,7 +143,7 @@ define([
             function save() {
                 //create new user
                 if (this.model.id==undefined){
-                    this.store.add(data).then(function(data){
+                    this.store.add(this.model).then(function(data){
                         this.form.set('value', data);
                         var pane = registry.byId("newPane_");
                         pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
@@ -159,7 +163,7 @@ define([
                         var pane = registry.byId("pane_"+data.id);
                         pane.set("title", data.name);
                         // pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
-                        updateTree();
+                        updateTree.call(this);
                     }.bind(this), function(err){
                         // Handle the error condition
                     }, function(evt){
@@ -169,7 +173,7 @@ define([
                 }
             }
             function updateTree() {
-                tree = registry.byId('personTree');
+                tree = this.tree;
                 tree.dndController.selectNone();
                 tree.model.store.clearOnClose = true;
                 tree._itemNodesMap = {};
@@ -180,11 +184,12 @@ define([
                 tree.rootNode.destroyRecursive();
 
                 // Recreate the model, (with the model again)
-                tree.model.constructor(dijit.byId("personTree").model);
+                tree.model.constructor(this.tree.model);
 
                 // Rebuild the tree
                 tree.postMixInProperties();
                 tree._load();
+
             }
 
             eval(this.script);
