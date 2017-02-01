@@ -1,13 +1,13 @@
 package ecm.web;
 
+import ecm.model.Document;
 import ecm.model.Incoming;
 import ecm.model.Outgoing;
 import ecm.model.Task;
+import ecm.web.to.AbstractDocumentDTO;
 import ecm.web.to.TreeNode;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -58,5 +58,15 @@ public class DocumentsRestController extends AbstractRestController{
         TreeNode<Task> root = new TreeNode<>("Tasks", "", taskDAO.findAll());
         String jsonInString = gson.toJson(root);
         return Response.ok(jsonInString).build();
+    }
+
+    @PUT
+    @Path("/incomings/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateEmployee(@PathParam("id") int id, AbstractDocumentDTO dto){
+        dto.setId(id);
+        Incoming updated = incomingDAO.update((Incoming) documentDTOConverter.fromDTO(dto));
+        return Response.ok(documentDTOConverter.toDTO(updated)).build();
     }
 }

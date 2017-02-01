@@ -7,6 +7,7 @@ import ecm.dao.ImageDaoJPA;
 import ecm.model.*;
 import ecm.util.xml.ByteArrayAdapter;
 import ecm.util.xml.GsonExclusionStrategy;
+import ecm.web.to.DocumentDTOConverter;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
@@ -33,6 +34,9 @@ public class AbstractRestController {
 
     @Inject
     ImageDaoJPA imageDAO;
+
+    @Inject
+    DocumentDTOConverter documentDTOConverter;
 
 
     String toJson(Object obj){

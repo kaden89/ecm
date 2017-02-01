@@ -230,6 +230,15 @@
                 }
             }
 
+            var incomingsStore = new JsonRest({
+                idProperty: 'id',
+                target: 'http://localhost:8080/ecm/rest/documents/incomings',
+                getChildren: function(object){
+                    return object;
+                }
+            });
+            incomingsStore = new Observable(incomingsStore);
+
             function createNewTab() {
                 xhr("/ecm/rest/widgets/person/", {
                     handleAs: "json"
@@ -394,7 +403,7 @@
                     xhr("/ecm/rest/widgets/incoming/"+id, {
                         handleAs: "json"
                     }).then(function(data){
-                        var widget  = new formsWidget(data, documentsStore);
+                        var widget  = new formsWidget(data, incomingsStore);
                         var id = data.entity.id;
                         var pane = new ContentPane({
                             title: data.entity.name, closable: true

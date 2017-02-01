@@ -62,24 +62,6 @@ define([
         startup: function () {
             this.inherited(arguments);
 
-            var restURL = 'http://localhost:8080/ecm/rest/employees/';
-            var personStore = new JsonRest({
-                idProperty: 'id',
-                target: restURL,
-                getChildren: function(object){
-                    return object;
-                }
-            });
-
-
-            var comboBox = new FilteringSelect({
-                store: personStore,
-                searchAttr: "name",
-                autocomplete: true,
-                placeholder: "Select author",
-                value: at(this.model.author, "id")
-            }, this.author);
-
             var toolbar = this.toolbar;
             var createButton = new Button({
                 label: "Save",
@@ -155,14 +137,6 @@ define([
             }
 
             function save() {
-                var form = this.form;
-                if (!form.validate()) return;
-                //clone for change birthday to ISO type without time
-                var data =  lang.clone(form.value);
-                data.birthday = locale.format(data.birthday, {datePattern: "yyyy-MM-dd", selector: "date"});
-                var formJson = dojo.toJson(data);
-                var method = "put";
-                var id;
                 //create new user
                 if (this.model.id==undefined){
                     this.store.add(data).then(function(data){
@@ -180,12 +154,12 @@ define([
                     });
                 }
                 else {
-                    this.store.put(data).then(function(data){
+                    this.store.put(this.model).then(function(data){
                         this.form.set('value', data);
                         var pane = registry.byId("pane_"+data.id);
-                        pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
+                        pane.set("title", data.name);
+                        // pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
                         updateTree();
-
                     }.bind(this), function(err){
                         // Handle the error condition
                     }, function(evt){
@@ -193,8 +167,6 @@ define([
                         // browser supports XHR2
                     });
                 }
-
-
             }
             function updateTree() {
                 tree = registry.byId('personTree');

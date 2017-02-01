@@ -32,15 +32,19 @@
                                data-dojo-props="value: at(this.model, 'name')">
                     </td>
                 </tr>
+                <div data-dojo-type="dojo/store/JsonRest"
+                     data-dojo-props="target:'http://localhost:8080/ecm/rest/employees/', idProperty:'id'"
+                     data-dojo-id="personStore"></div>
                 <tr>
                     <td>
                         <label>Author:</label>
                     </td>
                     <td>
-                        <div
-                               required="true"
-                               data-dojo-attach-point="author"
-                               > </div>
+                        <select required="true"
+                                name = "authorId"
+                                data-dojo-type="dijit/form/FilteringSelect"
+                                data-dojo-props="value: at(this.model, 'authorId'), store: personStore"
+                                data-dojo-attach-point="author"> </select>
                     </td>
                 </tr>
                 <tr>
@@ -48,11 +52,11 @@
                         <label>Sender:</label>
                     </td>
                     <td>
-                        <!--<input type="text"-->
-                               <!--name="sender"-->
-                               <!--required="true"-->
-                               <!--data-dojo-type="dijit/form/Select"-->
-                               <!--data-dojo-props="value: at(this.model, 'sender')">-->
+                        <select required="true"
+                                name = "senderId"
+                                data-dojo-type="dijit/form/FilteringSelect"
+                                data-dojo-props="value: at(this.model, 'senderId'), store: personStore"
+                                data-dojo-attach-point="sender"> </select>
                     </td>
                 </tr>
                 <tr>
@@ -60,11 +64,11 @@
                         <label>Recipient:</label>
                     </td>
                     <td>
-                        <!--<input type="text"-->
-                               <!--name="recipient"-->
-                               <!--required="true"-->
-                               <!--data-dojo-type="dijit/form/Select"-->
-                               <!--data-dojo-props="value: at(this.model, 'recipient')">-->
+                        <select required="true"
+                                name = "recipientId"
+                                data-dojo-type="dijit/form/FilteringSelect"
+                                data-dojo-props="value: at(this.model, 'recipientId'), store: personStore"
+                                data-dojo-attach-point="recipient"> </select>
                     </td>
                 </tr>
                 <tr>
@@ -120,7 +124,7 @@
                         <label>Text:</label>
                     </td>
                     <td>
-                        <div data-dojo-type="dijit/Editor"  data-dojo-props="value: at(this.model, 'text')">
+                        <div data-dojo-type="dijit/Editor" name = "text" data-dojo-props="value: at(this.model, 'text')">
                         </div>
                     </td>
                 </tr>

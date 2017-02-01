@@ -11,7 +11,8 @@ import java.time.LocalDate;
 
 public class LocalDateAdapter extends XmlAdapter<String, LocalDate> {
     public LocalDate unmarshal(String v) throws Exception {
-        return LocalDate.parse(v);
+
+        return LocalDate.parse(v.split("T")[0]);
     }
 
     public String marshal(LocalDate v) throws Exception {

@@ -3,6 +3,7 @@ package ecm.web;
 import ecm.model.Incoming;
 import ecm.model.Person;
 import ecm.web.to.DocumentWidgetResponse;
+import ecm.web.to.IncomingDTO;
 import ecm.web.to.StaffWidgetResponse;
 
 import javax.ws.rs.GET;
@@ -52,7 +53,7 @@ public class WidgetRestController extends AbstractRestController{
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/incoming.html"));
         response.setScript(readFile("/js/incoming.js"));
-        response.setEntity(new Incoming());
+        response.setEntity(documentDTOConverter.toDTO(new Incoming()));
         return Response.ok(response).build();
     }
 
@@ -62,7 +63,7 @@ public class WidgetRestController extends AbstractRestController{
     public Response getIncomingTemplate(@PathParam("id") int incomingId){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/incoming.html"));
-        response.setEntity(incomingDAO.find(incomingId));
+        response.setEntity(documentDTOConverter.toDTO(incomingDAO.find(incomingId)));
         response.setScript(readFile("/js/incoming.js"));
 
         return Response.ok(response).build();

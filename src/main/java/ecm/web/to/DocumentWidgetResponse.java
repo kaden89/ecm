@@ -7,21 +7,21 @@ import ecm.model.Document;
  */
 
 public class DocumentWidgetResponse extends AbstractWidgetResponse{
-    private Document entity;
+    private AbstractDocumentDTO entity;
 
     public DocumentWidgetResponse() {
     }
 
-    public DocumentWidgetResponse(String template, String script, Document document) {
+    public DocumentWidgetResponse(String template, String script, AbstractDocumentDTO document) {
         super(template, script);
         this.entity = document;
     }
 
-    public Document getEntity() {
+    public AbstractDocumentDTO getEntity() {
         return entity;
     }
 
-    public void setEntity(Document entity) {
+    public void setEntity(AbstractDocumentDTO entity) {
         this.entity = entity;
     }
 }
