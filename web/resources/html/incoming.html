@@ -88,11 +88,15 @@
                         <label>Date:</label>
                     </td>
                     <td>
-                        <input type="text"
+                        <input type="date"
                                name="date"
                                required="true"
-                               data-dojo-type="/ecm/resources/js/LocalDateTextBox.js"
-                               data-dojo-props="value: at(this.model, 'date')"/>
+                               data-dojo-type="dijit/form/DateTextBox"
+                               data-dojo-props="value: at(this.model, 'date').transform({
+                    parse: function(value){
+                     return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
+                    }
+                  })"/>
                     </td>
                 </tr>
                 <tr>
@@ -116,7 +120,11 @@
                                name="outboundRegDate"
                                required="true"
                                data-dojo-type="dijit/form/DateTextBox"
-                               data-dojo-props="value: at(this.model, 'outboundRegDate')">
+                               data-dojo-props="value: at(this.model, 'outboundRegDate').transform({
+                    parse: function(value){
+                     return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
+                    }
+                  })">
                     </td>
                 </tr>
                 <tr>
