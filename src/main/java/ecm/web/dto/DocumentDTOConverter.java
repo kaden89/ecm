@@ -12,7 +12,7 @@ import java.util.Collection;
  * Created by dkarachurin on 01.02.2017.
  */
 @Singleton
-public class DocumentDTOConverter {
+public class DocumentDTOConverter implements DTOConverter<Document, AbstractDocumentDTO>{
     @Inject
     GenericDAO<Person> personDAO;
 

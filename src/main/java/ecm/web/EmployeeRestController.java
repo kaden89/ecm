@@ -1,6 +1,8 @@
 package ecm.web;
 
 import ecm.model.*;
+import ecm.web.dto.AbstractStaffDTO;
+import ecm.web.dto.PersonDTO;
 import ecm.web.dto.TreeNode;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -22,18 +24,21 @@ public class EmployeeRestController extends AbstractRestController{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployees(){
-        GenericEntity<List<Person>> employees = new GenericEntity<List<Person>>(personDAO.findAll()) {
+        GenericEntity<List<AbstractStaffDTO>> employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(staffDTOConverter.toDtoCollection(new ArrayList<>(personDAO.findAll())))) {
         };
         int size = employees.getEntity().size();
         //TODO Paging need dto implementing
 //        String jsonInString = gson.toJson(personDAO.findAll());
+
+
         return Response.ok(employees).header( "Content-Range" , "items 0-"+size+"/"+size).build();
     }
 
     @GET
     @Path("/personTree")
     public Response getPersonRoot(){
-        TreeNode<Person> root = new TreeNode<>("Employees", "", personDAO.findAll());
+        List<AbstractStaffDTO> dtos = new ArrayList<>(staffDTOConverter.toDtoCollection(new ArrayList<>(personDAO.findAll())));
+        TreeNode<AbstractStaffDTO> root = new TreeNode<>("Employees", "", dtos);
         String jsonInString = gson.toJson(root);
         return Response.ok(jsonInString).build();
     }
@@ -42,7 +47,8 @@ public class EmployeeRestController extends AbstractRestController{
     @Path("/tree")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeRoot(){
-        TreeNode<Person> root = new TreeNode<>("Employees", "root", personDAO.findAll());
+        List<AbstractStaffDTO> dtos = new ArrayList<>(staffDTOConverter.toDtoCollection(new ArrayList<>(personDAO.findAll())));
+        TreeNode<AbstractStaffDTO> root = new TreeNode<>("Employees", "root", dtos);
         String jsonInString = gson.toJson(root);
         return Response.ok(jsonInString).build();
     }
@@ -51,7 +57,7 @@ public class EmployeeRestController extends AbstractRestController{
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployee(@PathParam("id") int employeeId){
-        Person person = personDAO.find(employeeId);
+        AbstractStaffDTO person = staffDTOConverter.toDTO(personDAO.find(employeeId));
         return Response.ok(person).build();
     }
 
@@ -98,10 +104,10 @@ public class EmployeeRestController extends AbstractRestController{
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateEmployee(@PathParam("id") int id, Person person){
-        person.setId(id);
-        Person updated = personDAO.update(person);
-        return Response.ok(updated).build();
+    public Response updateEmployee(@PathParam("id") int id, PersonDTO dto){
+        dto.setId(id);
+        Person updated = personDAO.update((Person) staffDTOConverter.fromDTO(dto));
+        return Response.ok(staffDTOConverter.toDTO(updated)).build();
     }
 
     @POST

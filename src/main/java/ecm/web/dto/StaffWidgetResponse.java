@@ -6,21 +6,21 @@ import ecm.model.Staff;
  * Created by dkarachurin on 31.01.2017.
  */
 public class StaffWidgetResponse extends AbstractWidgetResponse {
-    private Staff entity;
+    private AbstractStaffDTO entity;
 
     public StaffWidgetResponse() {
     }
 
-    public StaffWidgetResponse(String template, String script, Staff staff) {
+    public StaffWidgetResponse(String template, String script, AbstractStaffDTO staff) {
         super(template, script);
         this.entity = staff;
     }
 
-    public Staff getEntity() {
+    public AbstractStaffDTO getEntity() {
         return entity;
     }
 
-    public void setEntity(Staff entity) {
+    public void setEntity(AbstractStaffDTO entity) {
         this.entity = entity;
     }
 }

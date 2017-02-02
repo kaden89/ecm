@@ -3,9 +3,9 @@ package ecm.model;
 import ecm.dao.Storable;
 import ecm.util.xml.GsonExclude;
 import ecm.util.xml.LocalDateAdapter;
+import ecm.web.dto.PersonDTO;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -28,8 +28,6 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     private Image photo;
     @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate birthday;
-    @Transient
-    private String name;
 
     public Person() {
     }
@@ -42,10 +40,15 @@ public class Person extends Staff implements Comparable<Person>, Storable{
         this.birthday = birthday;
     }
 
-    @PostLoad
-    private void setFullName() {
-        this.name = toString();
+    public Person(PersonDTO dto) {
+        this.setId(dto.getId());
+        this.firstname = dto.getFirstname();
+        this.surname = dto.getSurname();
+        this.patronymic = dto.getPatronymic();
+        this.position = dto.getPosition();
+        this.birthday = dto.getBirthday();
     }
+
 
     public String getFirstname() {
         return firstname;
@@ -85,14 +88,6 @@ public class Person extends Staff implements Comparable<Person>, Storable{
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Image getPhoto() {

@@ -31,7 +31,7 @@ public class WidgetRestController extends AbstractRestController{
         StaffWidgetResponse response = new StaffWidgetResponse();
         response.setTemplate(readFile("/html/person.html"));
         response.setScript(readFile("/js/person.js"));
-        response.setEntity(new Person());
+        response.setEntity(staffDTOConverter.toDTO(new Person()));
         return Response.ok(response).build();
     }
 
@@ -41,7 +41,7 @@ public class WidgetRestController extends AbstractRestController{
     public Response getEmployeeTemplate(@PathParam("id") int employeeId){
         StaffWidgetResponse response = new StaffWidgetResponse();
         response.setTemplate(readFile("/html/person.html"));
-        response.setEntity(personDAO.find(employeeId));
+        response.setEntity(staffDTOConverter.toDTO(personDAO.find(employeeId)));
         response.setScript(readFile("/js/person.js"));
 
         return Response.ok(response).build();

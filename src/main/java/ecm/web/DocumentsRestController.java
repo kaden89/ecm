@@ -21,7 +21,7 @@ import java.util.List;
 @Path(value = DocumentsRestController.REST_URL)
 public class DocumentsRestController extends AbstractRestController{
     static final String REST_URL = "/documents";
-
+    //TODO move @GET's here and make openDocTab universally
     @GET
     @Path("/tree")
     @Produces(MediaType.APPLICATION_JSON)

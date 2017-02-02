@@ -43,7 +43,7 @@
                         <select required="true"
                                 name = "authorId"
                                 data-dojo-type="dijit/form/FilteringSelect"
-                                data-dojo-props="value: at(this.model, 'authorId'), store: personStore"
+                                data-dojo-props="value: at(this.model, 'authorId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
                                 data-dojo-attach-point="author"> </select>
                     </td>
                 </tr>
@@ -55,7 +55,7 @@
                         <select required="true"
                                 name = "recipientId"
                                 data-dojo-type="dijit/form/FilteringSelect"
-                                data-dojo-props="value: at(this.model, 'recipientId'), store: personStore"
+                                data-dojo-props="value: at(this.model, 'recipientId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
                                 data-dojo-attach-point="recipient"> </select>
                     </td>
                 </tr>

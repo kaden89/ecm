@@ -80,6 +80,8 @@
             var personStore = new JsonRest({
                 idProperty: 'id',
                 target: restURL,
+                headers: {
+                    'Content-Type': "application/json; charset=UTF-8"},
                 getChildren: function(object){
                     return object;
                 }
@@ -232,6 +234,8 @@
 
             var incomingsStore = new JsonRest({
                 idProperty: 'id',
+                headers: {
+                    'Content-Type': "application/json; charset=UTF-8"},
                 target: 'http://localhost:8080/ecm/rest/documents/incomings',
                 getChildren: function(object){
                     return object;
@@ -306,7 +310,7 @@
                     var widget  = new formsWidget(data, personStore, Registry.byId('personTree'));
                     var id = data.entity.id;
                     var pane = new ContentPane({
-                        title: data.entity.name, closable: true
+                        title: data.entity.fullname, closable: true
                     });
                     pane.set("id", "pane_"+id);
                     tabContainer.addChild(pane);
@@ -390,7 +394,7 @@
                     model: documentsModel,
                     onDblClick: openDocTab
 //                    autoExpand: true
-                }, "documentsTree"); // make sure you have a target HTML element with this id
+                }, "documentsTree");
                 documentsTree.startup();
 
                 function openDocTab(item, node) {

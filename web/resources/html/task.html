@@ -43,20 +43,8 @@
                         <select required="true"
                                 name = "authorId"
                                 data-dojo-type="dijit/form/FilteringSelect"
-                                data-dojo-props="value: at(this.model, 'authorId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
+                                data-dojo-props="value: at(this.model, 'authorId'), store: personStore"
                                 data-dojo-attach-point="author"> </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Sender:</label>
-                    </td>
-                    <td>
-                        <select required="true"
-                                name = "senderId"
-                                data-dojo-type="dijit/form/FilteringSelect"
-                                data-dojo-props="value: at(this.model, 'senderId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
-                                data-dojo-attach-point="sender"> </select>
                     </td>
                 </tr>
                 <tr>
@@ -67,7 +55,7 @@
                         <select required="true"
                                 name = "recipientId"
                                 data-dojo-type="dijit/form/FilteringSelect"
-                                data-dojo-props="value: at(this.model, 'recipientId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
+                                data-dojo-props="value: at(this.model, 'recipientId'), store: personStore"
                                 data-dojo-attach-point="recipient"> </select>
                     </td>
                 </tr>
@@ -101,30 +89,14 @@
                 </tr>
                 <tr>
                     <td>
-                        <label>Reference number:</label>
+                        <label>Delivery method:</label>
                     </td>
                     <td>
                         <input type="text"
-                               name="referenceNumber"
+                               name="deliveryMethod"
                                required="true"
                                data-dojo-type="dijit/form/ValidationTextBox"
-                               data-dojo-props="value: at(this.model, 'referenceNumber')">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Outbound reg date:</label>
-                    </td>
-                    <td>
-                        <input type="text"
-                               name="outboundRegDate"
-                               required="true"
-                               data-dojo-type="dijit/form/DateTextBox"
-                               data-dojo-props="value: at(this.model, 'outboundRegDate').transform({
-                    parse: function(value){
-                     return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
-                    }
-                  })">
+                               data-dojo-props="value: at(this.model, 'deliveryMethod')">
                     </td>
                 </tr>
                 <tr>
