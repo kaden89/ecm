@@ -2,13 +2,10 @@ package ecm.model.documents_factory;
 
 import ecm.model.Document;
 import ecm.model.Task;
-import ecm.model.documents_factory.util.DocumentPopulator;
 import ecm.util.exceptions.DocumentExistsException;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
-
-import static ecm.model.documents_factory.util.DocumentPopulator.*;
 
 /**
  * Created by dkarachurin on 10.01.2017.

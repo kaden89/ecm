@@ -1,9 +1,9 @@
-package ecm.web.to;
+package ecm.web.dto;
 
 /**
  * Created by dkarachurin on 31.01.2017.
  */
-//Glassfish can't correctly marshall polymorphic generics, so we need to create util class for each parent class
+//Glassfish can't correctly marshall polymorphic generics, so we need dto create util class for each parent class
 public abstract class AbstractWidgetResponse {
     private String template;
     private String script;

@@ -3,9 +3,8 @@ package ecm.web;
 import ecm.model.Incoming;
 import ecm.model.Outgoing;
 import ecm.model.Person;
-import ecm.web.to.DocumentWidgetResponse;
-import ecm.web.to.IncomingDTO;
-import ecm.web.to.StaffWidgetResponse;
+import ecm.web.dto.DocumentWidgetResponse;
+import ecm.web.dto.StaffWidgetResponse;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

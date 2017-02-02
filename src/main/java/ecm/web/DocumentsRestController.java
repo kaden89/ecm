@@ -1,11 +1,10 @@
 package ecm.web;
 
-import ecm.model.Document;
 import ecm.model.Incoming;
 import ecm.model.Outgoing;
 import ecm.model.Task;
-import ecm.web.to.AbstractDocumentDTO;
-import ecm.web.to.TreeNode;
+import ecm.web.dto.AbstractDocumentDTO;
+import ecm.web.dto.TreeNode;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

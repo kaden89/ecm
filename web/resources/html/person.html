@@ -106,7 +106,11 @@
                                        name="birthday"
                                        required="true"
                                        data-dojo-type="dijit/form/DateTextBox"
-                                       data-dojo-props="value: at(this.model, 'birthday')"/>
+                                       data-dojo-props="value: at(this.model, 'birthday').transform({
+                    parse: function(value){
+                     return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
+                    }
+                  })"/>
                             </td>
                         </tr>
                         <tr>

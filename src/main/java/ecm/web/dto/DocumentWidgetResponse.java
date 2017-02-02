@@ -1,6 +1,4 @@
-package ecm.web.to;
-
-import ecm.model.Document;
+package ecm.web.dto;
 
 /**
  * Created by dkarachurin on 23.01.2017.

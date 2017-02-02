@@ -5,7 +5,7 @@
         @XmlJavaTypeAdapter(type = LocalDate.class,
                 value = LocalDateAdapter.class)
 })
-package ecm.web.to;
+package ecm.web.dto;
 
 import ecm.util.xml.LocalDateAdapter;
 

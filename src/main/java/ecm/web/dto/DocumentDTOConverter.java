@@ -1,4 +1,4 @@
-package ecm.web.to;
+package ecm.web.dto;
 
 import ecm.dao.GenericDAO;
 import ecm.model.*;

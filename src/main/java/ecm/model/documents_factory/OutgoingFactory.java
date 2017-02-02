@@ -2,7 +2,6 @@ package ecm.model.documents_factory;
 
 import ecm.model.Document;
 import ecm.model.Outgoing;
-import ecm.model.documents_factory.util.DocumentPopulator;
 import ecm.util.exceptions.DocumentExistsException;
 
 import javax.inject.Inject;

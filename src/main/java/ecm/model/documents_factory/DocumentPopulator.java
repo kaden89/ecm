@@ -1,4 +1,4 @@
-package ecm.model.documents_factory.util;
+package ecm.model.documents_factory;
 
 import ecm.dao.GenericDAO;
 import ecm.dao.GenericDaoJpa;

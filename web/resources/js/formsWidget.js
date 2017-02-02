@@ -107,7 +107,7 @@ define([
                 var store = this.store;
                 deleteDialog = new ConfirmDialog({
                     title: "Delete",
-                    content: "Are you sure that you want to delete "+this.model.name+"?",
+                    content: "Are you sure that you want dto delete "+this.model.name+"?",
                     style: "width: 300px",
                     onCancel: function () {
                         return;

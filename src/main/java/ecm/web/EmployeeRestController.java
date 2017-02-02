@@ -1,7 +1,7 @@
 package ecm.web;
 
 import ecm.model.*;
-import ecm.web.to.TreeNode;
+import ecm.web.dto.TreeNode;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.ws.rs.*;
@@ -25,7 +25,7 @@ public class EmployeeRestController extends AbstractRestController{
         GenericEntity<List<Person>> employees = new GenericEntity<List<Person>>(personDAO.findAll()) {
         };
         int size = employees.getEntity().size();
-        //TODO Paging need to implementing
+        //TODO Paging need dto implementing
 //        String jsonInString = gson.toJson(personDAO.findAll());
         return Response.ok(employees).header( "Content-Range" , "items 0-"+size+"/"+size).build();
     }
