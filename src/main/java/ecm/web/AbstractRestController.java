@@ -19,7 +19,7 @@ public class AbstractRestController {
     //Glassfish can't correctly marshall generics, have dto use GSON for it, with LocalDate adapter.
     Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, (JsonSerializer<LocalDate>) (localDate, type, jsonSerializationContext) -> new JsonPrimitive(localDate.toString())).
             registerTypeAdapter(byte[].class, new ByteArrayAdapter()).setExclusionStrategies(new GsonExclusionStrategy()).create();
-
+    //TODO impl logger
     @Inject
     GenericDAO<Person> personDAO;
 

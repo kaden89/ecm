@@ -5,6 +5,8 @@ import ecm.model.*;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by dkarachurin on 01.02.2017.
@@ -39,6 +41,21 @@ public class DocumentDTOConverter {
             outgoing.setId(dto.getId());
             return outgoing;
         }
+        else if (dto instanceof TaskDTO){
+           Task task = new Task(dto.getName(),
+                   dto.getText(),
+                   dto.getRegNumber(),
+                   dto.getDate(),
+                   personDAO.find(dto.getAuthorId()),
+                   ((TaskDTO) dto).getDateOfIssue(),
+                   ((TaskDTO) dto).getDeadline(),
+                   personDAO.find(((TaskDTO) dto).getExecutorId()),
+                   ((TaskDTO) dto).isControlled(),
+                   personDAO.find(((TaskDTO) dto).getControllerId()));
+
+            task.setId(dto.getId());
+            return task;
+        }
         return null;
     }
 
@@ -71,6 +88,39 @@ public class DocumentDTOConverter {
             return outgoingDTO;
 
         }
+        else if (document instanceof Task){
+            TaskDTO taskDTO = new TaskDTO(document.getId(),
+                    document.getName(),
+                    document.getText(),
+                    document.getRegNumber(),
+                    document.getDate(),
+                    document.getAuthor().getId(),
+                    ((Task) document).getDateOfIssue(),
+                    ((Task) document).getDeadline(),
+                    ((Task) document).getExecutor().getId(),
+                    ((Task) document).isControlled(),
+                    ((Task) document).getController().getId());
+
+            taskDTO.setFullname(document.toString());
+            return taskDTO;
+
+        }
         return null;
+    }
+
+    public Collection<AbstractDocumentDTO> toDtoCollection(Collection<Document> documents){
+        Collection<AbstractDocumentDTO> result = new ArrayList<>();
+        for (Document document : documents) {
+            result.add(toDTO(document));
+        }
+        return result;
+    }
+
+    public Collection<Document> fromDtoCollection( Collection<AbstractDocumentDTO> dtoCollection){
+        Collection<Document> result = new ArrayList<>();
+        for (AbstractDocumentDTO dto : dtoCollection) {
+            result.add(fromDTO(dto));
+        }
+        return result;
     }
 }
