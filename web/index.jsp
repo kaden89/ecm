@@ -239,6 +239,15 @@
             });
             incomingsStore = new Observable(incomingsStore);
 
+            var outgoingsStore = new JsonRest({
+                idProperty: 'id',
+                target: 'http://localhost:8080/ecm/rest/documents/outgoings',
+                getChildren: function(object){
+                    return object;
+                }
+            });
+            outgoingsStore = new Observable(outgoingsStore);
+
             function createNewTab() {
                 xhr("/ecm/rest/widgets/person/", {
                     handleAs: "json"
@@ -385,7 +394,7 @@
                 documentsTree.startup();
 
                 function openDocTab(item, node) {
-                    var id;
+                    var id, store;
                     var url = "/ecm/rest/widgets/";
                     //Check if we are from Grid
                     if(item.target){
@@ -395,10 +404,12 @@
                         if (node.getParent().label == "Incomings"){
                             id = item.id;
                             url = url +"incoming/";
+                            store = incomingsStore;
                         }
                         else if (node.getParent().label == "Outgoings") {
                             id = item.id;
                             url = url +"outgoing/";
+                            store = outgoingsStore;
                         }
                         else {
                             return;
@@ -415,7 +426,7 @@
                     xhr(url+id, {
                         handleAs: "json"
                     }).then(function(data){
-                        var widget  = new formsWidget(data, incomingsStore, Registry.byId('documentsTree'));
+                        var widget  = new formsWidget(data, store, Registry.byId('documentsTree'));
                         var id = data.entity.id;
                         var pane = new ContentPane({
                             title: data.entity.fullname, closable: true

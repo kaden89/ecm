@@ -107,14 +107,14 @@ define([
                 var store = this.store;
                 deleteDialog = new ConfirmDialog({
                     title: "Delete",
-                    content: "Are you sure that you want dto delete "+this.model.name+"?",
+                    content: "Are you sure that you want to delete "+this.model.name+"?",
                     style: "width: 300px",
                     onCancel: function () {
                         return;
                     },
                     onExecute: function () {
-                        store.remove(id).then(success, error);
-                    }
+                        store.remove(id).then(success.bind(this), error);
+                    }.bind(this)
 
                 });
                 deleteDialog.show();
@@ -125,7 +125,7 @@ define([
                     tabPane.removeChild(pane);
                     tabPane.selectChild(registry.byId("WelcomPane"));
                     pane.destroy();
-                    updateTree();
+                    updateTree.call(this);
                 }
 
                 function error(err) {
@@ -141,6 +141,7 @@ define([
             }
 
             function save() {
+                if (!this.form.validate()) return;
                 //create new user
                 if (this.model.id==undefined){
                     this.store.add(this.model).then(function(data){

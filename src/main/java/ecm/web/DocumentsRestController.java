@@ -68,4 +68,20 @@ public class DocumentsRestController extends AbstractRestController{
         Incoming updated = incomingDAO.update((Incoming) documentDTOConverter.fromDTO(dto));
         return Response.ok(documentDTOConverter.toDTO(updated)).build();
     }
+
+    @DELETE
+    @Path("/incomings/{id}")
+    public Response deleteIncoming(@PathParam("id") int incomingId){
+        //log.info("delete organization with id "+organizationId);
+        incomingDAO.delete(incomingId);
+        return Response.ok().build();
+    }
+
+    @DELETE
+    @Path("/outgoings/{id}")
+    public Response deleteOutgoing(@PathParam("id") int outgoingId){
+        //log.info("delete organization with id "+organizationId);
+        outgoingDAO.delete(outgoingId);
+        return Response.ok().build();
+    }
 }
