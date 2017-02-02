@@ -1,6 +1,7 @@
 package ecm.web;
 
 import ecm.model.Incoming;
+import ecm.model.Outgoing;
 import ecm.model.Person;
 import ecm.web.to.DocumentWidgetResponse;
 import ecm.web.to.IncomingDTO;
@@ -69,6 +70,28 @@ public class WidgetRestController extends AbstractRestController{
         return Response.ok(response).build();
     }
 
+    @GET
+    @Path("/outgoing")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNewOutgoingTemplate(){
+        DocumentWidgetResponse response = new DocumentWidgetResponse();
+        response.setTemplate(readFile("/html/outgoing.html"));
+        response.setScript(readFile("/js/outgoing.js"));
+        response.setEntity(documentDTOConverter.toDTO(new Outgoing()));
+        return Response.ok(response).build();
+    }
+
+    @GET
+    @Path("/outgoing/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOutgoingTemplate(@PathParam("id") int outgoingId){
+        DocumentWidgetResponse response = new DocumentWidgetResponse();
+        response.setTemplate(readFile("/html/outgoing.html"));
+        response.setEntity(documentDTOConverter.toDTO(outgoingDAO.find(outgoingId)));
+        response.setScript(readFile("/js/outgoing.js"));
+
+        return Response.ok(response).build();
+    }
 
     private String readFile(String fileName){
         StringBuilder result = new StringBuilder("");

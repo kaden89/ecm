@@ -384,14 +384,25 @@
                 }, "documentsTree"); // make sure you have a target HTML element with this id
                 documentsTree.startup();
 
-                function openDocTab(item) {
+                function openDocTab(item, node) {
                     var id;
+                    var url = "/ecm/rest/widgets/";
                     //Check if we are from Grid
                     if(item.target){
                         id = item.rowId;
                     }
                     else{
-                        id = item.id
+                        if (node.getParent().label == "Incomings"){
+                            id = item.id;
+                            url = url +"incoming/";
+                        }
+                        else if (node.getParent().label == "Outgoings") {
+                            id = item.id;
+                            url = url +"outgoing/";
+                        }
+                        else {
+                            return;
+                        }
                     }
                     //if the tab is already open, switch on it
                     var tabContainer = Registry.byId("TabContainer");
@@ -401,13 +412,13 @@
                         return;
                     }
 
-                    xhr("/ecm/rest/widgets/incoming/"+id, {
+                    xhr(url+id, {
                         handleAs: "json"
                     }).then(function(data){
                         var widget  = new formsWidget(data, incomingsStore, Registry.byId('documentsTree'));
                         var id = data.entity.id;
                         var pane = new ContentPane({
-                            title: data.entity.name, closable: true
+                            title: data.entity.fullname, closable: true
                         });
                         pane.set("id", "pane_"+id);
                         tabContainer.addChild(pane);

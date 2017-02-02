@@ -28,6 +28,17 @@ public class DocumentDTOConverter {
             incoming.setId(dto.getId());
             return incoming;
         }
+        else if (dto instanceof OutgoingDTO){
+            Outgoing outgoing = new Outgoing(dto.getName(),
+                    dto.getText(),
+                    dto.getRegNumber(),
+                    dto.getDate(),
+                    personDAO.find(((OutgoingDTO) dto).getRecipientId()),
+                    personDAO.find(((OutgoingDTO) dto).getRecipientId()),
+                    ((OutgoingDTO) dto).getDeliveryMethod());
+            outgoing.setId(dto.getId());
+            return outgoing;
+        }
         return null;
     }
 
@@ -44,7 +55,21 @@ public class DocumentDTOConverter {
                     ((Incoming) document).getReferenceNumber(),
                     ((Incoming) document).getOutboundRegDate());
 
+            incomingDTO.setFullname(document.toString());
             return incomingDTO;
+        }
+        else if (document instanceof Outgoing){
+            OutgoingDTO outgoingDTO = new OutgoingDTO(document.getId(),
+                    document.getName(),
+                    document.getText(),
+                    document.getRegNumber(),
+                    document.getDate(),
+                    document.getAuthor().getId(),
+                    ((Outgoing) document).getRecipient().getId(),
+                    ((Outgoing) document).getDeliveryMethod());
+            outgoingDTO.setFullname(document.toString());
+            return outgoingDTO;
+
         }
         return null;
     }

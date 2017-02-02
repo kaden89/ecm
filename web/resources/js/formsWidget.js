@@ -161,7 +161,7 @@ define([
                     this.store.put(this.model).then(function(data){
                         this.form.set('value', data);
                         var pane = registry.byId("pane_"+data.id);
-                        pane.set("title", data.name);
+                        pane.set("title", data.fullname);
                         // pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
                         updateTree.call(this);
                     }.bind(this), function(err){

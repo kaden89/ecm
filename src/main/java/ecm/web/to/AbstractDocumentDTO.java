@@ -12,7 +12,7 @@ import java.time.LocalDate;
 /**
  * Created by dkarachurin on 01.02.2017.
  */
-@XmlSeeAlso({IncomingDTO.class})
+@XmlSeeAlso({IncomingDTO.class, OutgoingDTO.class})
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public abstract class AbstractDocumentDTO {
@@ -22,6 +22,7 @@ public abstract class AbstractDocumentDTO {
     private String regNumber;
     private LocalDate date;
     private Integer authorId;
+    private String fullname;
 
     public AbstractDocumentDTO() {
     }
@@ -81,5 +82,13 @@ public abstract class AbstractDocumentDTO {
 
     public void setAuthorId(Integer authorId) {
         this.authorId = authorId;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 }
