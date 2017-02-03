@@ -113,10 +113,10 @@ public class EmployeeRestController extends AbstractRestController{
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createEmployee(Person person){
-        person.setId(null);
-        personDAO.save(person);
-        return Response.ok(person).build();
+    public Response createEmployee(PersonDTO dto){
+        dto.setId(null);
+        Person person = personDAO.save((Person) staffDTOConverter.fromDTO(dto));
+        return Response.ok(staffDTOConverter.toDTO(person)).build();
     }
 
 

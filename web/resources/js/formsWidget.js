@@ -46,7 +46,7 @@ define([
 
 
 ], function (declare, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, registry, request, xhr,
-            domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor, Select, JsonRest,FilteringSelect,
+             domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor, Select, JsonRest, FilteringSelect,
              at, Memory, CheckBox) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
@@ -80,7 +80,7 @@ define([
             var closeButton = new Button({
                 label: "Close",
                 iconClass: "dijitEditorIcon dijitEditorIconCancel",
-                onClick:  lang.hitch(this, close)
+                onClick: lang.hitch(this, close)
             });
             toolbar.addChild(createButton);
             toolbar.addChild(deleteButton);
@@ -91,11 +91,11 @@ define([
             function close() {
                 var tabPane = registry.byId("TabContainer");
                 var pane;
-                if (this.isNew){
+                if (this.isNew) {
                     pane = registry.byId("newPane_");
                 }
                 else {
-                    pane = registry.byId("pane_"+this.model.id);
+                    pane = registry.byId("pane_" + this.model.id);
                 }
                 tabPane.removeChild(pane);
                 tabPane.selectChild(registry.byId("WelcomPane"));
@@ -107,7 +107,7 @@ define([
                 var store = this.store;
                 deleteDialog = new ConfirmDialog({
                     title: "Delete",
-                    content: "Are you sure that you want to delete "+this.model.name+"?",
+                    content: "Are you sure that you want to delete " + this.model.fullname + "?",
                     style: "width: 300px",
                     onCancel: function () {
                         return;
@@ -121,7 +121,7 @@ define([
 
                 function success() {
                     var tabPane = registry.byId("TabContainer");
-                    pane = registry.byId("pane_"+id);
+                    pane = registry.byId("pane_" + id);
                     tabPane.removeChild(pane);
                     tabPane.selectChild(registry.byId("WelcomPane"));
                     pane.destroy();
@@ -143,39 +143,43 @@ define([
             function save() {
                 if (!this.form.validate()) return;
                 //create new user
-                if (this.model.id==undefined){
-                    this.store.add(this.model).then(function(data){
-                        this.form.set('value', data);
+                if (this.model.id == undefined) {
+                    this.store.add(this.model).then(function (data) {
+                        for(var k in data) {
+                            this.model.set(k, data[k]);
+                        }
                         var pane = registry.byId("newPane_");
-                        pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
+                        pane.set("title", data.firstname + " " + data.surname + " " + data.patronymic);
                         // pane.set("id", "personPane_"+data.id);
                         // this.isNew = false;
                         updateTree();
-                    }.bind(this), function(err){
+                    }.bind(this), function (err) {
                         // Handle the error condition
-                    }, function(evt){
+                    }, function (evt) {
                         // Handle a progress event from the request if the
                         // browser supports XHR2
                     });
                 }
                 else {
-                    this.store.put(this.model).then(function(data){
-                        this.form.set('value', data);
-                        if (this.hasOwnProperty("isControlled")){
-                            this.isControlled.set('checked', data.isControlled);
-                        }
-                        var pane = registry.byId("pane_"+data.id);
+                    this.store.put(this.model).then(function (data) {
+                        // this.form.set('value', data);
+                        // if (this.hasOwnProperty("isControlled")) {
+                        //     this.isControlled.set('checked', data.isControlled);
+                        // }
+
+                        var pane = registry.byId("pane_" + data.id);
                         pane.set("title", data.fullname);
                         // pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
                         updateTree.call(this);
-                    }.bind(this), function(err){
+                    }.bind(this), function (err) {
                         // Handle the error condition
-                    }, function(evt){
+                    }, function (evt) {
                         // Handle a progress event from the request if the
                         // browser supports XHR2
                     });
                 }
             }
+
             function updateTree() {
                 tree = this.tree;
                 tree.dndController.selectNone();

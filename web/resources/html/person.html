@@ -55,10 +55,10 @@
                                 <label>ID:</label>
                             </td>
                             <td>
-                                <input type="text"
-                                       name="id"
-                                       data-dojo-type="dijit/form/TextBox"
-                                       data-dojo-props="value: at(this.model, 'id'), readOnly: true">
+                                <span data-dojo-type="dojox/mvc/Output"
+                                      data-dojo-attach-point="entityId"
+                                      data-dojo-props="value: at(this.model, 'id')"></span>
+
                             </td>
                         </tr>
                         <tr>
