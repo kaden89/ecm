@@ -43,20 +43,44 @@
                         <select required="true"
                                 name = "authorId"
                                 data-dojo-type="dijit/form/FilteringSelect"
-                                data-dojo-props="value: at(this.model, 'authorId'), store: personStore"
+                                data-dojo-props="value: at(this.model, 'authorId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
                                 data-dojo-attach-point="author"> </select>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label>Recipient:</label>
+                        <label>Executor:</label>
                     </td>
                     <td>
                         <select required="true"
-                                name = "recipientId"
+                                name = "executorId"
                                 data-dojo-type="dijit/form/FilteringSelect"
-                                data-dojo-props="value: at(this.model, 'recipientId'), store: personStore"
-                                data-dojo-attach-point="recipient"> </select>
+                                data-dojo-props="value: at(this.model, 'executorId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
+                                data-dojo-attach-point="executor"> </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Controller:</label>
+                    </td>
+                    <td>
+                        <select required="true"
+                                name = "controllerId"
+                                data-dojo-type="dijit/form/FilteringSelect"
+                                data-dojo-props="value: at(this.model, 'controllerId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
+                                data-dojo-attach-point="controller"> </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Is controlled:</label>
+                    </td>
+                    <td>
+                        <input type="checkbox"
+                               name="isControlled"
+                               data-dojo-type="dijit/form/CheckBox"
+                               data-dojo-attach-point="isControlled"
+                               data-dojo-props="checked: at(this.model, 'isControlled')">
                     </td>
                 </tr>
                 <tr>
@@ -89,14 +113,34 @@
                 </tr>
                 <tr>
                     <td>
-                        <label>Delivery method:</label>
+                        <label>Date of issue:</label>
                     </td>
                     <td>
-                        <input type="text"
-                               name="deliveryMethod"
+                        <input type="date"
+                               name="dateOfIssue"
                                required="true"
-                               data-dojo-type="dijit/form/ValidationTextBox"
-                               data-dojo-props="value: at(this.model, 'deliveryMethod')">
+                               data-dojo-type="dijit/form/DateTextBox"
+                               data-dojo-props="value: at(this.model, 'dateOfIssue').transform({
+                    parse: function(value){
+                     return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
+                    }
+                  })"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Deadline:</label>
+                    </td>
+                    <td>
+                        <input type="date"
+                               name="deadline"
+                               required="true"
+                               data-dojo-type="dijit/form/DateTextBox"
+                               data-dojo-props="value: at(this.model, 'deadline').transform({
+                    parse: function(value){
+                     return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
+                    }
+                  })"/>
                     </td>
                 </tr>
                 <tr>

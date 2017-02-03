@@ -44,7 +44,7 @@ public class PersonDaoJPA extends GenericDaoJpa<Person>{
         StringBuilder builder = new StringBuilder("Cannot delete "+find(id).toString() + ". He has next documents:");
         for (Document document : all) {
             builder.append(System.lineSeparator());
-            builder.append(document.getName());
+            builder.append(document.toString());
         }
         if (haveDocuments) throw new HasLinksException(builder.toString());
     }

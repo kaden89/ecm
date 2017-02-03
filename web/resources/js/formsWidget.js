@@ -31,7 +31,7 @@ define([
     "dijit/form/FilteringSelect",
     "dojox/mvc/at",
     "dojo/store/Memory",
-    "/ecm/resources/js/LocalDateTextBox.js",
+    "dijit/form/CheckBox",
     "dojo/on",
     "dojo/require",
     "dijit/layout/ContentPane",
@@ -47,7 +47,7 @@ define([
 
 ], function (declare, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, registry, request, xhr,
             domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor, Select, JsonRest,FilteringSelect,
-             at, Memory, UTCDateTextBox) {
+             at, Memory, CheckBox) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
         isNew: false,
@@ -161,6 +161,9 @@ define([
                 else {
                     this.store.put(this.model).then(function(data){
                         this.form.set('value', data);
+                        if (this.hasOwnProperty("isControlled")){
+                            this.isControlled.set('checked', data.isControlled);
+                        }
                         var pane = registry.byId("pane_"+data.id);
                         pane.set("title", data.fullname);
                         // pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);

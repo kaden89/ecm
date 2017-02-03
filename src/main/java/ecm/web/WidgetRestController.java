@@ -3,6 +3,7 @@ package ecm.web;
 import ecm.model.Incoming;
 import ecm.model.Outgoing;
 import ecm.model.Person;
+import ecm.model.Task;
 import ecm.web.dto.DocumentWidgetResponse;
 import ecm.web.dto.StaffWidgetResponse;
 
@@ -88,6 +89,29 @@ public class WidgetRestController extends AbstractRestController{
         response.setTemplate(readFile("/html/outgoing.html"));
         response.setEntity(documentDTOConverter.toDTO(outgoingDAO.find(outgoingId)));
         response.setScript(readFile("/js/outgoing.js"));
+
+        return Response.ok(response).build();
+    }
+
+    @GET
+    @Path("/task")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNewTaskTemplate(){
+        DocumentWidgetResponse response = new DocumentWidgetResponse();
+        response.setTemplate(readFile("/html/task.html"));
+        response.setScript(readFile("/js/task.js"));
+        response.setEntity(documentDTOConverter.toDTO(new Task()));
+        return Response.ok(response).build();
+    }
+
+    @GET
+    @Path("/task/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTaskTemplate(@PathParam("id") int taskId){
+        DocumentWidgetResponse response = new DocumentWidgetResponse();
+        response.setTemplate(readFile("/html/task.html"));
+        response.setEntity(documentDTOConverter.toDTO(taskDAO.find(taskId)));
+        response.setScript(readFile("/js/task.js"));
 
         return Response.ok(response).build();
     }

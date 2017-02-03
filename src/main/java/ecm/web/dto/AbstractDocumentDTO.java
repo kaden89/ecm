@@ -9,7 +9,7 @@ import java.time.LocalDate;
 /**
  * Created by dkarachurin on 01.02.2017.
  */
-@XmlSeeAlso({IncomingDTO.class, OutgoingDTO.class})
+@XmlSeeAlso({IncomingDTO.class, OutgoingDTO.class, TaskDTO.class})
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public abstract class AbstractDocumentDTO {

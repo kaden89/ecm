@@ -252,6 +252,15 @@
             });
             outgoingsStore = new Observable(outgoingsStore);
 
+            var tasksStore = new JsonRest({
+                idProperty: 'id',
+                target: 'http://localhost:8080/ecm/rest/documents/tasks',
+                getChildren: function(object){
+                    return object;
+                }
+            });
+            tasksStore = new Observable(tasksStore);
+
             function createNewTab() {
                 xhr("/ecm/rest/widgets/person/", {
                     handleAs: "json"
@@ -422,7 +431,9 @@
                             store = outgoingsStore;
                         }
                         else {
-                            return;
+                            id = item.id;
+                            url = url +"task/";
+                            store = tasksStore;
                         }
                     }
                     //if the tab is already open, switch on it

@@ -31,7 +31,7 @@ public class DocumentDTOConverter implements DTOConverter<Document, AbstractDocu
             return outgoing;
         }
         else if (dto instanceof TaskDTO){
-           Task task = new Task((TaskDTO) dto);
+            Task task = new Task((TaskDTO) dto);
             task.setAuthor(personDAO.find(dto.getAuthorId()));
             task.setExecutor(personDAO.find(((TaskDTO) dto).getExecutorId()));
             task.setController(personDAO.find(((TaskDTO) dto).getControllerId()));

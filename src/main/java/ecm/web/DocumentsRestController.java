@@ -85,6 +85,24 @@ public class DocumentsRestController extends AbstractRestController{
         return Response.ok(documentDTOConverter.toDTO(updated)).build();
     }
 
+    @PUT
+    @Path("/tasks/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateTask(@PathParam("id") int id, AbstractDocumentDTO dto){
+        dto.setId(id);
+        Task updated = taskDAO.update((Task) documentDTOConverter.fromDTO(dto));
+        return Response.ok(documentDTOConverter.toDTO(updated)).build();
+    }
+
+    @DELETE
+    @Path("/tasks/{id}")
+    public Response deleteTask(@PathParam("id") int taskId){
+        //log.info("delete organization with id "+organizationId);
+        taskDAO.delete(taskId);
+        return Response.ok().build();
+    }
+
     @DELETE
     @Path("/incomings/{id}")
     public Response deleteIncoming(@PathParam("id") int incomingId){
