@@ -13,7 +13,7 @@ public class TaskDTO extends AbstractDocumentDTO {
     private Integer executorId;
     private boolean isControlled;
     private Integer controllerId;
-
+    private String restUrl = "tasks";
     public TaskDTO() {
     }
 
@@ -74,5 +74,13 @@ public class TaskDTO extends AbstractDocumentDTO {
 
     public void setControllerId(Integer controllerId) {
         this.controllerId = controllerId;
+    }
+
+    public String getRestUrl() {
+        return restUrl;
+    }
+
+    public void setRestUrl(String restUrl) {
+        this.restUrl = restUrl;
     }
 }

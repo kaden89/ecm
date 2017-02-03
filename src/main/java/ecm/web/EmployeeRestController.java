@@ -38,7 +38,7 @@ public class EmployeeRestController extends AbstractRestController{
     @Path("/personTree")
     public Response getPersonRoot(){
         List<AbstractStaffDTO> dtos = new ArrayList<>(staffDTOConverter.toDtoCollection(new ArrayList<>(personDAO.findAll())));
-        TreeNode<AbstractStaffDTO> root = new TreeNode<>("Employees", "", dtos);
+        TreeNode<AbstractStaffDTO> root = new TreeNode<>("Employees", "", dtos, "employees");
         String jsonInString = gson.toJson(root);
         return Response.ok(jsonInString).build();
     }
@@ -48,7 +48,7 @@ public class EmployeeRestController extends AbstractRestController{
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeRoot(){
         List<AbstractStaffDTO> dtos = new ArrayList<>(staffDTOConverter.toDtoCollection(new ArrayList<>(personDAO.findAll())));
-        TreeNode<AbstractStaffDTO> root = new TreeNode<>("Employees", "root", dtos);
+        TreeNode<AbstractStaffDTO> root = new TreeNode<>("Employees", "root", dtos, "employees");
         String jsonInString = gson.toJson(root);
         return Response.ok(jsonInString).build();
     }

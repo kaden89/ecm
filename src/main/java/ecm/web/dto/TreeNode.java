@@ -10,22 +10,25 @@ public class TreeNode<T> {
     private String name;
     private String id;
     private List<T> children;
+    private String restUrl;
     private boolean haveChildren;
 
     public TreeNode() {
     }
 
-    public TreeNode(String name, String id, List<T> children, boolean haveChildren) {
+    public TreeNode(String name, String id, List<T> children, boolean haveChildren, String restUrl ){
         this.name = name;
         this.id = id;
         this.children = children;
         this.haveChildren = haveChildren;
+        this.restUrl = restUrl;
     }
 
-    public TreeNode(String name, String id, List<T> children) {
+    public TreeNode(String name, String id, List<T> children, String restUrl) {
         this.name = name;
         this.id = id;
         this.children = children;
+        this.restUrl = restUrl;
     }
 
     public TreeNode(String name, String id) {
@@ -63,5 +66,13 @@ public class TreeNode<T> {
 
     public void setHaveChildren(boolean haveChildren) {
         this.haveChildren = haveChildren;
+    }
+
+    public String getRestUrl() {
+        return restUrl;
+    }
+
+    public void setRestUrl(String restUrl) {
+        this.restUrl = restUrl;
     }
 }

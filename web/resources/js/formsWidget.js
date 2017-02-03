@@ -197,7 +197,6 @@ define([
                 // Rebuild the tree
                 tree.postMixInProperties();
                 tree._load();
-
             }
 
             eval(this.script);

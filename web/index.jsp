@@ -58,19 +58,20 @@
             "/ecm/resources/js/formsWidget.js",
             "dojo/store/Observable",
             "dijit/ConfirmDialog",
+            "/ecm/resources/js/gridWidget.js",
             /*'dojo/store/Memory',*/
             "dojo/domReady!"], function (declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults, Memory, SingleSort, JsonRest, Bar, Toolbar, Button,
                                          RowHeader, Row, IndirectSelect, Dialog, Registry, query, Dom, parser, xhr, Lightbox, dom, JsonRest,
-                                         Tree, ObjectStoreModel, Stateful, at, formsWidget, Observable, ConfirmDialog) {
+                                         Tree, ObjectStoreModel, Stateful, at, formsWidget, Observable, ConfirmDialog, gridWidget) {
             var restURL = 'http://localhost:8080/ecm/rest/employees/';
             var personTreeStore = new JsonRest({
                 idProperty: 'id',
-                target: restURL+"personTree",
-                mayHaveChildren: function(object){
+                target: restURL + "personTree",
+                mayHaveChildren: function (object) {
                     return "haveChildren" in object;
                 },
-                getChildren: function(object){
-                    return this.get(object.id).then(function(fullObject){
+                getChildren: function (object) {
+                    return this.get(object.id).then(function (fullObject) {
                         return fullObject.children;
                     });
                 }
@@ -81,8 +82,9 @@
                 idProperty: 'id',
                 target: restURL,
                 headers: {
-                    'Content-Type': "application/json; charset=UTF-8"},
-                getChildren: function(object){
+                    'Content-Type': "application/json; charset=UTF-8"
+                },
+                getChildren: function (object) {
                     return object;
                 }
             });
@@ -152,26 +154,26 @@
 
 
             function deleteSelected() {
-                        var items = grid.select.row.getSelected();
-                        if (items.length) {
-                            dojo.forEach(items, function (selectedItem) {
-                                if (selectedItem !== null) {
-                                    deleteDialog = new ConfirmDialog({
-                                        title: "Delete",
-                                        content: "Are you sure that you want to delete person with id "+selectedItem+"?",
-                                        style: "width: 300px",
-                                        onCancel: function () {
-                                            return;
-                                        },
-                                        onExecute: function () {
-                                            grid.store.remove(selectedItem).then(success, error);
-                                        }
-
-                                    });
-                                    deleteDialog.show();
+                var items = grid.select.row.getSelected();
+                if (items.length) {
+                    dojo.forEach(items, function (selectedItem) {
+                        if (selectedItem !== null) {
+                            deleteDialog = new ConfirmDialog({
+                                title: "Delete",
+                                content: "Are you sure that you want to delete person with id " + selectedItem + "?",
+                                style: "width: 300px",
+                                onCancel: function () {
+                                    return;
+                                },
+                                onExecute: function () {
+                                    grid.store.remove(selectedItem).then(success, error);
                                 }
+
                             });
+                            deleteDialog.show();
                         }
+                    });
+                }
             }
 
             function success() {
@@ -232,44 +234,16 @@
                 }
             }
 
-            var incomingsStore = new JsonRest({
-                idProperty: 'id',
-                headers: {
-                    'Content-Type': "application/json; charset=UTF-8"},
-                target: 'http://localhost:8080/ecm/rest/documents/incomings',
-                getChildren: function(object){
-                    return object;
-                }
-            });
-            incomingsStore = new Observable(incomingsStore);
-
-            var outgoingsStore = new JsonRest({
-                idProperty: 'id',
-                target: 'http://localhost:8080/ecm/rest/documents/outgoings',
-                getChildren: function(object){
-                    return object;
-                }
-            });
-            outgoingsStore = new Observable(outgoingsStore);
-
-            var tasksStore = new JsonRest({
-                idProperty: 'id',
-                target: 'http://localhost:8080/ecm/rest/documents/tasks',
-                getChildren: function(object){
-                    return object;
-                }
-            });
-            tasksStore = new Observable(tasksStore);
 
             function createNewTab() {
                 xhr("/ecm/rest/widgets/person/", {
                     handleAs: "json"
-                }).then(function(data){
-                    var widget  = new formsWidget(data, personStore);
+                }).then(function (data) {
+                    var widget = new formsWidget(data, personStore);
                     var tabContainer = Registry.byId("TabContainer");
                     var id = data.entity.id;
                     var pane = Registry.byId("newPane_");
-                    if (pane != undefined){
+                    if (pane != undefined) {
                         tabContainer.selectChild(pane);
                         return;
                     }
@@ -284,9 +258,9 @@
                     pane.setContent(widget);
                     Registry.add(pane);
 
-                }, function(err){
+                }, function (err) {
                     console.log(err);
-                }, function(evt){
+                }, function (evt) {
                     // Handle a progress event from the request if the
                     // browser supports XHR2
                 });
@@ -299,37 +273,37 @@
             function openTab(item) {
                 var id;
                 //Check if we are from Grid
-                if(item.target){
+                if (item.target) {
                     id = item.rowId;
                 }
-                else{
+                else {
                     id = item.id
                 }
                 //if the tab is already open, switch on it
                 var tabContainer = Registry.byId("TabContainer");
-                var pane = Registry.byId("pane_"+id);
-                if (pane != undefined){
+                var pane = Registry.byId("pane_" + id);
+                if (pane != undefined) {
                     tabContainer.selectChild(pane);
                     return;
                 }
 
-                xhr("/ecm/rest/widgets/person/"+id, {
+                xhr("/ecm/rest/widgets/person/" + id, {
                     handleAs: "json"
-                }).then(function(data){
-                    var widget  = new formsWidget(data, personStore, Registry.byId('personTree'));
+                }).then(function (data) {
+                    var widget = new formsWidget(data, personStore, Registry.byId('personTree'));
                     var id = data.entity.id;
                     var pane = new ContentPane({
                         title: data.entity.fullname, closable: true
                     });
-                    pane.set("id", "pane_"+id);
+                    pane.set("id", "pane_" + id);
                     tabContainer.addChild(pane);
                     tabContainer.selectChild(pane);
                     pane.setContent(widget);
                     Registry.add(pane);
 
-                }, function(err){
+                }, function (err) {
                     console.log(err);
-                }, function(evt){
+                }, function (evt) {
                     // Handle a progress event from the request if the
                     // browser supports XHR2
                 });
@@ -342,9 +316,9 @@
 
                 var restURL = 'http://localhost:8080/ecm/rest/employees';
                 var personStore = new JsonRest({
-                    idAttribute:"surname",
+                    idAttribute: "surname",
                     target: restURL,
-                    getChildren: function(object){
+                    getChildren: function (object) {
                         console.dir(object);
 //                        return this.query({parent: object.id});
                         return object;
@@ -355,14 +329,14 @@
 
                 model = new ObjectStoreModel({
                     store: personTreeStore,
-                    getRoot: function(onItem){
+                    getRoot: function (onItem) {
                         this.store.get("").then(onItem);
                     },
-                    mayHaveChildren: function(object){
+                    mayHaveChildren: function (object) {
                         return "children" in object;
                     },
-                    getLabel : function(item) {
-                        if (item.fullname != undefined){
+                    getLabel: function (item) {
+                        if (item.fullname != undefined) {
                             return item.fullname;
                         } else {
                             return item.name;
@@ -378,15 +352,14 @@
                 tree.startup();
 
 
-
                 var documentsStore = new JsonRest({
                     target: "/ecm/rest/documents/tree",
-                    idAttribute:"id",
-                    mayHaveChildren: function(object){
+                    idAttribute: "id",
+                    mayHaveChildren: function (object) {
                         return "haveChildren" in object;
                     },
-                    getChildren: function(object){
-                        return this.get(object.id).then(function(fullObject){
+                    getChildren: function (object) {
+                        return this.get(object.id).then(function (fullObject) {
                             return fullObject.children;
                         });
                     }
@@ -397,10 +370,10 @@
 
                 documentsModel = new ObjectStoreModel({
                     store: documentsStore,
-                    getRoot: function(onItem){
+                    getRoot: function (onItem) {
                         this.store.get("").then(onItem);
                     },
-                    mayHaveChildren: function(object){
+                    mayHaveChildren: function (object) {
                         return "haveChildren" in object;
                     }
                 });
@@ -408,59 +381,98 @@
                 documentsTree = new Tree({
                     model: documentsModel,
                     onDblClick: openDocTab
-//                    autoExpand: true
+//                   autoExpand: true
                 }, "documentsTree");
                 documentsTree.startup();
 
+//                var incomingsStore = new JsonRest({
+//                    idProperty: 'id',
+//                    headers: {
+//                        'Content-Type': "application/json; charset=UTF-8"},
+//                    target: 'http://localhost:8080/ecm/rest/documents/incomings',
+//                    getChildren: function(object){
+//                        return object;
+//                    }
+//                });
+//                incomingsStore = new Observable(incomingsStore);
+//
+//                var outgoingsStore = new JsonRest({
+//                    idProperty: 'id',
+//                    target: 'http://localhost:8080/ecm/rest/documents/outgoings',
+//                    getChildren: function(object){
+//                        return object;
+//                    }
+//                });
+//                outgoingsStore = new Observable(outgoingsStore);
+//
+//                var tasksStore = new JsonRest({
+//                    idProperty: 'id',
+//                    target: 'http://localhost:8080/ecm/rest/documents/tasks',
+//                    getChildren: function(object){
+//                        return object;
+//                    }
+//                });
+//                tasksStore = new Observable(tasksStore);
+
                 function openDocTab(item, node) {
-                    var id, store;
-                    var url = "/ecm/rest/widgets/";
+                    var itsParent = item.hasOwnProperty("haveChildren");
+                    var widget;
+                    var id = item.id;
+                    var widgetUrl;
+                    var storeUrl = "/ecm/rest/documents/" + item.restUrl;
+                    var store = new JsonRest({
+                        idProperty: 'id',
+                        target: storeUrl,
+                        getChildren: function (object) {
+                            return object;
+                        }
+                    });
+                    store = new Observable(store);
+
                     //Check if we are from Grid
-                    if(item.target){
-                        id = item.rowId;
+                    if (item.hasOwnProperty("target")) {
+
                     }
-                    else{
-                        if (node.getParent().label == "Incomings"){
-                            id = item.id;
-                            url = url +"incoming/";
-                            store = incomingsStore;
-                        }
-                        else if (node.getParent().label == "Outgoings") {
-                            id = item.id;
-                            url = url +"outgoing/";
-                            store = outgoingsStore;
-                        }
-                        else {
-                            id = item.id;
-                            url = url +"task/";
-                            store = tasksStore;
-                        }
+                    //Check if we are from parent node
+                    else if (itsParent) {
+                        widgetUrl = "/ecm/rest/widgets/" + item.id + "/" + item.restUrl;
                     }
+
+                    else {
+                        widgetUrl = "/ecm/rest/widgets/" + item.restUrl + "/" + item.id;
+                    }
+
                     //if the tab is already open, switch on it
                     var tabContainer = Registry.byId("TabContainer");
-                    var pane = Registry.byId("pane_"+id);
-                    if (pane != undefined){
+                    var pane = Registry.byId("pane_" + id);
+                    if (pane != undefined) {
                         tabContainer.selectChild(pane);
                         return;
                     }
 
-                    xhr(url+id, {
+                    xhr(widgetUrl, {
                         handleAs: "json"
-                    }).then(function(data){
-                        var widget  = new formsWidget(data, store, Registry.byId('documentsTree'));
+                    }).then(function (data) {
+                        if (itsParent) {
+                            widget = new gridWidget(data, store, Registry.byId('documentsTree'));
+                        }
+                        else {
+                            widget = new formsWidget(data, store, Registry.byId('documentsTree'));
+                        }
+
                         var id = data.entity.id;
                         var pane = new ContentPane({
                             title: data.entity.fullname, closable: true
                         });
-                        pane.set("id", "pane_"+id);
+                        pane.set("id", "pane_" + id);
                         tabContainer.addChild(pane);
                         tabContainer.selectChild(pane);
                         pane.setContent(widget);
                         Registry.add(pane);
 
-                    }, function(err){
+                    }, function (err) {
                         console.log(err);
-                    }, function(evt){
+                    }, function (evt) {
                         // Handle a progress event from the request if the
                         // browser supports XHR2
                     });

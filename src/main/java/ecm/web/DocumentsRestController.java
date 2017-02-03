@@ -27,10 +27,10 @@ public class DocumentsRestController extends AbstractRestController{
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeRoot(){
         List<TreeNode> nodes = new ArrayList<>();
-        nodes.add(new TreeNode("Incomings", "incomings", null, true));
-        nodes.add(new TreeNode("Outgoings", "outgoings", null, true));
-        nodes.add(new TreeNode("Tasks", "tasks", null,true));
-        TreeNode<TreeNode> root = new TreeNode<>("Documents", "", nodes);
+        nodes.add(new TreeNode("Incomings", "incomings", null, true, "incomingsGrid"));
+        nodes.add(new TreeNode("Outgoings", "outgoings", null, true, "outgoingsGrid"));
+        nodes.add(new TreeNode("Tasks", "tasks", null,true, "tasksGrid"));
+        TreeNode<TreeNode> root = new TreeNode<>("Documents", "", nodes, "");
         String jsonInString = gson.toJson(root);
         return Response.ok(jsonInString).build();
     }
@@ -40,7 +40,7 @@ public class DocumentsRestController extends AbstractRestController{
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeIncomingDocuments(){
         List<AbstractDocumentDTO> dtos = new ArrayList<>(documentDTOConverter.toDtoCollection(new ArrayList<>(incomingDAO.findAll())));
-        TreeNode<AbstractDocumentDTO> root = new TreeNode<>("Incomings", "", dtos);
+        TreeNode<AbstractDocumentDTO> root = new TreeNode<>("Incomings", "", dtos, "incomings");
         String jsonInString = gson.toJson(root);
         return Response.ok(jsonInString).build();
     }
@@ -50,7 +50,7 @@ public class DocumentsRestController extends AbstractRestController{
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeOutgoingDocuments(){
         List<AbstractDocumentDTO> dtos = new ArrayList<>(documentDTOConverter.toDtoCollection(new ArrayList<>(outgoingDAO.findAll())));
-        TreeNode<AbstractDocumentDTO> root = new TreeNode<>("Outgoings", "", dtos);
+        TreeNode<AbstractDocumentDTO> root = new TreeNode<>("Outgoings", "", dtos, "outgoings");
         String jsonInString = gson.toJson(root);
         return Response.ok(jsonInString).build();
     }
@@ -60,7 +60,7 @@ public class DocumentsRestController extends AbstractRestController{
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeTaskDocuments(){
         List<AbstractDocumentDTO> dtos = new ArrayList<>(documentDTOConverter.toDtoCollection(new ArrayList<>(taskDAO.findAll())));
-        TreeNode<AbstractDocumentDTO> root = new TreeNode<>("Tasks", "", dtos);
+        TreeNode<AbstractDocumentDTO> root = new TreeNode<>("Tasks", "", dtos, "tasks");
         String jsonInString = gson.toJson(root);
         return Response.ok(jsonInString).build();
     }

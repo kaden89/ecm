@@ -48,7 +48,7 @@ public class WidgetRestController extends AbstractRestController{
         return Response.ok(response).build();
     }
     @GET
-    @Path("/incoming")
+    @Path("/incomings")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNewIncomingTemplate(){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
@@ -59,7 +59,7 @@ public class WidgetRestController extends AbstractRestController{
     }
 
     @GET
-    @Path("/incoming/{id}")
+    @Path("/incomings/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getIncomingTemplate(@PathParam("id") int incomingId){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
@@ -71,7 +71,7 @@ public class WidgetRestController extends AbstractRestController{
     }
 
     @GET
-    @Path("/outgoing")
+    @Path("/outgoings")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNewOutgoingTemplate(){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
@@ -82,7 +82,7 @@ public class WidgetRestController extends AbstractRestController{
     }
 
     @GET
-    @Path("/outgoing/{id}")
+    @Path("/outgoings/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOutgoingTemplate(@PathParam("id") int outgoingId){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
@@ -94,7 +94,7 @@ public class WidgetRestController extends AbstractRestController{
     }
 
     @GET
-    @Path("/task")
+    @Path("/tasks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNewTaskTemplate(){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
@@ -105,7 +105,7 @@ public class WidgetRestController extends AbstractRestController{
     }
 
     @GET
-    @Path("/task/{id}")
+    @Path("/tasks/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTaskTemplate(@PathParam("id") int taskId){
         DocumentWidgetResponse response = new DocumentWidgetResponse();

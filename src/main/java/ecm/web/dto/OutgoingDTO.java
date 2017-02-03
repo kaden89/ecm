@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class OutgoingDTO extends AbstractDocumentDTO {
     private Integer recipientId;
     private String deliveryMethod;
-
+    private String restUrl = "outgoings";
     public OutgoingDTO() {
     }
 
@@ -40,5 +40,13 @@ public class OutgoingDTO extends AbstractDocumentDTO {
 
     public void setDeliveryMethod(String deliveryMethod) {
         this.deliveryMethod = deliveryMethod;
+    }
+
+    public String getRestUrl() {
+        return restUrl;
+    }
+
+    public void setRestUrl(String restUrl) {
+        this.restUrl = restUrl;
     }
 }
