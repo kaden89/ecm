@@ -1,5 +1,6 @@
 package ecm.model;
 
+import ecm.web.dto.TaskDTO;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -34,6 +35,15 @@ public class Task extends Document {
         this.isControlled = isControlled;
         this.controller = controller;
     }
+
+    public Task(TaskDTO dto) {
+        super(dto.getName(), dto.getText(), dto.getRegNumber(), dto.getDate(), null);
+        this.dateOfIssue = dto.getDateOfIssue();
+        this.deadline = dto.getDeadline();
+        this.isControlled = dto.isControlled();
+        this.setId(dto.getId());
+    }
+
 
     public LocalDate getDateOfIssue() {
         return dateOfIssue;

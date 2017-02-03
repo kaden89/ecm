@@ -18,42 +18,23 @@ public class DocumentDTOConverter implements DTOConverter<Document, AbstractDocu
 
     public Document fromDTO(AbstractDocumentDTO dto){
         if (dto instanceof IncomingDTO){
-            Incoming incoming = new Incoming(dto.getName(),
-                    dto.getText(),
-                    dto.getRegNumber(),
-                    dto.getDate(),
-                    personDAO.find(dto.getAuthorId()),
-                    personDAO.find(((IncomingDTO) dto).getSenderId()),
-                    personDAO.find(((IncomingDTO) dto).getRecipientId()),
-                    ((IncomingDTO) dto).getReferenceNumber(),
-                    ((IncomingDTO) dto).getOutboundRegDate());
-            incoming.setId(dto.getId());
+            Incoming incoming = new Incoming((IncomingDTO) dto);
+            incoming.setAuthor(personDAO.find(dto.getAuthorId()));
+            incoming.setSender(personDAO.find(((IncomingDTO) dto).getSenderId()));
+            incoming.setRecipient(personDAO.find(((IncomingDTO) dto).getRecipientId()));
             return incoming;
         }
         else if (dto instanceof OutgoingDTO){
-            Outgoing outgoing = new Outgoing(dto.getName(),
-                    dto.getText(),
-                    dto.getRegNumber(),
-                    dto.getDate(),
-                    personDAO.find(((OutgoingDTO) dto).getRecipientId()),
-                    personDAO.find(((OutgoingDTO) dto).getRecipientId()),
-                    ((OutgoingDTO) dto).getDeliveryMethod());
-            outgoing.setId(dto.getId());
+            Outgoing outgoing = new Outgoing((OutgoingDTO) dto);
+            outgoing.setAuthor(personDAO.find(dto.getAuthorId()));
+            outgoing.setRecipient(personDAO.find(((OutgoingDTO) dto).getRecipientId()));
             return outgoing;
         }
         else if (dto instanceof TaskDTO){
-           Task task = new Task(dto.getName(),
-                   dto.getText(),
-                   dto.getRegNumber(),
-                   dto.getDate(),
-                   personDAO.find(dto.getAuthorId()),
-                   ((TaskDTO) dto).getDateOfIssue(),
-                   ((TaskDTO) dto).getDeadline(),
-                   personDAO.find(((TaskDTO) dto).getExecutorId()),
-                   ((TaskDTO) dto).isControlled(),
-                   personDAO.find(((TaskDTO) dto).getControllerId()));
-
-            task.setId(dto.getId());
+           Task task = new Task((TaskDTO) dto);
+            task.setAuthor(personDAO.find(dto.getAuthorId()));
+            task.setExecutor(personDAO.find(((TaskDTO) dto).getExecutorId()));
+            task.setController(personDAO.find(((TaskDTO) dto).getControllerId()));
             return task;
         }
         return null;
@@ -61,47 +42,16 @@ public class DocumentDTOConverter implements DTOConverter<Document, AbstractDocu
 
     public AbstractDocumentDTO toDTO(Document document){
         if (document instanceof Incoming){
-            IncomingDTO incomingDTO = new IncomingDTO(document.getId(),
-                    document.getName(),
-                    document.getText(),
-                    document.getRegNumber(),
-                    document.getDate(),
-                    document.getAuthor().getId(),
-                    ((Incoming) document).getSender().getId(),
-                    ((Incoming) document).getRecipient().getId(),
-                    ((Incoming) document).getReferenceNumber(),
-                    ((Incoming) document).getOutboundRegDate());
-
-            incomingDTO.setFullname(document.toString());
+            IncomingDTO incomingDTO = new IncomingDTO((Incoming) document);
             return incomingDTO;
         }
         else if (document instanceof Outgoing){
-            OutgoingDTO outgoingDTO = new OutgoingDTO(document.getId(),
-                    document.getName(),
-                    document.getText(),
-                    document.getRegNumber(),
-                    document.getDate(),
-                    document.getAuthor().getId(),
-                    ((Outgoing) document).getRecipient().getId(),
-                    ((Outgoing) document).getDeliveryMethod());
-            outgoingDTO.setFullname(document.toString());
+            OutgoingDTO outgoingDTO = new OutgoingDTO((Outgoing)document);
             return outgoingDTO;
 
         }
         else if (document instanceof Task){
-            TaskDTO taskDTO = new TaskDTO(document.getId(),
-                    document.getName(),
-                    document.getText(),
-                    document.getRegNumber(),
-                    document.getDate(),
-                    document.getAuthor().getId(),
-                    ((Task) document).getDateOfIssue(),
-                    ((Task) document).getDeadline(),
-                    ((Task) document).getExecutor().getId(),
-                    ((Task) document).isControlled(),
-                    ((Task) document).getController().getId());
-
-            taskDTO.setFullname(document.toString());
+            TaskDTO taskDTO = new TaskDTO((Task) document);
             return taskDTO;
 
         }

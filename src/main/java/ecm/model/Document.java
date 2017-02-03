@@ -1,9 +1,11 @@
 package ecm.model;
 
+import ecm.dao.GenericDAO;
 import ecm.dao.Storable;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import javax.inject.Inject;
 import javax.persistence.*;
 import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
@@ -29,6 +31,7 @@ public abstract class Document implements Comparable<Document>, Storable {
 
     public Document() {
     }
+
 
     public Document(String name, String text, String regNumber, LocalDate date, Person author) {
         this.name = name;

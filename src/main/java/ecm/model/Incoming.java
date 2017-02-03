@@ -1,11 +1,15 @@
 package ecm.model;
 
+import ecm.dao.GenericDAO;
+import ecm.web.dto.IncomingDTO;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import javax.inject.Inject;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
 
@@ -31,6 +35,13 @@ public class Incoming extends Document {
         this.recipient = recipient;
         this.referenceNumber = referenceNumber;
         this.outboundRegDate = outboundRegDate;
+    }
+
+    public Incoming(IncomingDTO dto) {
+        super(dto.getName(), dto.getText(), dto.getRegNumber(), dto.getDate(), null);
+        this.referenceNumber = dto.getReferenceNumber();
+        this.outboundRegDate = dto.getOutboundRegDate();
+        this.setId(dto.getId());
     }
 
     public Person getSender() {

@@ -1,5 +1,6 @@
 package ecm.model;
 
+import ecm.web.dto.OutgoingDTO;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -28,6 +29,11 @@ public class Outgoing extends Document {
         this.deliveryMethod = deliveryMethod;
     }
 
+    public Outgoing(OutgoingDTO dto) {
+        super(dto.getName(), dto.getText(), dto.getRegNumber(), dto.getDate(), null);
+        this.deliveryMethod = dto.getDeliveryMethod();
+        this.setId(dto.getId());
+    }
     public Person getRecipient() {
         return recipient;
     }

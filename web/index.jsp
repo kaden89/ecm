@@ -353,7 +353,13 @@
                         return "children" in object;
                     },
                     getLabel : function(item) {
-                        return item.name;}
+                        if (item.fullname != undefined){
+                            return item.fullname;
+                        } else {
+                            return item.name;
+                        }
+                    }
+
                 });
 
                 tree = new Tree({

@@ -1,5 +1,7 @@
 package ecm.web.dto;
 
+import ecm.model.Task;
+
 import java.time.LocalDate;
 
 /**
@@ -26,6 +28,16 @@ public class TaskDTO extends AbstractDocumentDTO {
 
     public LocalDate getDateOfIssue() {
         return dateOfIssue;
+    }
+
+    public TaskDTO(Task task) {
+        super(task.getId(), task.getName(), task.getText(), task.getRegNumber(), task.getDate(), task.getAuthor().getId());
+        this.dateOfIssue = task.getDateOfIssue();
+        this.deadline = task.getDeadline();
+        this.executorId = task.getExecutor().getId();
+        this.isControlled = task.isControlled();
+        this.controllerId = task.getController().getId();
+        this.setFullname(task.toString());
     }
 
     public void setDateOfIssue(LocalDate dateOfIssue) {

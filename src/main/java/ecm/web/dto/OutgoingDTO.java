@@ -1,5 +1,7 @@
 package ecm.web.dto;
 
+import ecm.model.Outgoing;
+
 import java.time.LocalDate;
 
 /**
@@ -22,6 +24,12 @@ public class OutgoingDTO extends AbstractDocumentDTO {
         return recipientId;
     }
 
+    public OutgoingDTO(Outgoing outgoing) {
+        super(outgoing.getId(), outgoing.getName(), outgoing.getText(), outgoing.getRegNumber(), outgoing.getDate(), outgoing.getAuthor().getId());
+        this.recipientId = outgoing.getRecipient().getId();
+        this.deliveryMethod = outgoing.getDeliveryMethod();
+        this.setFullname(outgoing.toString());
+    }
     public void setRecipientId(Integer recipientId) {
         this.recipientId = recipientId;
     }

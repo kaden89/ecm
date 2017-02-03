@@ -1,5 +1,7 @@
 package ecm.web.dto;
 
+import ecm.model.Incoming;
+
 import java.time.LocalDate;
 
 /**
@@ -20,6 +22,15 @@ public class IncomingDTO extends AbstractDocumentDTO{
         this.recipientId = recipientId;
         this.referenceNumber = referenceNumber;
         this.outboundRegDate = outboundRegDate;
+    }
+
+    public IncomingDTO(Incoming incoming) {
+        super(incoming.getId(), incoming.getName(), incoming.getText(), incoming.getRegNumber(), incoming.getDate(), incoming.getAuthor().getId());
+        this.senderId = incoming.getSender().getId();
+        this.recipientId = incoming.getRecipient().getId();
+        this.referenceNumber = incoming.getReferenceNumber();
+        this.outboundRegDate = incoming.getOutboundRegDate();
+        this.setFullname(incoming.toString());
     }
 
     public Integer getSenderId() {
