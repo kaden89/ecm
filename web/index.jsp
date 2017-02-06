@@ -160,7 +160,7 @@
                         if (selectedItem !== null) {
                             deleteDialog = new ConfirmDialog({
                                 title: "Delete",
-                                content: "Are you sure that you want to delete person with id " + selectedItem + "?",
+                                content: "Are you sure that you want to delete entity with id " + selectedItem + "?",
                                 style: "width: 300px",
                                 onCancel: function () {
                                     return;
@@ -236,7 +236,7 @@
 
 
             function createNewTab() {
-                xhr("/ecm/rest/widgets/person/", {
+                xhr("/ecm/rest/widgets/person/new", {
                     handleAs: "json"
                 }).then(function (data) {
                     var widget = new formsWidget(data, personStore);
@@ -272,6 +272,9 @@
 
             function openTab(item) {
                 var id;
+                if (item.id == undefined){
+                    id = "new";
+                }
                 //Check if we are from Grid
                 if (item.target) {
                     id = item.rowId;
@@ -435,7 +438,7 @@
                     }
                     //Check if we are from parent node
                     else if (itsParent) {
-                        widgetUrl = "/ecm/rest/widgets/" + item.id + "/" + item.restUrl;
+                        widgetUrl = "/ecm/rest/widgets/" + item.id
                     }
 
                     else {
@@ -453,16 +456,20 @@
                     xhr(widgetUrl, {
                         handleAs: "json"
                     }).then(function (data) {
+                        var id, title;
                         if (itsParent) {
                             widget = new gridWidget(data, store, Registry.byId('documentsTree'));
+                            id = "grid";
+                            title = "grid";
                         }
                         else {
                             widget = new formsWidget(data, store, Registry.byId('documentsTree'));
+                            id = data.entity.id;
+                            title = data.entity.fullname;
                         }
 
-                        var id = data.entity.id;
                         var pane = new ContentPane({
-                            title: data.entity.fullname, closable: true
+                            title: title, closable: true
                         });
                         pane.set("id", "pane_" + id);
                         tabContainer.addChild(pane);

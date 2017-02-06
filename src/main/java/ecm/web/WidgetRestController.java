@@ -26,7 +26,7 @@ public class WidgetRestController extends AbstractRestController{
     private ClassLoader classLoader = getClass().getClassLoader();
 
     @GET
-    @Path("/person")
+    @Path("/person/new")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNewEmployeeTemplate(){
         StaffWidgetResponse response = new StaffWidgetResponse();
@@ -48,7 +48,7 @@ public class WidgetRestController extends AbstractRestController{
         return Response.ok(response).build();
     }
     @GET
-    @Path("/incomings")
+    @Path("/incomings/new")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNewIncomingTemplate(){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
@@ -71,7 +71,7 @@ public class WidgetRestController extends AbstractRestController{
     }
 
     @GET
-    @Path("/outgoings")
+    @Path("/outgoings/new")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNewOutgoingTemplate(){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
@@ -95,6 +95,16 @@ public class WidgetRestController extends AbstractRestController{
 
     @GET
     @Path("/tasks")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTaskGrid(){
+        DocumentWidgetResponse response = new DocumentWidgetResponse();
+        response.setTemplate(readFile("/html/taskGrid.html"));
+        response.setScript(readFile("/js/taskGrid.js"));
+        return Response.ok(response).build();
+    }
+
+    @GET
+    @Path("/tasks/new")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNewTaskTemplate(){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
