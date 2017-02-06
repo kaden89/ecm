@@ -63,10 +63,10 @@
             "dojo/domReady!"], function (declare, TabContainer, ContentPane, GridX, Dod, Cache, Deferred, QueryResults, Memory, SingleSort, JsonRest, Bar, Toolbar, Button,
                                          RowHeader, Row, IndirectSelect, Dialog, Registry, query, Dom, parser, xhr, Lightbox, dom, JsonRest,
                                          Tree, ObjectStoreModel, Stateful, at, formsWidget, Observable, ConfirmDialog, gridWidget) {
-            var restURL = 'http://localhost:8080/ecm/rest/employees/';
+            var restURL = 'http://localhost:8080/ecm/rest/';
             var personTreeStore = new JsonRest({
                 idProperty: 'id',
-                target: restURL + "personTree",
+                target: restURL + "employees/personTree",
                 mayHaveChildren: function (object) {
                     return "haveChildren" in object;
                 },
@@ -80,7 +80,7 @@
 
             var personStore = new JsonRest({
                 idProperty: 'id',
-                target: restURL,
+                target: restURL+"employees/",
                 headers: {
                     'Content-Type': "application/json; charset=UTF-8"
                 },
@@ -89,6 +89,34 @@
                 }
             });
             personStore = new Observable(personStore);
+
+
+            var taskStore = new JsonRest({
+                idProperty: 'id',
+                target: restURL+"documents/tasks",
+                getChildren: function (object) {
+                    return object;
+                }
+            });
+            taskStore = new Observable(taskStore);
+
+            var incomingStore = new JsonRest({
+                idProperty: 'id',
+                target: restURL+"documents/incomings",
+                getChildren: function (object) {
+                    return object;
+                }
+            });
+            incomingStore = new Observable(incomingStore);
+
+            var outgoingStore = new JsonRest({
+                idProperty: 'id',
+                target: restURL+"documents/outgoings",
+                getChildren: function (object) {
+                    return object;
+                }
+            });
+            outgoingStore = new Observable(outgoingStore);
 
 
             //create structure......
@@ -423,14 +451,16 @@
                     var id = item.id;
                     var widgetUrl;
                     var storeUrl = "/ecm/rest/documents/" + item.restUrl;
-                    var store = new JsonRest({
-                        idProperty: 'id',
-                        target: storeUrl,
-                        getChildren: function (object) {
-                            return object;
-                        }
-                    });
-                    store = new Observable(store);
+                    var store;
+
+                    switch(item.restUrl) {
+                        case 'tasks':  store = taskStore;
+                            break;
+                        case 'incomings':  store = incomingStore;
+                            break;
+                        case 'outgoings':  store = outgoingStore;
+                            break;
+                    }
 
                     //Check if we are from Grid
                     if (item.hasOwnProperty("target")) {

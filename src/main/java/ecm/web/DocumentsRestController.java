@@ -9,6 +9,7 @@ import ecm.web.dto.IncomingDTO;
 import ecm.web.dto.TreeNode;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -27,9 +28,9 @@ public class DocumentsRestController extends AbstractRestController{
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeRoot(){
         List<TreeNode> nodes = new ArrayList<>();
-        nodes.add(new TreeNode("Incomings", "incomings", null, true, "incomingsGrid"));
-        nodes.add(new TreeNode("Outgoings", "outgoings", null, true, "outgoingsGrid"));
-        nodes.add(new TreeNode("Tasks", "tasks", null,true, "tasksGrid"));
+        nodes.add(new TreeNode("Incomings", "incomings", null, true, "incomings"));
+        nodes.add(new TreeNode("Outgoings", "outgoings", null, true, "outgoings"));
+        nodes.add(new TreeNode("Tasks", "tasks", null,true, "tasks"));
         TreeNode<TreeNode> root = new TreeNode<>("Documents", "", nodes, "");
         String jsonInString = gson.toJson(root);
         return Response.ok(jsonInString).build();
@@ -63,6 +64,18 @@ public class DocumentsRestController extends AbstractRestController{
         TreeNode<AbstractDocumentDTO> root = new TreeNode<>("Tasks", "", dtos, "tasks");
         String jsonInString = gson.toJson(root);
         return Response.ok(jsonInString).build();
+    }
+
+    @GET
+    @Path("/tasks")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTasks(){
+//        List<AbstractDocumentDTO> dtos = new ArrayList<>(documentDTOConverter.toDtoCollection(new ArrayList<>(taskDAO.findAll())));
+//        String jsonInString = gson.toJson(dtos);
+        GenericEntity<List<AbstractDocumentDTO>> tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(documentDTOConverter.toDtoCollection(new ArrayList<>(taskDAO.findAll())))) {
+        };
+        int size = tasks.getEntity().size();
+        return Response.ok(tasks).header( "Content-Range" , "items 0-"+size+"/"+size).build();
     }
 
     @PUT

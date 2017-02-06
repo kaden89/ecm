@@ -1,6 +1,8 @@
 package ecm.web.dto;
 
 
+import ecm.model.Document;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -21,10 +23,21 @@ public abstract class AbstractDocumentDTO {
     private LocalDate date;
     private Integer authorId;
     private String fullname;
+    private String authorName;
 
     public AbstractDocumentDTO() {
     }
 
+    public AbstractDocumentDTO(Document document) {
+        this.id = document.getId();
+        this.name = document.getName();
+        this.text = document.getText();
+        this.regNumber = document.getRegNumber();
+        this.date = document.getDate();
+        this.authorId = document.getAuthor().getId();
+        this.authorName = document.getAuthor().toString();
+
+    }
     public AbstractDocumentDTO(Integer id, String name, String text, String regNumber, LocalDate date, Integer authorId) {
         this.id = id;
         this.name = name;
@@ -88,5 +101,13 @@ public abstract class AbstractDocumentDTO {
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 }

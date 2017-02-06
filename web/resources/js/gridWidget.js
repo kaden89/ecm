@@ -71,28 +71,19 @@ define([
         ,
         startup: function () {
             this.inherited(arguments);
-            var restURL = 'http://localhost:8080/ecm/rest/employees/';
-            var personStore = new JsonRest({
-                idProperty: 'id',
-                target: restURL,
-                headers: {
-                    'Content-Type': "application/json; charset=UTF-8"
-                },
-                getChildren: function (object) {
-                    return object;
-                }
-            });
-            personStore = new Observable(personStore);
 
-
-            //create structure......
             var columns = [
                 {id: 'id', field: 'id', name: 'id', width: '5%'},
-                {id: 'firstname', field: 'firstname', name: 'Firstname', width: '19%'},
-                {id: 'surname', field: 'surname', name: 'Surname', width: '19%'},
-                {id: 'patronymic', field: 'patronymic', name: 'Patronymic', width: '19%'},
-                {id: 'position', field: 'position', name: 'Position', width: '19%'},
-                {id: 'birthday', field: 'birthday', name: 'Birthday', width: '19%'}
+                {id: 'name', field: 'name', name: 'Name', width: '9.5%'},
+                {id: 'author', field: 'authorName', name: 'Author', width: '13.5%'},
+                {id: 'executor', field: 'executorName', name: 'Executor', width: '13.5%'},
+                {id: 'controller', field: 'controllerName', name: 'Controller', width: '13.5%'},
+                {id: 'isControlled', field: 'isControlled', name: 'Is controlled', width: '5%'},
+                {id: 'regNumber', field: 'regNumber', name: 'Reg number', width: '5%'},
+                {id: 'date', field: 'date', name: 'Date', width: '5%'},
+                {id: 'dateOfIssue', field: 'dateOfIssue', name: 'Date of issue', width: '5%'},
+                {id: 'deadline', field: 'deadline', name: 'Deadline', width: '5%'},
+                {id: 'text', field: 'text', name: 'Text', width: '20%'}
             ];
 
             var toolbar = new Toolbar({}, "toolbar");
@@ -109,14 +100,13 @@ define([
             });
             toolbar.addChild(createButton);
             toolbar.addChild(deleteButton);
-//            toolbar.addChild(editButton);
-            toolbar.startup();
+
 
             //Create grid widget.
             var grid = GridX({
                 id: 'taskGrid',
                 cacheClass: Cache,
-                store: personStore,
+                store: this.store,
                 structure: columns,
                 selectRowMultiple: false,
                 barTop: [
@@ -127,7 +117,7 @@ define([
                     {
                         moduleClass: SingleSort,
                         //Declare initialOrder as module parameter:
-                        initialOrder: {colId: 'firstname', descending: true}
+                        initialOrder: {colId: 'name', descending: true}
                     },
                     Bar,
                     RowHeader,

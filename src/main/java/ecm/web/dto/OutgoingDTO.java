@@ -25,7 +25,7 @@ public class OutgoingDTO extends AbstractDocumentDTO {
     }
 
     public OutgoingDTO(Outgoing outgoing) {
-        super(outgoing.getId(), outgoing.getName(), outgoing.getText(), outgoing.getRegNumber(), outgoing.getDate(), outgoing.getAuthor().getId());
+        super(outgoing);
         this.recipientId = outgoing.getRecipient().getId();
         this.deliveryMethod = outgoing.getDeliveryMethod();
         this.setFullname(outgoing.toString());

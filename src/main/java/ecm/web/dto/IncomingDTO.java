@@ -25,7 +25,7 @@ public class IncomingDTO extends AbstractDocumentDTO{
     }
 
     public IncomingDTO(Incoming incoming) {
-        super(incoming.getId(), incoming.getName(), incoming.getText(), incoming.getRegNumber(), incoming.getDate(), incoming.getAuthor().getId());
+        super(incoming);
         this.senderId = incoming.getSender().getId();
         this.recipientId = incoming.getRecipient().getId();
         this.referenceNumber = incoming.getReferenceNumber();

@@ -11,8 +11,10 @@ public class TaskDTO extends AbstractDocumentDTO {
     private LocalDate dateOfIssue;
     private LocalDate deadline;
     private Integer executorId;
-    private boolean isControlled;
+    private String executorName;
     private Integer controllerId;
+    private String controllerName;
+    private boolean isControlled;
     private String restUrl = "tasks";
     public TaskDTO() {
     }
@@ -31,12 +33,14 @@ public class TaskDTO extends AbstractDocumentDTO {
     }
 
     public TaskDTO(Task task) {
-        super(task.getId(), task.getName(), task.getText(), task.getRegNumber(), task.getDate(), task.getAuthor().getId());
+        super(task);
         this.dateOfIssue = task.getDateOfIssue();
         this.deadline = task.getDeadline();
         this.executorId = task.getExecutor().getId();
-        this.isControlled = task.isControlled();
+        this.executorName = task.getExecutor().toString();
         this.controllerId = task.getController().getId();
+        this.controllerName = task.getController().toString();
+        this.isControlled = task.isControlled();
         this.setFullname(task.toString());
     }
 
@@ -82,5 +86,21 @@ public class TaskDTO extends AbstractDocumentDTO {
 
     public void setRestUrl(String restUrl) {
         this.restUrl = restUrl;
+    }
+
+    public String getExecutorName() {
+        return executorName;
+    }
+
+    public void setExecutorName(String executorName) {
+        this.executorName = executorName;
+    }
+
+    public String getControllerName() {
+        return controllerName;
+    }
+
+    public void setControllerName(String controllerName) {
+        this.controllerName = controllerName;
     }
 }
