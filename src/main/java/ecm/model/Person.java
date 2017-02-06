@@ -6,6 +6,7 @@ import ecm.util.xml.LocalDateAdapter;
 import ecm.web.dto.PersonDTO;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -17,9 +18,11 @@ import java.time.LocalDate;
 @XmlRootElement
 @Entity
 public class Person extends Staff implements Comparable<Person>, Storable{
-
+    @NotNull
     private String firstname;
+    @NotNull
     private String surname;
+    @NotNull
     private String patronymic;
     private String position;
     @XmlTransient

@@ -42,6 +42,7 @@ define([
     "gridx/modules/SingleSort",
     "gridx/modules/Bar",
     "dojo/store/Observable",
+    "dijit/layout/ContentPane",
     "dojo/on",
     "dojo/require",
     "dijit/layout/ContentPane",
@@ -57,7 +58,7 @@ define([
 
 ], function (declare, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, Registry, request, xhr,
              domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor, Select, JsonRest, FilteringSelect,
-             at, Memory, CheckBox,formsWidget, GridX, Dod, Cache, RowHeader, Row, IndirectSelect, SingleSort, Bar, Observable) {
+             at, Memory, CheckBox,formsWidget, GridX, Dod, Cache, RowHeader, Row, IndirectSelect, SingleSort, Bar, Observable, ContentPane) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         store: null,
         script: null,
@@ -71,7 +72,7 @@ define([
         ,
         startup: function () {
             this.inherited(arguments);
-
+            var store = this.store;
             var columns = [
                 {id: 'id', field: 'id', name: 'id', width: '5%'},
                 {id: 'name', field: 'name', name: 'Name', width: '9.5%'},
@@ -98,8 +99,30 @@ define([
                 iconClass: "dijitEditorIcon dijitEditorIconDelete",
                 onClick: deleteSelected
             });
+
+            var closeButton = new Button({
+                label: "Close",
+                iconClass: "dijitEditorIcon dijitEditorIconCancel",
+                onClick: lang.hitch(this, close)
+            });
+
             toolbar.addChild(createButton);
             toolbar.addChild(deleteButton);
+            toolbar.addChild(closeButton);
+
+            function close() {
+                var tabPane = Registry.byId("TabContainer");
+                var pane;
+                if (this.isNew) {
+                    pane = Registry.byId("newPane_");
+                }
+                else {
+                    pane = Registry.byId("pane_tasks");
+                }
+                tabPane.removeChild(pane);
+                tabPane.selectChild(Registry.byId("WelcomPane"));
+                pane.destroy();
+            }
 
 
             //Create grid widget.
@@ -233,10 +256,10 @@ define([
                     return;
                 }
 
-                xhr("/ecm/rest/widgets/person/" + id, {
+                xhr("/ecm/rest/widgets/tasks/" + id, {
                     handleAs: "json"
                 }).then(function (data) {
-                    var widget = new formsWidget(data, personStore, Registry.byId('personTree'));
+                    var widget = new formsWidget(data, store, Registry.byId('documentsTree'));
                     var id = data.entity.id;
                     var pane = new ContentPane({
                         title: data.entity.fullname, closable: true

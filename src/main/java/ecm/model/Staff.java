@@ -3,6 +3,7 @@ package ecm.model;
 import com.google.gson.annotations.Expose;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -19,6 +20,7 @@ public abstract class Staff {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Expose
+    @NotNull
     private Integer id;
 
     public Staff() {

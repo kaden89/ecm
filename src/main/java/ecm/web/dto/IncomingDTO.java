@@ -16,13 +16,6 @@ public class IncomingDTO extends AbstractDocumentDTO{
     public IncomingDTO() {
     }
 
-    public IncomingDTO(Integer id, String name, String text, String regNumber, LocalDate date, Integer authorId, Integer senderId, Integer recipientId, Integer referenceNumber, LocalDate outboundRegDate) {
-        super(id, name, text, regNumber, date, authorId);
-        this.senderId = senderId;
-        this.recipientId = recipientId;
-        this.referenceNumber = referenceNumber;
-        this.outboundRegDate = outboundRegDate;
-    }
 
     public IncomingDTO(Incoming incoming) {
         super(incoming);

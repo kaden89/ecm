@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
 
@@ -20,10 +21,14 @@ import java.time.LocalDate;
 @Entity
 public class Incoming extends Document {
     @ManyToOne
+    @NotNull
     private Person sender;
     @ManyToOne
+    @NotNull
     private Person recipient;
+    @NotNull
     private Integer referenceNumber;
+    @NotNull
     private LocalDate outboundRegDate;
 
     public Incoming() {

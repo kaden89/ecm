@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.inject.Inject;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
 
@@ -21,12 +22,17 @@ import java.time.LocalDate;
 public abstract class Document implements Comparable<Document>, Storable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
     private Integer id;
+    @NotNull
     private String name;
     private String text;
+    @NotNull
     private String regNumber;
+    @NotNull
     private LocalDate date;
     @ManyToOne
+    @NotNull
     private Person author;
 
     public Document() {

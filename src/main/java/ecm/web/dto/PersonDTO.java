@@ -18,17 +18,6 @@ public class PersonDTO extends AbstractStaffDTO {
     public PersonDTO() {
     }
 
-    public PersonDTO(Integer id, String firstname, String surname, String patronymic, String position, LocalDate birthday, String fullname) {
-        super(id);
-        this.firstname = firstname;
-        this.surname = surname;
-        this.patronymic = patronymic;
-        this.position = position;
-        this.birthday = birthday;
-        this.fullname = fullname;
-    }
-
-
     public PersonDTO(Person person) {
         super(person.getId());
         this.firstname = person.getFirstname();

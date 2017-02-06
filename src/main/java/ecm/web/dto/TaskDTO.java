@@ -19,15 +19,6 @@ public class TaskDTO extends AbstractDocumentDTO {
     public TaskDTO() {
     }
 
-    public TaskDTO(Integer id, String name, String text, String regNumber, LocalDate date, Integer authorId, LocalDate dateOfIssue, LocalDate deadline, Integer executorId, boolean isControlled, Integer controllerId) {
-        super(id, name, text, regNumber, date, authorId);
-        this.dateOfIssue = dateOfIssue;
-        this.deadline = deadline;
-        this.executorId = executorId;
-        this.isControlled = isControlled;
-        this.controllerId = controllerId;
-    }
-
     public LocalDate getDateOfIssue() {
         return dateOfIssue;
     }

@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
 
@@ -17,11 +18,14 @@ import java.time.LocalDate;
 @Entity
 public class Task extends Document {
     private LocalDate dateOfIssue;
+    @NotNull
     private LocalDate deadline;
     @ManyToOne
+    @NotNull
     private Person executor;
     private boolean isControlled;
     @ManyToOne
+    @NotNull
     private Person controller;
 
     public Task() {

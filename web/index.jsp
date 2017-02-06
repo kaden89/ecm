@@ -489,8 +489,8 @@
                         var id, title;
                         if (itsParent) {
                             widget = new gridWidget(data, store, Registry.byId('documentsTree'));
-                            id = "grid";
-                            title = "grid";
+                            id = "tasks";
+                            title = "Tasks";
                         }
                         else {
                             widget = new formsWidget(data, store, Registry.byId('documentsTree'));
