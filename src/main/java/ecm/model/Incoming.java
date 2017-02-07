@@ -27,14 +27,14 @@ public class Incoming extends Document {
     @NotNull
     private Person recipient;
     @NotNull
-    private Integer referenceNumber;
+    private String referenceNumber;
     @NotNull
     private LocalDate outboundRegDate;
 
     public Incoming() {
     }
 
-    public Incoming(String name, String text, String regNumber, LocalDate date, Person author, Person sender, Person recipient, int referenceNumber, LocalDate outboundRegDate) {
+    public Incoming(String name, String text, String regNumber, LocalDate date, Person author, Person sender, Person recipient, String referenceNumber, LocalDate outboundRegDate) {
         super(name, text, regNumber, date, author);
         this.sender = sender;
         this.recipient = recipient;
@@ -65,11 +65,11 @@ public class Incoming extends Document {
         this.recipient = recipient;
     }
 
-    public int getReferenceNumber() {
+    public String getReferenceNumber() {
         return referenceNumber;
     }
 
-    public void setReferenceNumber(int referenceNumber) {
+    public void setReferenceNumber(String referenceNumber) {
         this.referenceNumber = referenceNumber;
     }
 

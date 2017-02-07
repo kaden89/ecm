@@ -12,7 +12,7 @@ public class IncomingDTO extends AbstractDocumentDTO{
     private String senderName;
     private Integer recipientId;
     private String recipientName;
-    private Integer referenceNumber;
+    private String referenceNumber;
     private LocalDate outboundRegDate;
     private String restUrl = "incomings";
 
@@ -47,11 +47,11 @@ public class IncomingDTO extends AbstractDocumentDTO{
         this.recipientId = recipientId;
     }
 
-    public Integer getReferenceNumber() {
+    public String getReferenceNumber() {
         return referenceNumber;
     }
 
-    public void setReferenceNumber(Integer referenceNumber) {
+    public void setReferenceNumber(String referenceNumber) {
         this.referenceNumber = referenceNumber;
     }
 

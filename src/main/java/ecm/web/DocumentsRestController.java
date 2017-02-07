@@ -4,9 +4,7 @@ import ecm.model.Document;
 import ecm.model.Incoming;
 import ecm.model.Outgoing;
 import ecm.model.Task;
-import ecm.web.dto.AbstractDocumentDTO;
-import ecm.web.dto.IncomingDTO;
-import ecm.web.dto.TreeNode;
+import ecm.web.dto.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
@@ -92,6 +90,36 @@ public class DocumentsRestController extends AbstractRestController{
         };
         int size = tasks.getEntity().size();
         return Response.ok(tasks).header( "Content-Range" , "items 0-"+size+"/"+size).build();
+    }
+
+    @POST
+    @Path("/tasks")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createTask(TaskDTO dto){
+        dto.setId(null);
+        Task task = taskDAO.save(documentDTOConverter.fromDTO(dto));
+        return Response.ok(documentDTOConverter.toDTO(task)).build();
+    }
+
+    @POST
+    @Path("/outgoings")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createOutgoing(OutgoingDTO dto){
+        dto.setId(null);
+        Outgoing outgoing = outgoingDAO.save(documentDTOConverter.fromDTO(dto));
+        return Response.ok(documentDTOConverter.toDTO(outgoing)).build();
+    }
+
+    @POST
+    @Path("/incomings")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createIncoming(IncomingDTO dto){
+        dto.setId(null);
+        Incoming incoming = incomingDAO.save(documentDTOConverter.fromDTO(dto));
+        return Response.ok(documentDTOConverter.toDTO(incoming)).build();
     }
 
     @PUT

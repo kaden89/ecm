@@ -83,7 +83,7 @@ define([
             var createButton = new Button({
                 label: "Create",
                 iconClass: "dijitEditorIcon dijitEditorIconPaste",
-                onClick: createNewTab
+                onClick: lang.hitch(this, createNewTab)
             });
 
             var deleteButton = new Button({
@@ -198,12 +198,11 @@ define([
 
 
             function createNewTab() {
-                xhr("/ecm/rest/widgets/person/", {
+                xhr("/ecm/rest/widgets/"+this.restUrl+"/new", {
                     handleAs: "json"
                 }).then(function (data) {
-                    var widget = new formsWidget(data, personStore);
+                    var widget = new formsWidget(data, this.store);
                     var tabContainer = Registry.byId("TabContainer");
-                    var id = data.entity.id;
                     var pane = Registry.byId("newPane_");
                     if (pane != undefined) {
                         tabContainer.selectChild(pane);
@@ -220,7 +219,7 @@ define([
                     pane.setContent(widget);
                     Registry.add(pane);
 
-                }, function (err) {
+                }.bind(this), function (err) {
                     console.log(err);
                 }, function (evt) {
                     // Handle a progress event from the request if the
@@ -229,17 +228,8 @@ define([
             }
 
             function openTab(item) {
-                var id;
-                if (item.id == undefined){
-                    id = "new";
-                }
-                //Check if we are from Grid
-                if (item.target) {
-                    id = item.rowId;
-                }
-                else {
-                    id = item.id
-                }
+                var id = item.rowId;
+
                 //if the tab is already open, switch on it
                 var tabContainer = Registry.byId("TabContainer");
                 var pane = Registry.byId("pane_" + id);

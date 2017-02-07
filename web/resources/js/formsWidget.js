@@ -60,7 +60,7 @@ define([
             this.store = store;
             this.script = args.script;
             this.tree = tree;
-            if (args.entity.id == undefined) this.isNew = true;
+            if (args.entity == undefined) this.isNew = true;
         }
         ,
         startup: function () {

@@ -64,7 +64,6 @@ public class WidgetRestController extends AbstractRestController{
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/incoming.html"));
         response.setScript(readFile("/js/incoming.js"));
-        response.setEntity(documentDTOConverter.toDTO(new Incoming()));
         return Response.ok(response).build();
     }
 
@@ -97,7 +96,6 @@ public class WidgetRestController extends AbstractRestController{
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/outgoing.html"));
         response.setScript(readFile("/js/outgoing.js"));
-        response.setEntity(documentDTOConverter.toDTO(new Outgoing()));
         return Response.ok(response).build();
     }
 
@@ -130,7 +128,6 @@ public class WidgetRestController extends AbstractRestController{
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/task.html"));
         response.setScript(readFile("/js/task.js"));
-        response.setEntity(documentDTOConverter.toDTO(new Task()));
         return Response.ok(response).build();
     }
 
