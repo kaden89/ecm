@@ -16,7 +16,7 @@ import java.time.LocalDate;
  * Created by dkarachurin on 24.01.2017.
  */
 public class AbstractRestController {
-    //Glassfish can't correctly marshall generics, have dto use GSON for it, with LocalDate adapter.
+    //Glassfish can't correctly marshall inner generics, have dto use GSON for it, with LocalDate adapter.
     Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, (JsonSerializer<LocalDate>) (localDate, type, jsonSerializationContext) -> new JsonPrimitive(localDate.toString())).
             registerTypeAdapter(byte[].class, new ByteArrayAdapter()).setExclusionStrategies(new GsonExclusionStrategy()).create();
     //TODO impl logger

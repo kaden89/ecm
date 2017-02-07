@@ -148,10 +148,17 @@ define([
                         for(var k in data) {
                             this.model.set(k, data[k]);
                         }
+                        //Dojo can't correctly handle id changing, so close old pane and create new one
                         var pane = registry.byId("newPane_");
-                        pane.set("title", data.firstname + " " + data.surname + " " + data.patronymic);
-                        // pane.set("id", "personPane_"+data.id);
-                        // this.isNew = false;
+                        var tabContainer = registry.byId("TabContainer");
+                        tabContainer.removeChild(pane);
+                        pane.set("title", data.fullname);
+                        pane.set("id", "pane_"+data.id);
+                        registry.remove("newPane_");
+                        registry.add(pane);
+                        tabContainer.addChild(pane);
+                        tabContainer.selectChild(pane);
+
                         updateTree();
                     }.bind(this), function (err) {
                         // Handle the error condition
@@ -162,10 +169,6 @@ define([
                 }
                 else {
                     this.store.put(this.model).then(function (data) {
-                        // this.form.set('value', data);
-                        // if (this.hasOwnProperty("isControlled")) {
-                        //     this.isControlled.set('checked', data.isControlled);
-                        // }
 
                         var pane = registry.byId("pane_" + data.id);
                         pane.set("title", data.fullname);
