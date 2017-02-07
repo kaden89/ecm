@@ -70,9 +70,25 @@ public class DocumentsRestController extends AbstractRestController{
     @Path("/tasks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTasks(){
-//        List<AbstractDocumentDTO> dtos = new ArrayList<>(documentDTOConverter.toDtoCollection(new ArrayList<>(taskDAO.findAll())));
-//        String jsonInString = gson.toJson(dtos);
         GenericEntity<List<AbstractDocumentDTO>> tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(documentDTOConverter.toDtoCollection(new ArrayList<>(taskDAO.findAll())))) {
+        };
+        int size = tasks.getEntity().size();
+        return Response.ok(tasks).header( "Content-Range" , "items 0-"+size+"/"+size).build();
+    }
+    @GET
+    @Path("/outgoings")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOutgoings(){
+        GenericEntity<List<AbstractDocumentDTO>> tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(documentDTOConverter.toDtoCollection(new ArrayList<>(outgoingDAO.findAll())))) {
+        };
+        int size = tasks.getEntity().size();
+        return Response.ok(tasks).header( "Content-Range" , "items 0-"+size+"/"+size).build();
+    }
+    @GET
+    @Path("/incomings")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getIncomings(){
+        GenericEntity<List<AbstractDocumentDTO>> tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(documentDTOConverter.toDtoCollection(new ArrayList<>(incomingDAO.findAll())))) {
         };
         int size = tasks.getEntity().size();
         return Response.ok(tasks).header( "Content-Range" , "items 0-"+size+"/"+size).build();

@@ -9,10 +9,13 @@ import java.time.LocalDate;
  */
 public class IncomingDTO extends AbstractDocumentDTO{
     private Integer senderId;
+    private String senderName;
     private Integer recipientId;
+    private String recipientName;
     private Integer referenceNumber;
     private LocalDate outboundRegDate;
     private String restUrl = "incomings";
+
     public IncomingDTO() {
     }
 
@@ -20,7 +23,9 @@ public class IncomingDTO extends AbstractDocumentDTO{
     public IncomingDTO(Incoming incoming) {
         super(incoming);
         this.senderId = incoming.getSender().getId();
+        this.senderName = incoming.getSender().toString();
         this.recipientId = incoming.getRecipient().getId();
+        this.recipientName = incoming.getRecipient().toString();
         this.referenceNumber = incoming.getReferenceNumber();
         this.outboundRegDate = incoming.getOutboundRegDate();
         this.setFullname(incoming.toString());
@@ -64,5 +69,21 @@ public class IncomingDTO extends AbstractDocumentDTO{
 
     public void setRestUrl(String restUrl) {
         this.restUrl = restUrl;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
     }
 }

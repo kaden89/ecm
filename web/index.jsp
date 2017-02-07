@@ -447,13 +447,14 @@
 
                 function openDocTab(item, node) {
                     var itsParent = item.hasOwnProperty("haveChildren");
+                    var restUrl = item.restUrl;
                     var widget;
                     var id = item.id;
                     var widgetUrl;
                     var storeUrl = "/ecm/rest/documents/" + item.restUrl;
                     var store;
 
-                    switch(item.restUrl) {
+                    switch(restUrl) {
                         case 'tasks':  store = taskStore;
                             break;
                         case 'incomings':  store = incomingStore;
@@ -483,14 +484,17 @@
                         return;
                     }
 
+
                     xhr(widgetUrl, {
                         handleAs: "json"
                     }).then(function (data) {
                         var id, title;
+                        params = {store: store, tree:  Registry.byId('documentsTree'), restUrl: restUrl};
                         if (itsParent) {
-                            widget = new gridWidget(data, store, Registry.byId('documentsTree'));
-                            id = "tasks";
-                            title = "Tasks";
+
+                            widget = new gridWidget(data, params);
+                            id = restUrl;
+                            title = restUrl.charAt(0).toUpperCase() + restUrl.slice(1);
                         }
                         else {
                             widget = new formsWidget(data, store, Registry.byId('documentsTree'));

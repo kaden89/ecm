@@ -63,29 +63,21 @@ define([
         store: null,
         script: null,
         tree: null,
-        constructor: function (args, store, tree) {
+        restUrl: null,
+        constructor: function (args, params) {
             this.templateString = args.template;
-            this.store = store;
+            this.store = params.store;
             this.script = args.script;
-            this.tree = tree;
+            this.tree = params.tree;
+            this.restUrl = params.restUrl;
         }
         ,
         startup: function () {
             this.inherited(arguments);
+
+            eval(this.script);
+
             var store = this.store;
-            var columns = [
-                {id: 'id', field: 'id', name: 'id', width: '5%'},
-                {id: 'name', field: 'name', name: 'Name', width: '9.5%'},
-                {id: 'author', field: 'authorName', name: 'Author', width: '13.5%'},
-                {id: 'executor', field: 'executorName', name: 'Executor', width: '13.5%'},
-                {id: 'controller', field: 'controllerName', name: 'Controller', width: '13.5%'},
-                {id: 'isControlled', field: 'isControlled', name: 'Is controlled', width: '5%'},
-                {id: 'regNumber', field: 'regNumber', name: 'Reg number', width: '5%'},
-                {id: 'date', field: 'date', name: 'Date', width: '5%'},
-                {id: 'dateOfIssue', field: 'dateOfIssue', name: 'Date of issue', width: '5%'},
-                {id: 'deadline', field: 'deadline', name: 'Deadline', width: '5%'},
-                {id: 'text', field: 'text', name: 'Text', width: '20%'}
-            ];
 
             var toolbar = new Toolbar({}, "toolbar");
             var createButton = new Button({
@@ -117,7 +109,7 @@ define([
                     pane = Registry.byId("newPane_");
                 }
                 else {
-                    pane = Registry.byId("pane_tasks");
+                    pane = Registry.byId("pane_"+this.restUrl);
                 }
                 tabPane.removeChild(pane);
                 tabPane.selectChild(Registry.byId("WelcomPane"));
@@ -127,7 +119,7 @@ define([
 
             //Create grid widget.
             var grid = GridX({
-                id: 'taskGrid',
+                id: this.restUrl,
                 cacheClass: Cache,
                 store: this.store,
                 structure: columns,
@@ -150,7 +142,7 @@ define([
             });
             grid.placeAt(this.grid);
 
-            grid.connect(grid, "onRowDblClick", openTab);
+            grid.connect(grid, "onRowDblClick", lang.hitch(this, openTab));
             grid.startup();
 
             function deleteSelected() {
@@ -256,7 +248,7 @@ define([
                     return;
                 }
 
-                xhr("/ecm/rest/widgets/tasks/" + id, {
+                xhr("/ecm/rest/widgets/"+this.restUrl+"/" + id, {
                     handleAs: "json"
                 }).then(function (data) {
                     var widget = new formsWidget(data, store, Registry.byId('documentsTree'));

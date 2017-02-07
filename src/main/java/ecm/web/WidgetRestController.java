@@ -48,6 +48,16 @@ public class WidgetRestController extends AbstractRestController{
         return Response.ok(response).build();
     }
     @GET
+    @Path("/incomings")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getIncomings(){
+        DocumentWidgetResponse response = new DocumentWidgetResponse();
+        response.setTemplate(readFile("/html/grid.html"));
+        response.setScript(readFile("/js/incomingGrid.js"));
+        return Response.ok(response).build();
+    }
+
+    @GET
     @Path("/incomings/new")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNewIncomingTemplate(){
@@ -67,6 +77,16 @@ public class WidgetRestController extends AbstractRestController{
         response.setEntity(documentDTOConverter.toDTO(incomingDAO.find(incomingId)));
         response.setScript(readFile("/js/incoming.js"));
 
+        return Response.ok(response).build();
+    }
+
+    @GET
+    @Path("/outgoings")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOutgoings(){
+        DocumentWidgetResponse response = new DocumentWidgetResponse();
+        response.setTemplate(readFile("/html/grid.html"));
+        response.setScript(readFile("/js/outgoingGrid.js"));
         return Response.ok(response).build();
     }
 
@@ -98,7 +118,7 @@ public class WidgetRestController extends AbstractRestController{
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTaskGrid(){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
-        response.setTemplate(readFile("/html/taskGrid.html"));
+        response.setTemplate(readFile("/html/grid.html"));
         response.setScript(readFile("/js/taskGrid.js"));
         return Response.ok(response).build();
     }
