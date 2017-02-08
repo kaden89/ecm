@@ -1,5 +1,6 @@
-define("dojo/store/JsonRest", "dojo/_base/declare", function(JsonRest, declare) {
-    return declare("myJsonRest", {
+define(["dojo/store/JsonRest", "dojo/_base/declare", "dojo/_base/lang", "dojo/_base/xhr", "dojo/store/util/QueryResults"], function(JsonRest, declare, h, e, m) {
+    return declare([JsonRest], {
+        //Override method which build query sort params for next template: 'sortField=fieldName&desc=true/false' instead 'sort(+-fieldName)'
         query: function(b, a) {
             a = a || {};
             var c = h.mixin({
@@ -13,12 +14,11 @@ define("dojo/store/JsonRest", "dojo/_base/declare", function(JsonRest, declare) 
                             d = !0) : c.Range = c["X-Range"];
             if (a && a.sort) {
                 var k = this.sortParam;
-                b += (b || d ? "\x26" : "?") + (k ? k + "\x3d" : "sort_(");
+                b += (b || d ? "\x26" : "?") + (k ? k + "\x3d" : "sortField=");
                 for (d = 0; d < a.sort.length; d++) {
                     var f = a.sort[d];
-                    b += (0 < d ? "," : "") + (f.descending ? this.descendingPrefix : this.ascendingPrefix) + encodeURIComponent(f.attribute)
+                    b += encodeURIComponent(f.attribute)+ "&desc="+ (f.descending ? true : false)
                 }
-                k || (b += ")")
             }
             var g = e("GET", {
                 url: this.target + (b || ""),

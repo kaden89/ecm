@@ -74,4 +74,10 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
     public void deleteAll() {
         entityManager.createQuery("DELETE FROM "+entityClass.getSimpleName()+" e").executeUpdate();
     }
+
+    @Override
+    public List<T> findAllSortable(String fieldName, boolean desc) {
+        String direction = desc ? "DESC" : "ASC";
+        return entityManager.createQuery("SELECT e FROM "+entityClass.getSimpleName()+" e ORDER BY e."+fieldName+" "+direction).getResultList();
+    }
 }

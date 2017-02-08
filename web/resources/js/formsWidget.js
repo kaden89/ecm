@@ -27,7 +27,7 @@ define([
     "dijit/Dialog",
     "dijit/Editor",
     "dijit/form/Select",
-    "dojo/store/JsonRest",
+    "/ecm/resources/js/myJsonRest.js",
     "dijit/form/FilteringSelect",
     "dojox/mvc/at",
     "dojo/store/Memory",
@@ -85,10 +85,10 @@ define([
                 onClick: lang.hitch(this, close)
             });
             toolbar.addChild(createButton);
-            toolbar.addChild(closeButton);
             if (this.deletable){
                 toolbar.addChild(deleteButton);
             }
+            toolbar.addChild(closeButton);
             toolbar.startup();
 
 

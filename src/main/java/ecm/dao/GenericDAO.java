@@ -21,4 +21,6 @@ public interface GenericDAO<T> {
     void deleteAll();
 
     List<T> findAllByAuthorId(int id);
+
+    List<T> findAllSortable(String fieldName, boolean desc);
 }

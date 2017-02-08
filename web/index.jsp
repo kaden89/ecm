@@ -50,7 +50,7 @@
             "dojo/request/xhr",
             "dojox/image/Lightbox",
             "dojo/dom",
-            "dojo/store/JsonRest",
+            "/ecm/resources/js/myJsonRest.js",
             "dijit/Tree",
             "dijit/tree/ObjectStoreModel",
             "dojo/Stateful",

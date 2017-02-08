@@ -27,7 +27,7 @@ define([
     "dijit/Dialog",
     "dijit/Editor",
     "dijit/form/Select",
-    "dojo/store/JsonRest",
+    "/ecm/resources/js/myJsonRest.js",
     "dijit/form/FilteringSelect",
     "dojox/mvc/at",
     "dojo/store/Memory",

@@ -24,8 +24,8 @@ public class EmployeeRestController extends AbstractRestController{
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEmployees(@Context HttpServletRequest req){
-        GenericEntity<List<AbstractStaffDTO>> employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(staffDTOConverter.toDtoCollection(new ArrayList<>(personDAO.findAll())))) {
+    public Response getEmployees(@QueryParam("sortField") String field, @QueryParam("desc") boolean desc){
+        GenericEntity<List<AbstractStaffDTO>> employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(staffDTOConverter.toDtoCollection(new ArrayList<>(personDAO.findAllSortable(field, desc))))) {
         };
         int size = employees.getEntity().size();
         //TODO Paging need to implementing
