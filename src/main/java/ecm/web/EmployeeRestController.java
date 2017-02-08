@@ -124,7 +124,6 @@ public class EmployeeRestController extends AbstractRestController{
     @DELETE
     @Path("/{id}")
     public Response deleteEmployee(@PathParam("id") int personId){
-        //log.info("delete organization with id "+organizationId);
         personDAO.delete(personId);
         return Response.ok().build();
     }

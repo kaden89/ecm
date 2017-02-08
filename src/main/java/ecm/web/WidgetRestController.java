@@ -4,8 +4,7 @@ import ecm.model.Incoming;
 import ecm.model.Outgoing;
 import ecm.model.Person;
 import ecm.model.Task;
-import ecm.web.dto.DocumentWidgetResponse;
-import ecm.web.dto.StaffWidgetResponse;
+import ecm.web.dto.*;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -26,18 +25,28 @@ public class WidgetRestController extends AbstractRestController{
     private ClassLoader classLoader = getClass().getClassLoader();
 
     @GET
-    @Path("/person/new")
+    @Path("/persons")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPersons(){
+        DocumentWidgetResponse response = new DocumentWidgetResponse();
+        response.setTemplate(readFile("/html/grid.html"));
+        response.setScript(readFile("/js/personGrid.js"));
+        return Response.ok(response).build();
+    }
+
+    @GET
+    @Path("/persons/new")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNewEmployeeTemplate(){
         StaffWidgetResponse response = new StaffWidgetResponse();
         response.setTemplate(readFile("/html/person.html"));
         response.setScript(readFile("/js/person.js"));
-        response.setEntity(staffDTOConverter.toDTO(new Person()));
+        response.setEntity(new PersonDTO());
         return Response.ok(response).build();
     }
 
     @GET
-    @Path("/person/{id}")
+    @Path("/persons/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeTemplate(@PathParam("id") int employeeId){
         StaffWidgetResponse response = new StaffWidgetResponse();
@@ -64,6 +73,7 @@ public class WidgetRestController extends AbstractRestController{
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/incoming.html"));
         response.setScript(readFile("/js/incoming.js"));
+        response.setEntity(new IncomingDTO());
         return Response.ok(response).build();
     }
 
@@ -96,6 +106,7 @@ public class WidgetRestController extends AbstractRestController{
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/outgoing.html"));
         response.setScript(readFile("/js/outgoing.js"));
+        response.setEntity(new OutgoingDTO());
         return Response.ok(response).build();
     }
 
@@ -128,6 +139,7 @@ public class WidgetRestController extends AbstractRestController{
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/task.html"));
         response.setScript(readFile("/js/task.js"));
+        response.setEntity(new TaskDTO());
         return Response.ok(response).build();
     }
 
@@ -139,7 +151,6 @@ public class WidgetRestController extends AbstractRestController{
         response.setTemplate(readFile("/html/task.html"));
         response.setEntity(documentDTOConverter.toDTO(taskDAO.find(taskId)));
         response.setScript(readFile("/js/task.js"));
-
         return Response.ok(response).build();
     }
 

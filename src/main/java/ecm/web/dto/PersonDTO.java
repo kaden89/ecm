@@ -14,6 +14,7 @@ public class PersonDTO extends AbstractStaffDTO {
     private String position;
     private LocalDate birthday;
     private String fullname;
+    private String restUrl = "persons";
 
     public PersonDTO() {
     }
@@ -74,5 +75,13 @@ public class PersonDTO extends AbstractStaffDTO {
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+
+    public String getRestUrl() {
+        return restUrl;
+    }
+
+    public void setRestUrl(String restUrl) {
+        this.restUrl = restUrl;
     }
 }

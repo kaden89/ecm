@@ -50,17 +50,19 @@ define([
              at, Memory, CheckBox) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
-        isNew: false,
         store: null,
         script: null,
         tree: null,
-        constructor: function (args, store, tree) {
-            this.templateString = args.template;
-            this.model = new Stateful(args.entity);
-            this.store = store;
-            this.script = args.script;
-            this.tree = tree;
-            if (args.entity == undefined) this.isNew = true;
+        deletable: true,
+        constructor: function (response, params) {
+            this.templateString = response.template;
+            this.model = new Stateful(response.entity);
+            this.store = params.store;
+            this.script = response.script;
+            this.tree = params.tree;
+            if (params.deletable != undefined){
+                this.deletable = params.deletable;
+            }
         }
         ,
         startup: function () {
@@ -83,16 +85,18 @@ define([
                 onClick: lang.hitch(this, close)
             });
             toolbar.addChild(createButton);
-            toolbar.addChild(deleteButton);
             toolbar.addChild(closeButton);
+            if (this.deletable){
+                toolbar.addChild(deleteButton);
+            }
             toolbar.startup();
 
 
             function close() {
                 var tabPane = registry.byId("TabContainer");
                 var pane;
-                if (this.isNew) {
-                    pane = registry.byId("newPane_");
+                if (this.model.id == undefined) {
+                    pane = registry.byId("newPane_"+this.model.restUrl);
                 }
                 else {
                     pane = registry.byId("pane_" + this.model.id);
@@ -149,17 +153,17 @@ define([
                             this.model.set(k, data[k]);
                         }
                         //Dojo can't correctly handle id changing, so close old pane and create new one
-                        var pane = registry.byId("newPane_");
+                        var pane = registry.byId("newPane_"+data.restUrl);
                         var tabContainer = registry.byId("TabContainer");
                         tabContainer.removeChild(pane);
                         pane.set("title", data.fullname);
                         pane.set("id", "pane_"+data.id);
-                        registry.remove("newPane_");
+                        registry.remove("newPane_"+data.restUrl);
                         registry.add(pane);
                         tabContainer.addChild(pane);
                         tabContainer.selectChild(pane);
-
-                        updateTree();
+                        toolbar.addChild(deleteButton);
+                        updateTree.call(this);
                     }.bind(this), function (err) {
                         // Handle the error condition
                     }, function (evt) {

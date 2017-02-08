@@ -64,12 +64,17 @@ define([
         script: null,
         tree: null,
         restUrl: null,
+        closable: true,
         constructor: function (args, params) {
             this.templateString = args.template;
             this.store = params.store;
             this.script = args.script;
             this.tree = params.tree;
             this.restUrl = params.restUrl;
+            if (params.closable != undefined){
+                this.closable = params.closable;
+            }
+
         }
         ,
         startup: function () {
@@ -89,7 +94,7 @@ define([
             var deleteButton = new Button({
                 label: "Delete",
                 iconClass: "dijitEditorIcon dijitEditorIconDelete",
-                onClick: deleteSelected
+                onClick: lang.hitch(this, deleteSelected)
             });
 
             var closeButton = new Button({
@@ -100,19 +105,17 @@ define([
 
             toolbar.addChild(createButton);
             toolbar.addChild(deleteButton);
-            toolbar.addChild(closeButton);
+
+            if (this.closable){
+                toolbar.addChild(closeButton);
+            }
 
             function close() {
                 var tabPane = Registry.byId("TabContainer");
-                var pane;
-                if (this.isNew) {
-                    pane = Registry.byId("newPane_");
-                }
-                else {
-                    pane = Registry.byId("pane_"+this.restUrl);
-                }
+                var pane = Registry.byId("pane_"+this.restUrl);
                 tabPane.removeChild(pane);
                 tabPane.selectChild(Registry.byId("WelcomPane"));
+                Registry.remove(pane);
                 pane.destroy();
             }
 
@@ -158,17 +161,25 @@ define([
                                     return;
                                 },
                                 onExecute: function () {
-                                    grid.store.remove(selectedItem).then(success, error);
-                                }
+                                    var pane = Registry.byId("pane_"+selectedItem);
+                                    if (pane){
+                                        var tabContainer = Registry.byId("TabContainer");
+                                        tabContainer.removeChild(pane);
+                                        Registry.remove(pane);
+                                        pane.destroy();
+                                    }
+                                    grid.store.remove(selectedItem).then(success.bind(this), error);
+                                }.bind(this)
 
                             });
                             deleteDialog.show();
                         }
-                    });
+                    }.bind(this));
                 }
             }
 
             function success() {
+                var tree = this.tree;
                 tree.dndController.selectNone();
                 tree.model.store.clearOnClose = true;
                 tree._itemNodesMap = {};
@@ -179,7 +190,7 @@ define([
                 tree.rootNode.destroyRecursive();
 
                 // Recreate the model, (with the model again)
-                tree.model.constructor(dijit.byId("personTree").model);
+                tree.model.constructor(dijit.byId(this.tree.id).model);
 
                 // Rebuild the tree
                 tree.postMixInProperties();
@@ -201,19 +212,20 @@ define([
                 xhr("/ecm/rest/widgets/"+this.restUrl+"/new", {
                     handleAs: "json"
                 }).then(function (data) {
-                    var widget = new formsWidget(data, this.store);
+                    var params = {store: this.store, tree: this.tree, deletable: false};
+                    var widget = new formsWidget(data, params);
                     var tabContainer = Registry.byId("TabContainer");
-                    var pane = Registry.byId("newPane_");
+                    var pane = Registry.byId("newPane_"+this.restUrl);
                     if (pane != undefined) {
                         tabContainer.selectChild(pane);
                         return;
                     }
                     var pane = new ContentPane({
-                        title: "New person (Unsaved)", closable: true, onClose: function () {
+                        title: "New "+this.restUrl.slice(0, -1)+ " (Unsaved)", closable: true, onClose: function () {
                             return confirm("Do you really want to Close this?");
                         }
                     });
-                    pane.set("id", "newPane_");
+                    pane.set("id", "newPane_"+this.restUrl);
                     tabContainer.addChild(pane);
                     tabContainer.selectChild(pane);
                     pane.setContent(widget);
@@ -241,7 +253,8 @@ define([
                 xhr("/ecm/rest/widgets/"+this.restUrl+"/" + id, {
                     handleAs: "json"
                 }).then(function (data) {
-                    var widget = new formsWidget(data, store, Registry.byId('documentsTree'));
+                    var params = {store: this.store, tree: this.tree};
+                    var widget = new formsWidget(data, params);
                     var id = data.entity.id;
                     var pane = new ContentPane({
                         title: data.entity.fullname, closable: true
@@ -252,7 +265,7 @@ define([
                     pane.setContent(widget);
                     Registry.add(pane);
 
-                }, function (err) {
+                }.bind(this), function (err) {
                     console.log(err);
                 }, function (evt) {
                     // Handle a progress event from the request if the

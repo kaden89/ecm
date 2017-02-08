@@ -34,7 +34,7 @@ list.startup();
 
 
 var avatar = this.avatar;
-if (!this.isNew){
+if (this.model.id != undefined){
     loadPhoto(this.model.id, avatar);
 }
 
