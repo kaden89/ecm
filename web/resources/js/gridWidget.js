@@ -135,7 +135,7 @@ define([
                     {
                         moduleClass: SingleSort,
                         //Declare initialOrder as module parameter:
-                        initialOrder: {colId: 'name', descending: true}
+                        initialOrder: {colId: 'id', descending: true}
                     },
                     Bar,
                     RowHeader,

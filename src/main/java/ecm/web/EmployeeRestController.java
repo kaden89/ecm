@@ -6,6 +6,7 @@ import ecm.web.dto.PersonDTO;
 import ecm.web.dto.TreeNode;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.*;
@@ -23,11 +24,11 @@ public class EmployeeRestController extends AbstractRestController{
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEmployees(){
+    public Response getEmployees(@Context HttpServletRequest req){
         GenericEntity<List<AbstractStaffDTO>> employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(staffDTOConverter.toDtoCollection(new ArrayList<>(personDAO.findAll())))) {
         };
         int size = employees.getEntity().size();
-        //TODO Paging need dto implementing
+        //TODO Paging need to implementing
 //        String jsonInString = gson.toJson(personDAO.findAll());
 
 
