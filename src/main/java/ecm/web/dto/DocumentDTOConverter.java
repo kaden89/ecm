@@ -14,7 +14,7 @@ import java.util.Collection;
 @Singleton
 public class DocumentDTOConverter implements DTOConverter<Document, AbstractDocumentDTO> {
     @Inject
-    GenericDAO<Person> personDAO;
+    private GenericDAO<Person> personDAO;
 
     public Document fromDTO(AbstractDocumentDTO dto) {
         if (dto instanceof IncomingDTO) {
@@ -49,7 +49,6 @@ public class DocumentDTOConverter implements DTOConverter<Document, AbstractDocu
         } else if (document instanceof Task) {
             TaskDTO taskDTO = new TaskDTO((Task) document);
             return taskDTO;
-
         }
         return null;
     }

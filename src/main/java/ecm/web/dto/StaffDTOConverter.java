@@ -1,8 +1,12 @@
 package ecm.web.dto;
 
+import ecm.dao.GenericDAO;
+import ecm.dao.GenericDaoJpa;
 import ecm.model.Person;
+import ecm.model.Post;
 import ecm.model.Staff;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,9 +16,14 @@ import java.util.Collection;
  */
 @Singleton
 public class StaffDTOConverter implements DTOConverter<Staff, AbstractStaffDTO> {
+    @Inject
+    private GenericDAO<Post> postDAO;
+
     public Staff fromDTO(AbstractStaffDTO dto) {
         if (dto instanceof PersonDTO) {
-            return new Person((PersonDTO) dto);
+            Person person = new Person((PersonDTO) dto);
+            person.setPosition(postDAO.find(((PersonDTO) dto).getPositionId()));
+            return person;
         }
         return null;
     }

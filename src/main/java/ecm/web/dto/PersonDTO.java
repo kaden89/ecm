@@ -11,7 +11,8 @@ public class PersonDTO extends AbstractStaffDTO {
     private String firstname;
     private String surname;
     private String patronymic;
-    private String position;
+    private Integer positionId;
+    private String positionName;
     private LocalDate birthday;
     private String fullname;
     private String restUrl = "persons";
@@ -24,7 +25,8 @@ public class PersonDTO extends AbstractStaffDTO {
         this.firstname = person.getFirstname();
         this.surname = person.getSurname();
         this.patronymic = person.getPatronymic();
-        this.position = person.getPosition();
+        this.positionId = person.getPosition().getId();
+        this.positionName = person.getPosition().getPost();
         this.birthday = person.getBirthday();
         this.fullname = person.toString();
     }
@@ -53,12 +55,12 @@ public class PersonDTO extends AbstractStaffDTO {
         this.patronymic = patronymic;
     }
 
-    public String getPosition() {
-        return position;
+    public Integer getPositionId() {
+        return positionId;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
+    public void setPositionId(Integer position) {
+        this.positionId = position;
     }
 
     public LocalDate getBirthday() {
@@ -83,5 +85,13 @@ public class PersonDTO extends AbstractStaffDTO {
 
     public void setRestUrl(String restUrl) {
         this.restUrl = restUrl;
+    }
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
     }
 }

@@ -163,6 +163,7 @@ define([
                         tabContainer.addChild(pane);
                         tabContainer.selectChild(pane);
                         toolbar.addChild(deleteButton,1);
+                        this.uploader.set('url', '/ecm/rest/employees/'+ data.id+'/photo');
                         updateTree.call(this, this.tree);
                     }.bind(this), function (err) {
                         // Handle the error condition

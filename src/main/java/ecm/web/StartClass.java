@@ -52,10 +52,22 @@ public class StartClass implements ServletContextListener {
     @Inject
     private GenericDAO<Task> taskDAO;
 
+    @Inject
+    private GenericDAO<Post> postDAO;
+
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         context = servletContextEvent.getServletContext();
+
+        Post post1 = new Post("tester");
+        Post post2 = new Post("programmer");
+        Post post3 = new Post("manager");
+
+        postDAO.save(post1);
+        postDAO.save(post2);
+        postDAO.save(post3);
+
         deleteOldDocuments();
         loadStaff();
         try {
@@ -65,8 +77,10 @@ public class StartClass implements ServletContextListener {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        Person test = new Person("test person", "without", "documents", "tester",  LocalDate.now());
-        Person test2 = new Person("test person2", "without", "documents", "tester",  LocalDate.now());
+
+
+        Person test = new Person("test person", "without", "documents", post1,  LocalDate.now());
+        Person test2 = new Person("test person2", "without", "documents", post2,  LocalDate.now());
         personDAO.save(test);
         personDAO.save(test2);
 //        createJSON();

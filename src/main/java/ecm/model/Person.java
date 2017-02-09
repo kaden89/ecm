@@ -24,7 +24,9 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     private String surname;
     @NotNull
     private String patronymic;
-    private String position;
+    @NotNull
+    @ManyToOne
+    private Post position;
     @XmlTransient
     @GsonExclude
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "owner")
@@ -36,7 +38,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     public Person() {
     }
 
-    public Person(String firstName, String surname, String patronymic, String position, LocalDate birthday) {
+    public Person(String firstName, String surname, String patronymic, Post position, LocalDate birthday) {
         this.firstname = firstName;
         this.surname = surname;
         this.patronymic = patronymic;
@@ -49,7 +51,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
         this.firstname = dto.getFirstname();
         this.surname = dto.getSurname();
         this.patronymic = dto.getPatronymic();
-        this.position = dto.getPosition();
+        this.position = null;
         this.birthday = dto.getBirthday();
     }
 
@@ -78,11 +80,11 @@ public class Person extends Staff implements Comparable<Person>, Storable{
         this.patronymic = patronymic;
     }
 
-    public String getPosition() {
+    public Post getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(Post position) {
         this.position = position;
     }
 

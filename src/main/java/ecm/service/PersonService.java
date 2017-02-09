@@ -49,4 +49,10 @@ public class PersonService extends GenericServiceImpl<Person>  {
         }
         if (haveDocuments) throw new HasLinksException(builder.toString());
     }
+
+    @Override
+    public List<Person> findAllSorted(String field, String direction) {
+        if (field.equals("positionName")) field = "position.post";
+        return super.findAllSorted(field, direction);
+    }
 }

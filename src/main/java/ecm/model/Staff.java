@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @Access(value = AccessType.FIELD)
 public abstract class Staff {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Expose
     @NotNull
     private Integer id;
@@ -30,6 +30,7 @@ public abstract class Staff {
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }

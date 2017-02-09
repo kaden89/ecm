@@ -119,11 +119,14 @@
                                 <label>Position:</label>
                             </td>
                             <td>
-                                <input type="text"
-                                       name="position"
-                                       required="true"
-                                       data-dojo-type="dijit/form/ValidationTextBox"
-                                       data-dojo-props="value: at(this.model, 'position')">
+                                <div data-dojo-type="dojo/store/JsonRest"
+                                     data-dojo-props="target:'http://localhost:8080/ecm/rest/employees/posts', idProperty:'id'"
+                                     data-dojo-id="postStore"></div>
+                                <select required="true"
+                                        name="positionId"
+                                        data-dojo-type="dijit/form/FilteringSelect"
+                                        data-dojo-props="value: at(this.model, 'positionId'), store: postStore, labelAttr: 'post', searchAttr: 'post'"
+                                        data-dojo-attach-point="position"> </select>
                             </td>
                         </tr>
                     </table>

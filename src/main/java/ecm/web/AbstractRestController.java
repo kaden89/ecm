@@ -36,6 +36,9 @@ public class AbstractRestController {
     private GenericService<Task> taskService;
 
     @Inject
+    private GenericService<Post> postService;
+
+    @Inject
     private ImageService imageService;
 
     @Inject
@@ -111,5 +114,13 @@ public class AbstractRestController {
 
     public void setStaffDTOConverter(DTOConverter<Staff, AbstractStaffDTO> staffDTOConverter) {
         this.staffDTOConverter = staffDTOConverter;
+    }
+
+    public GenericService<Post> getPostService() {
+        return postService;
+    }
+
+    public void setPostService(GenericService<Post> postService) {
+        this.postService = postService;
     }
 }

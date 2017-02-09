@@ -24,10 +24,10 @@ public class EmployeeRestController extends AbstractRestController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEmployees(@QueryParam("sortField") String field, @QueryParam("direction") String direction) {
+    public Response getEmployees(@QueryParam("sortField") String sortField, @QueryParam("direction") String direction) {
         GenericEntity<List<AbstractStaffDTO>> employees;
-        if (field != null) {
-            employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAllSorted(field, direction))))) {
+        if (sortField != null) {
+            employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAllSorted(sortField, direction))))) {
             };
         } else {
             employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAll())))) {
@@ -36,6 +36,21 @@ public class EmployeeRestController extends AbstractRestController {
         int size = employees.getEntity().size();
         //TODO Paging need to implementing
         return Response.ok(employees).header("Content-Range", "items 0-" + size + "/" + size).build();
+    }
+
+    @GET
+    @Path("/posts")
+    public Response getPosts() {
+        GenericEntity<List<Post>> posts = new GenericEntity<List<Post>>(new ArrayList<>(new ArrayList<>(getPostService().findAll()))) {
+        };
+        int size = posts.getEntity().size();
+        return Response.ok(posts).header("Content-Range", "items 0-" + size + "/" + size).build();
+    }
+
+    @GET
+    @Path("/posts/{id}")
+    public Response getPosts(@PathParam("id") int postId) {
+        return Response.ok(getPostService().find(postId)).build();
     }
 
     @GET
