@@ -12,15 +12,15 @@ public interface GenericDAO<T> {
 
     T find(int id);
 
-    T save(Storable entity);
+    T save(T entity);
 
     T update(T entity);
 
-    void delete(int id) throws TransactionalException;
+    void delete(T entity);
 
     void deleteAll();
 
     List<T> findAllByAuthorId(int id);
 
-    List<T> findAllSortable(String fieldName, boolean desc);
+    List<T> findAllSorted(String fieldName, String direction);
 }

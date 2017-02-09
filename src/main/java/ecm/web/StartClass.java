@@ -158,10 +158,12 @@ public class StartClass implements ServletContextListener {
     }
 
     private void loadStaff() {
-        try {
-            InputStream personsStream = context.getResourceAsStream("/resources/xml/persons.xml");
-            InputStream organizationsStream = context.getResourceAsStream("/resources/xml/organizations.xml");
-            InputStream departmentsStream = context.getResourceAsStream("/resources/xml/departments.xml");
+        try(
+                InputStream personsStream = context.getResourceAsStream("/resources/xml/persons.xml");
+                InputStream organizationsStream = context.getResourceAsStream("/resources/xml/organizations.xml");
+                InputStream departmentsStream = context.getResourceAsStream("/resources/xml/departments.xml")
+        ) {
+
 
             JAXBContext context = JAXBContext.newInstance(Organizations.class, Departments.class, Persons.class, Person.class);
             Unmarshaller um = context.createUnmarshaller();
@@ -174,9 +176,7 @@ public class StartClass implements ServletContextListener {
             List<Person> personList = persons.getPersons();
 
             List<Person> tmp = personDAO.findAll();
-//            for (Person person : tmp) {
-//                personDAO.delete(person.getId());
-//            }
+
             for (Person person : personList) {
                 personDAO.save(person);
                 //TODO костыль
@@ -187,6 +187,8 @@ public class StartClass implements ServletContextListener {
             MemoryStore.departmentStore = departments.getDepartments();
 
         } catch (JAXBException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

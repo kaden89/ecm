@@ -50,12 +50,9 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
     }
 
     @Override
-    public T save(Storable entity) {
-        if (entity.getId() == null)
-            entityManager.persist(entity);
-        else
-            entityManager.merge(entity);
-        return find(entity.getId());
+    public T save(T entity) {
+        entityManager.persist(entity);
+        return entity;
     }
 
     @Override
@@ -65,8 +62,7 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
 
 
     @Override
-    public void delete(int id){
-        T entity = find(id);
+    public void delete(T entity){
         entityManager.remove(entity);
     }
 
@@ -76,8 +72,7 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
     }
 
     @Override
-    public List<T> findAllSortable(String fieldName, boolean desc) {
-        String direction = desc ? "DESC" : "ASC";
+    public List<T> findAllSorted(String fieldName, String direction) {
         return entityManager.createQuery("SELECT e FROM "+entityClass.getSimpleName()+" e ORDER BY e."+fieldName+" "+direction).getResultList();
     }
 }

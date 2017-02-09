@@ -6,7 +6,6 @@ import ecm.web.dto.PersonDTO;
 import ecm.web.dto.TreeNode;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.*;
@@ -22,25 +21,30 @@ import java.util.List;
 public class EmployeeRestController extends AbstractRestController{
     static final String REST_URL = "/employees";
 
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEmployees(@QueryParam("sortField") String field, @QueryParam("desc") boolean desc){
-        GenericEntity<List<AbstractStaffDTO>> employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(staffDTOConverter.toDtoCollection(new ArrayList<>(personDAO.findAllSortable(field, desc))))) {
-        };
+    public Response getEmployees(@QueryParam("sortField") String field, @QueryParam("direction") String direction){
+        GenericEntity<List<AbstractStaffDTO>> employees;
+        if (field !=null) {
+            employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAllSorted(field, direction))))) {
+            };
+        }
+        else {
+            employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAll())))) {
+            };
+        }
         int size = employees.getEntity().size();
         //TODO Paging need to implementing
-//        String jsonInString = gson.toJson(personDAO.findAll());
-
-
-        return Response.ok(employees).header( "Content-Range" , "items 0-"+size+"/"+size).build();
+     return Response.ok(employees).header( "Content-Range" , "items 0-"+size+"/"+size).build();
     }
 
     @GET
     @Path("/personTree")
     public Response getPersonRoot(){
-        List<AbstractStaffDTO> dtos = new ArrayList<>(staffDTOConverter.toDtoCollection(new ArrayList<>(personDAO.findAll())));
+        List<AbstractStaffDTO> dtos = new ArrayList<>(getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAll())));
         TreeNode<AbstractStaffDTO> root = new TreeNode<>("Employees", "", dtos, "employees");
-        String jsonInString = gson.toJson(root);
+        String jsonInString = toJson(root);
         return Response.ok(jsonInString).build();
     }
 
@@ -48,9 +52,9 @@ public class EmployeeRestController extends AbstractRestController{
     @Path("/tree")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeRoot(){
-        List<AbstractStaffDTO> dtos = new ArrayList<>(staffDTOConverter.toDtoCollection(new ArrayList<>(personDAO.findAll())));
+        List<AbstractStaffDTO> dtos = new ArrayList<>(getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAll())));
         TreeNode<AbstractStaffDTO> root = new TreeNode<>("Employees", "root", dtos, "employees");
-        String jsonInString = gson.toJson(root);
+        String jsonInString = toJson(root);
         return Response.ok(jsonInString).build();
     }
 
@@ -58,36 +62,36 @@ public class EmployeeRestController extends AbstractRestController{
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployee(@PathParam("id") int employeeId){
-        AbstractStaffDTO person = staffDTOConverter.toDTO(personDAO.find(employeeId));
+        AbstractStaffDTO person = getStaffDTOConverter().toDTO(getPersonService().find(employeeId));
         return Response.ok(person).build();
     }
 
-    @GET
-    @Path("/{id}/incoming")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getEmployeeIncomingDocuments(@PathParam("id") int employeeId){
-        GenericEntity<List<Incoming>> incomings = new GenericEntity<List<Incoming>>(incomingDAO.findAllByAuthorId(employeeId)) {
-        };
-        return Response.ok(incomings).build();
-    }
-
-    @GET
-    @Path("/{id}/outgoing")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getEmployeeOutgoingDocuments(@PathParam("id") int employeeId){
-        GenericEntity<List<Outgoing>> outgoings = new GenericEntity<List<Outgoing>>(outgoingDAO.findAllByAuthorId(employeeId)) {
-        };
-        return Response.ok(outgoings).build();
-    }
-
-    @GET
-    @Path("/{id}/task")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getEmployeeTaskDocuments(@PathParam("id") int employeeId){
-        GenericEntity<List<Task>> tasks = new GenericEntity<List<Task>>(taskDAO.findAllByAuthorId(employeeId)) {
-        };
-        return Response.ok(tasks).build();
-    }
+//    @GET
+//    @Path("/{id}/incoming")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getEmployeeIncomingDocuments(@PathParam("id") int employeeId){
+//        GenericEntity<List<Incoming>> incomings = new GenericEntity<List<Incoming>>(incomingService.findAllByAuthorId(employeeId)) {
+//        };
+//        return Response.ok(incomings).build();
+//    }
+//
+//    @GET
+//    @Path("/{id}/outgoing")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getEmployeeOutgoingDocuments(@PathParam("id") int employeeId){
+//        GenericEntity<List<Outgoing>> outgoings = new GenericEntity<List<Outgoing>>(outgoingService.findAllByAuthorId(employeeId)) {
+//        };
+//        return Response.ok(outgoings).build();
+//    }
+//
+//    @GET
+//    @Path("/{id}/task")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getEmployeeTaskDocuments(@PathParam("id") int employeeId){
+//        GenericEntity<List<Task>> tasks = new GenericEntity<List<Task>>(taskService.findAllByAuthorId(employeeId)) {
+//        };
+//        return Response.ok(tasks).build();
+//    }
 
     @GET
     @Path("/{id}/documents")
@@ -107,8 +111,8 @@ public class EmployeeRestController extends AbstractRestController{
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateEmployee(@PathParam("id") int id, PersonDTO dto){
         dto.setId(id);
-        Person updated = personDAO.update((Person) staffDTOConverter.fromDTO(dto));
-        return Response.ok(staffDTOConverter.toDTO(updated)).build();
+        Person updated = getPersonService().update((Person) getStaffDTOConverter().fromDTO(dto));
+        return Response.ok(getStaffDTOConverter().toDTO(updated)).build();
     }
 
     @POST
@@ -116,8 +120,8 @@ public class EmployeeRestController extends AbstractRestController{
     @Produces(MediaType.APPLICATION_JSON)
     public Response createEmployee(PersonDTO dto){
         dto.setId(null);
-        Person person = personDAO.save((Person) staffDTOConverter.fromDTO(dto));
-        return Response.ok(staffDTOConverter.toDTO(person)).build();
+        Person person = getPersonService().save((Person) getStaffDTOConverter().fromDTO(dto));
+        return Response.ok(getStaffDTOConverter().toDTO(person)).build();
     }
 
 
@@ -125,7 +129,7 @@ public class EmployeeRestController extends AbstractRestController{
     @DELETE
     @Path("/{id}")
     public Response deleteEmployee(@PathParam("id") int personId){
-        personDAO.delete(personId);
+        getPersonService().delete(getPersonService().find(personId));
         return Response.ok().build();
     }
 
@@ -133,7 +137,7 @@ public class EmployeeRestController extends AbstractRestController{
     @Path("/{id}/photo")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPhoto(@PathParam("id") int ownerId){
-       return Response.ok(imageDAO.findByOwnerId(ownerId)).build();
+       return Response.ok(getImageService().findByOwnerId(ownerId)).build();
     }
 
     @POST
@@ -148,13 +152,13 @@ public class EmployeeRestController extends AbstractRestController{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Image image = imageDAO.findByOwnerId(ownerId);
+        Image image = getImageService().findByOwnerId(ownerId);
         if (image==null){
-            result = imageDAO.save(new Image(personDAO.find(ownerId), bytes));
+            result = getImageService().save(new Image(getPersonService().find(ownerId), bytes));
         }
         else {
             image.setImage(bytes);
-            result = imageDAO.update(image);
+            result = getImageService().update(image);
         }
 
        return Response.ok(result).build();

@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
  */
 @Singleton
 @Transactional
-public class ImageDaoJPA {
+public class ImageDaoJPA implements ImageDAO{
     @PersistenceContext(unitName="EcmPersistence")
     EntityManager entityManager;
 

@@ -1,9 +1,5 @@
 package ecm.web;
 
-import ecm.model.Incoming;
-import ecm.model.Outgoing;
-import ecm.model.Person;
-import ecm.model.Task;
 import ecm.web.dto.*;
 
 import javax.ws.rs.GET;
@@ -51,7 +47,7 @@ public class WidgetRestController extends AbstractRestController{
     public Response getEmployeeTemplate(@PathParam("id") int employeeId){
         StaffWidgetResponse response = new StaffWidgetResponse();
         response.setTemplate(readFile("/html/person.html"));
-        response.setEntity(staffDTOConverter.toDTO(personDAO.find(employeeId)));
+        response.setEntity(getStaffDTOConverter().toDTO(getPersonService().find(employeeId)));
         response.setScript(readFile("/js/person.js"));
 
         return Response.ok(response).build();
@@ -83,7 +79,7 @@ public class WidgetRestController extends AbstractRestController{
     public Response getIncomingTemplate(@PathParam("id") int incomingId){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/incoming.html"));
-        response.setEntity(documentDTOConverter.toDTO(incomingDAO.find(incomingId)));
+        response.setEntity(getDocumentDTOConverter().toDTO(getIncomingService().find(incomingId)));
         response.setScript(readFile("/js/incoming.js"));
 
         return Response.ok(response).build();
@@ -116,7 +112,7 @@ public class WidgetRestController extends AbstractRestController{
     public Response getOutgoingTemplate(@PathParam("id") int outgoingId){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/outgoing.html"));
-        response.setEntity(documentDTOConverter.toDTO(outgoingDAO.find(outgoingId)));
+        response.setEntity(getDocumentDTOConverter().toDTO(getOutgoingService().find(outgoingId)));
         response.setScript(readFile("/js/outgoing.js"));
 
         return Response.ok(response).build();
@@ -149,7 +145,7 @@ public class WidgetRestController extends AbstractRestController{
     public Response getTaskTemplate(@PathParam("id") int taskId){
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/task.html"));
-        response.setEntity(documentDTOConverter.toDTO(taskDAO.find(taskId)));
+        response.setEntity(getDocumentDTOConverter().toDTO(getTaskService().find(taskId)));
         response.setScript(readFile("/js/task.js"));
         return Response.ok(response).build();
     }

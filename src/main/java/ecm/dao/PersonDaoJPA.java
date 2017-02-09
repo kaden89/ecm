@@ -29,9 +29,9 @@ public class PersonDaoJPA extends GenericDaoJpa<Person>{
     GenericDAO<Task> taskDAO;
 
     @Override
-    public void delete(int id) {
-        checkAvailabilityOfDocumentsByAuthorId(id);
-        super.delete(id);
+    public void delete(Person person) {
+        checkAvailabilityOfDocumentsByAuthorId(person.getId());
+        super.delete(person);
     }
 
     private void checkAvailabilityOfDocumentsByAuthorId(int id){
