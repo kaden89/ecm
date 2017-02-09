@@ -19,33 +19,5 @@ import java.util.List;
 @Singleton
 @Transactional
 public class PersonDaoJPA extends GenericDaoJpa<Person>{
-    @Inject
-    GenericDAO<Outgoing> outgoingDAO;
 
-    @Inject
-    GenericDAO<Incoming> incomingDAO;
-
-    @Inject
-    GenericDAO<Task> taskDAO;
-
-    @Override
-    public void delete(Person person) {
-        checkAvailabilityOfDocumentsByAuthorId(person.getId());
-        super.delete(person);
-    }
-
-    private void checkAvailabilityOfDocumentsByAuthorId(int id){
-        List<Document> all = new ArrayList<>();
-        all.addAll(outgoingDAO.findAllByAuthorId(id));
-        all.addAll(incomingDAO.findAllByAuthorId(id));
-        all.addAll(taskDAO.findAllByAuthorId(id));
-
-        boolean haveDocuments = all.size() != 0;
-        StringBuilder builder = new StringBuilder("Cannot delete "+find(id).toString() + ". He has next documents:");
-        for (Document document : all) {
-            builder.append(System.lineSeparator());
-            builder.append(document.toString());
-        }
-        if (haveDocuments) throw new HasLinksException(builder.toString());
-    }
 }

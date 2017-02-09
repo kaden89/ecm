@@ -155,7 +155,7 @@ define([
                         if (selectedItem !== null) {
                             deleteDialog = new ConfirmDialog({
                                 title: "Delete",
-                                content: "Are you sure that you want to delete person with id " + selectedItem + "?",
+                                content: "Are you sure that you want to delete "+this.restUrl.slice(0, -1)+" with id " + selectedItem + "?",
                                 style: "width: 300px",
                                 onCancel: function () {
                                     return;
@@ -206,9 +206,11 @@ define([
                         return;
                     }
                     var pane = new ContentPane({
-                        title: "New "+this.restUrl.slice(0, -1)+ " (Unsaved)", closable: true, onClose: function () {
-                            return confirm("Do you really want to Close this?");
-                        }
+                        title: "New "+this.restUrl.slice(0, -1)+ " (Unsaved)",
+                        closable: true
+                        // onClose: function () {
+                        //     return confirm("Do you really want to Close this?");
+                        // }
                     });
                     pane.set("id", "newPane_"+this.restUrl);
                     tabContainer.addChild(pane);
