@@ -38,6 +38,7 @@ public abstract class AbstractDocumentDTO {
         this.authorName = document.getAuthor().toString();
 
     }
+
     public AbstractDocumentDTO(Integer id, String name, String text, String regNumber, LocalDate date, Integer authorId) {
         this.id = id;
         this.name = name;

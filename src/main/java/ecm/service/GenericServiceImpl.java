@@ -37,8 +37,8 @@ public abstract class GenericServiceImpl<T> implements GenericService<T> {
     }
 
     @Override
-    public void delete(T entity) {
-        this.getGenericDao().delete(entity);
+    public void delete(int id) {
+        this.getGenericDao().delete(getGenericDao().find(id));
     }
 
     @Override

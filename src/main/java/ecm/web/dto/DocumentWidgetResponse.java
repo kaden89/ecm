@@ -4,7 +4,7 @@ package ecm.web.dto;
  * Created by dkarachurin on 23.01.2017.
  */
 
-public class DocumentWidgetResponse extends AbstractWidgetResponse{
+public class DocumentWidgetResponse extends AbstractWidgetResponse {
     private AbstractDocumentDTO entity;
 
     public DocumentWidgetResponse() {

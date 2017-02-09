@@ -16,6 +16,7 @@ public class TaskDTO extends AbstractDocumentDTO {
     private String controllerName;
     private boolean isControlled;
     private String restUrl = "tasks";
+
     public TaskDTO() {
     }
 

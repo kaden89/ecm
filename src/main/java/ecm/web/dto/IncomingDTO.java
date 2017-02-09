@@ -7,7 +7,7 @@ import java.time.LocalDate;
 /**
  * Created by dkarachurin on 01.02.2017.
  */
-public class IncomingDTO extends AbstractDocumentDTO{
+public class IncomingDTO extends AbstractDocumentDTO {
     private Integer senderId;
     private String senderName;
     private Integer recipientId;

@@ -45,7 +45,7 @@ public class AbstractRestController {
     private DTOConverter<Staff, AbstractStaffDTO> staffDTOConverter;
 
 
-    String toJson(Object obj){
+    String toJson(Object obj) {
         return gsonUtil.getGson().toJson(obj);
     }
 

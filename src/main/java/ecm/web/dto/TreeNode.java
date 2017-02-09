@@ -16,7 +16,7 @@ public class TreeNode<T> {
     public TreeNode() {
     }
 
-    public TreeNode(String name, String id, List<T> children, boolean haveChildren, String restUrl ){
+    public TreeNode(String name, String id, List<T> children, boolean haveChildren, String restUrl) {
         this.name = name;
         this.id = id;
         this.children = children;

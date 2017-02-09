@@ -135,7 +135,7 @@ define([
                     {
                         moduleClass: SingleSort,
                         //Declare initialOrder as module parameter:
-                        initialOrder: {colId: 'id', descending: true}
+                        initialOrder: {colId: 'id', descending: false}
                     },
                     Bar,
                     RowHeader,
@@ -179,22 +179,7 @@ define([
             }
 
             function success() {
-                var tree = this.tree;
-                tree.dndController.selectNone();
-                tree.model.store.clearOnClose = true;
-                tree._itemNodesMap = {};
-                tree.rootNode.state = "UNCHECKED";
-                tree.model.childrenCache = null;
-
-                // Destroy the widget
-                tree.rootNode.destroyRecursive();
-
-                // Recreate the model, (with the model again)
-                tree.model.constructor(dijit.byId(this.tree.id).model);
-
-                // Rebuild the tree
-                tree.postMixInProperties();
-                tree._load();
+                updateTree.call(this, this.tree);
             }
 
             function error(err) {

@@ -14,10 +14,9 @@
                         <label>ID:</label>
                     </td>
                     <td>
-                        <input type="text"
-                               name="id"
-                               data-dojo-type="dijit/form/TextBox"
-                               data-dojo-props="value: at(this.model, 'id'), readOnly: true">
+                        <span data-dojo-type="dojox/mvc/Output"
+                              data-dojo-attach-point="entityId"
+                              data-dojo-props="value: at(this.model, 'id')"></span>
                     </td>
                 </tr>
                 <tr>
@@ -41,7 +40,7 @@
                     </td>
                     <td>
                         <select required="true"
-                                name = "authorId"
+                                name="authorId"
                                 data-dojo-type="dijit/form/FilteringSelect"
                                 data-dojo-props="value: at(this.model, 'authorId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
                                 data-dojo-attach-point="author"> </select>
@@ -53,7 +52,7 @@
                     </td>
                     <td>
                         <select required="true"
-                                name = "executorId"
+                                name="executorId"
                                 data-dojo-type="dijit/form/FilteringSelect"
                                 data-dojo-props="value: at(this.model, 'executorId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
                                 data-dojo-attach-point="executor"> </select>
@@ -65,7 +64,7 @@
                     </td>
                     <td>
                         <select required="true"
-                                name = "controllerId"
+                                name="controllerId"
                                 data-dojo-type="dijit/form/FilteringSelect"
                                 data-dojo-props="value: at(this.model, 'controllerId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
                                 data-dojo-attach-point="controller"> </select>
@@ -148,12 +147,11 @@
                         <label>Text:</label>
                     </td>
                     <td>
-                        <div data-dojo-type="dijit/Editor" name = "text" data-dojo-props="value: at(this.model, 'text')">
+                        <div data-dojo-type="dijit/Editor" name="text" data-dojo-props="value: at(this.model, 'text')">
                         </div>
                     </td>
                 </tr>
             </table>
-
 
 
             <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">

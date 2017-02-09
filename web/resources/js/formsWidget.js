@@ -129,7 +129,7 @@ define([
                     tabPane.removeChild(pane);
                     tabPane.selectChild(registry.byId("WelcomPane"));
                     pane.destroy();
-                    updateTree.call(this);
+                    updateTree.call(this, this.tree);
                 }
 
                 function error(err) {
@@ -162,8 +162,8 @@ define([
                         registry.add(pane);
                         tabContainer.addChild(pane);
                         tabContainer.selectChild(pane);
-                        toolbar.addChild(deleteButton);
-                        updateTree.call(this);
+                        toolbar.addChild(deleteButton,1);
+                        updateTree.call(this, this.tree);
                     }.bind(this), function (err) {
                         // Handle the error condition
                     }, function (evt) {
@@ -177,7 +177,7 @@ define([
                         var pane = registry.byId("pane_" + data.id);
                         pane.set("title", data.fullname);
                         // pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
-                        updateTree.call(this);
+                        updateTree.call(this, this.tree);
                     }.bind(this), function (err) {
                         // Handle the error condition
                     }, function (evt) {
@@ -187,24 +187,7 @@ define([
                 }
             }
 
-            function updateTree() {
-                tree = this.tree;
-                tree.dndController.selectNone();
-                tree.model.store.clearOnClose = true;
-                tree._itemNodesMap = {};
-                tree.rootNode.state = "UNCHECKED";
-                tree.model.childrenCache = null;
 
-                // Destroy the widget
-                tree.rootNode.destroyRecursive();
-
-                // Recreate the model, (with the model again)
-                tree.model.constructor(this.tree.model);
-
-                // Rebuild the tree
-                tree.postMixInProperties();
-                tree._load();
-            }
 
             eval(this.script);
         }
@@ -215,40 +198,5 @@ define([
         postCreate: function () {
             var a = 1;
         }
-        //     switch(this.alertType) // обращение к переменой в теле виджета.
-        //     {
-        //         case “informing”: {
-        //             this.Nodetitle.innerHTML = “Інформування”; // переменная, которая     подтягивается с шаблона виджета.
-        //             this.Nodemessageimage.src = require.toUrl(“./image/informing.png”);
-        //             domStyle.set(this._startupWidgets[1].domNode, “display”, “none”); /* this._startupWidgets[1] this is button cancel*/
-        //             break;
-        //         }
-        //         case “error”: {
-        //             this.Nodetitle.innerHTML = “Помилка”;
-        //             this.Nodemessageimage.src = require.toUrl(“./image/error.png”);
-        //             domStyle.set(this._startupWidgets[1].domNode, “display”, “none”); /* this._startupWidgets[1] this is button cancel*/
-        //             break;
-        //         }
-        //
-        //         case “success”: {
-        //             this.Nodetitle.innerHTML = “Успішно”;
-        //             this.Nodemessageimage.src = require.toUrl(“./image/success.png”);
-        //             domStyle.set(this._startupWidgets[1].domNode, “display”, “none”); /* this._startupWidgets[1] this is button cancel*/
-        //             break;
-        //         }
-        //         case “question”: {
-        //             this.Nodetitle.innerHTML = “Видійсно хочете виконати данну операцію?”;
-        //             this.Nodemessageimage.src = require.toUrl(“./image/question.png”);
-        //             break;
-        //         }
-        //         case “warning”: {
-        //             this.Nodetitle.innerHTML = “Попередження”;
-        //             this.Nodemessageimage.src = require.toUrl(“./image/warning.png”);
-        //             domStyle.set(this._startupWidgets[1].domNode, “display”, “none”); /* this._startupWidgets[1] this is button cancel*/
-        //             break;
-        //         }
-        //         default: break;
-        //
-        //     }
     });
 });

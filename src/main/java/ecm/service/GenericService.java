@@ -24,7 +24,7 @@ public interface GenericService<T> {
     T update(T updateInstance);
 
     @Transactional
-    void delete(T entity);
+    void delete(int id);
 
     @Transactional
     void deleteAll();
