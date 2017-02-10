@@ -230,7 +230,6 @@ require({
             var widget;
             var id = item.id;
             var widgetUrl;
-            var storeUrl = "/ecm/rest/documents/" + item.restUrl;
             var store;
 
             switch(restUrl) {
@@ -307,12 +306,8 @@ require({
     }).then(function (data) {
         var id, title;
         params = {store: personStore, tree:  Registry.byId('personTree'), restUrl: "persons", closable: false};
-
         widget = new gridWidget(data, params);
-
-        pane = Registry.byId("WelcomPane");
-        pane.setContent(widget);
-
+        widget.placeAt(dom.byId('gridContainer'));
 
     }.bind(this), function (err) {
         console.log(err);

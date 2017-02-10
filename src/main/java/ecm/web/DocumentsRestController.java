@@ -66,9 +66,15 @@ public class DocumentsRestController extends AbstractRestController {
     @GET
     @Path("/tasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTasks() {
-        GenericEntity<List<AbstractDocumentDTO>> tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getTaskService().findAll())))) {
-        };
+    public Response getTasks(@QueryParam("sortField") String sortField, @QueryParam("direction") String direction) {
+        GenericEntity<List<AbstractDocumentDTO>> tasks;
+        if (sortField != null) {
+            tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getTaskService().findAllSorted(sortField, direction))))) {
+            };
+        } else {
+            tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getTaskService().findAll())))) {
+            };
+        }
         int size = tasks.getEntity().size();
         return Response.ok(tasks).header("Content-Range", "items 0-" + size + "/" + size).build();
     }
@@ -76,21 +82,34 @@ public class DocumentsRestController extends AbstractRestController {
     @GET
     @Path("/outgoings")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOutgoings() {
-        GenericEntity<List<AbstractDocumentDTO>> tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getOutgoingService().findAll())))) {
-        };
-        int size = tasks.getEntity().size();
-        return Response.ok(tasks).header("Content-Range", "items 0-" + size + "/" + size).build();
+    public Response getOutgoings(@QueryParam("sortField") String sortField, @QueryParam("direction") String direction) {
+        GenericEntity<List<AbstractDocumentDTO>> outgoings;
+        if (sortField != null) {
+            outgoings = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getOutgoingService().findAllSorted(sortField, direction))))) {
+            };
+        } else {
+            outgoings = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getOutgoingService().findAll())))) {
+            };
+        }
+        int size = outgoings.getEntity().size();
+        return Response.ok(outgoings).header("Content-Range", "items 0-" + size + "/" + size).build();
     }
 
     @GET
     @Path("/incomings")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getIncomings() {
-        GenericEntity<List<AbstractDocumentDTO>> tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getIncomingService().findAll())))) {
-        };
-        int size = tasks.getEntity().size();
-        return Response.ok(tasks).header("Content-Range", "items 0-" + size + "/" + size).build();
+    public Response getIncomings(@QueryParam("sortField") String sortField, @QueryParam("direction") String direction) {
+        GenericEntity<List<AbstractDocumentDTO>> incoming;
+        if (sortField != null) {
+            incoming = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getIncomingService().findAllSorted(sortField, direction))))) {
+            };
+        } else {
+            incoming = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getIncomingService().findAll())))) {
+            };
+        }
+
+        int size = incoming.getEntity().size();
+        return Response.ok(incoming).header("Content-Range", "items 0-" + size + "/" + size).build();
     }
 
     @POST
