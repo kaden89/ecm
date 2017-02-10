@@ -43,6 +43,11 @@ define([
     "gridx/modules/Bar",
     "dojo/store/Observable",
     "dijit/layout/ContentPane",
+    "gridx/modules/ColumnResizer",
+    "gridx/modules/NestedSort",
+    "gridx/modules/Filter",
+    "gridx/modules/filter/FilterBar",
+    "gridx/modules/filter/QuickFilter",
     "dojo/on",
     "dojo/require",
     "dijit/layout/ContentPane",
@@ -58,7 +63,7 @@ define([
 
 ], function (declare, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, Registry, request, xhr,
              domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor, Select, JsonRest, FilteringSelect,
-             at, Memory, CheckBox,formsWidget, GridX, Dod, Cache, RowHeader, Row, IndirectSelect, SingleSort, Bar, Observable, ContentPane) {
+             at, Memory, CheckBox,formsWidget, GridX, Dod, Cache, RowHeader, Row, IndirectSelect, SingleSort, Bar, Observable, ContentPane,Resizer, NestedSort, Filter, FilterBar, QuickFilter) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         store: null,
         script: null,
@@ -127,6 +132,18 @@ define([
                 store: this.store,
                 structure: columns,
                 selectRowMultiple: false,
+                filterServerMode: true,
+                filterSetupQuery: function(expr){
+                    console.log(JSON.stringify(expr));
+                    console.log(expr);
+
+                    if (!expr) {
+                        return;
+                    }
+                    var exprJson = JSON.stringify(expr);
+                    return {filter: exprJson}
+
+                },
                 barTop: [
                     toolbar
                 ],
@@ -140,7 +157,10 @@ define([
                     Bar,
                     RowHeader,
                     Row,
-                    IndirectSelect
+                    IndirectSelect,
+                    Resizer,
+                    Filter,
+                    FilterBar
                 ]
             });
             grid.placeAt(this.grid);

@@ -4,6 +4,7 @@ import ecm.model.*;
 import ecm.web.dto.AbstractStaffDTO;
 import ecm.web.dto.PersonDTO;
 import ecm.web.dto.TreeNode;
+import ecm.web.dto.filtering.RootFilterDTO;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.ws.rs.*;
@@ -24,7 +25,7 @@ public class EmployeeRestController extends AbstractRestController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEmployees(@QueryParam("sortField") String sortField, @QueryParam("direction") String direction) {
+    public Response getEmployees(@QueryParam("filter") String filter, @QueryParam("sortField") String sortField, @QueryParam("direction") String direction) {
         GenericEntity<List<AbstractStaffDTO>> employees;
         if (sortField != null) {
             employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAllSorted(sortField, direction))))) {
@@ -34,6 +35,7 @@ public class EmployeeRestController extends AbstractRestController {
             };
         }
         int size = employees.getEntity().size();
+        RootFilterDTO filterDTO = getGsonUtil().getGson().fromJson(filter, RootFilterDTO.class);
         //TODO Paging need to implementing
         return Response.ok(employees).header("Content-Range", "items 0-" + size + "/" + size).build();
     }
