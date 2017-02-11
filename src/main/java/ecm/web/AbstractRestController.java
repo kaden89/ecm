@@ -52,6 +52,10 @@ public class AbstractRestController {
         return gsonUtil.getGson().toJson(obj);
     }
 
+    Object fromJson(String json, Class clazz){
+        return getGsonUtil().getGson().fromJson(json, clazz);
+    }
+
     public GsonUtil getGsonUtil() {
         return gsonUtil;
     }

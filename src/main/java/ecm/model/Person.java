@@ -35,6 +35,10 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate birthday;
 
+    @NotNull
+    private String fullname;
+
+
     public Person() {
     }
 
@@ -104,11 +108,22 @@ public class Person extends Staff implements Comparable<Person>, Storable{
         this.photo = photo;
     }
 
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+    @PostLoad
+    @PrePersist
+    private void calculateFullname(){
+        this.fullname = firstname + " " + surname + " " + patronymic;
+    }
+
     @Override
     public String toString() {
-        return firstname +
-                " " + surname +
-                " " + patronymic;
+        return fullname;
     }
 
     @Override

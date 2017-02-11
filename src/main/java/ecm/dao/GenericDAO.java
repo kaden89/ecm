@@ -1,5 +1,7 @@
 package ecm.dao;
 
+import ecm.util.filtering.Filter;
+
 import javax.transaction.TransactionalException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
@@ -22,5 +24,7 @@ public interface GenericDAO<T> {
 
     List<T> findAllByAuthorId(int id);
 
-    List<T> findAllSorted(String fieldName, String direction);
+    List<T> findAllSorted(String sortField, String direction);
+
+    List<T> findAllSortedAndFiltered(String sortField, String direction, Filter filter);
 }

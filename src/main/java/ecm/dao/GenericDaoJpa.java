@@ -1,13 +1,18 @@
 package ecm.dao;
 
 import ecm.model.Person;
+import ecm.util.filtering.Filter;
+import ecm.util.filtering.Rule;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dkarachurin on 13.01.2017.
@@ -72,7 +77,18 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
     }
 
     @Override
-    public List<T> findAllSorted(String fieldName, String direction) {
-        return entityManager.createQuery("SELECT e FROM "+entityClass.getSimpleName()+" e ORDER BY e."+fieldName+" "+direction).getResultList();
+    public List<T> findAllSorted(String sortField, String direction) {
+        return entityManager.createQuery("SELECT e FROM "+entityClass.getSimpleName()+" e ORDER BY e."+ sortField +" "+direction).getResultList();
+    }
+
+    @Override
+    public List<T> findAllSortedAndFiltered(String sortField, String direction, Filter filter) {
+        Map<String, Object> params = filter.getQueryParams();
+
+        Query query = entityManager.createQuery("SELECT e FROM "+entityClass.getSimpleName()+" e WHERE"+filter.toString()+"ORDER BY e."+ sortField +" "+direction);
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            query.setParameter(entry.getKey(), entry.getValue());
+        }
+        return query.getResultList();
     }
 }

@@ -1,6 +1,7 @@
 package ecm.service;
 
 import ecm.dao.GenericDAO;
+import ecm.util.filtering.Filter;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -58,6 +59,11 @@ public abstract class GenericServiceImpl<T> implements GenericService<T> {
 
     @Override
     public void deleteAll() {
+        genericDao.deleteAll();
+    }
 
+    @Override
+    public List<T> findAllSortedAndFiltered(String field, String direction, Filter filter) {
+        return genericDao.findAllSortedAndFiltered(field, direction, filter);
     }
 }
