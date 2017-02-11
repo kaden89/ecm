@@ -25,9 +25,9 @@ public enum Conditions {
     @SerializedName("lessEqual")
     LESS_EQUAL("<="),
     @SerializedName("match")
-    MATCH("LIKE"),
+    MATCH("IN"),
     @SerializedName("contain")
-    CONTAIN("IN"),
+    CONTAIN("LIKE"),
     @SerializedName("startWith")
     START_WITH("like CONCAT(?2, '%')"),
     @SerializedName("endWith")

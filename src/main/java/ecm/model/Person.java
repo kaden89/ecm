@@ -57,6 +57,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
         this.patronymic = dto.getPatronymic();
         this.position = null;
         this.birthday = dto.getBirthday();
+        this.fullname = dto.getFullname();
     }
 
 
@@ -115,6 +116,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     public void setFullname(String fullname) {
         this.fullname = fullname;
     }
+
     @PostLoad
     @PrePersist
     private void calculateFullname(){

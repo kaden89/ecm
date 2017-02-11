@@ -48,6 +48,8 @@ define([
     "gridx/modules/Filter",
     "gridx/modules/filter/FilterBar",
     "gridx/modules/filter/QuickFilter",
+    "gridx/modules/Pagination",
+    "gridx/modules/pagination/PaginationBar",
     "dojo/on",
     "dojo/require",
     "dijit/layout/ContentPane",
@@ -63,7 +65,8 @@ define([
 
 ], function (declare, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, Registry, request, xhr,
              domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor, Select, JsonRest, FilteringSelect,
-             at, Memory, CheckBox,formsWidget, GridX, Dod, Cache, RowHeader, Row, IndirectSelect, SingleSort, Bar, Observable, ContentPane,Resizer, NestedSort, Filter, FilterBar, QuickFilter) {
+             at, Memory, CheckBox,formsWidget, GridX, Dod, Cache, RowHeader, Row, IndirectSelect, SingleSort, Bar, Observable, ContentPane,Resizer,
+             NestedSort, Filter, FilterBar, QuickFilter, Pagination, PaginationBar) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         store: null,
         script: null,
@@ -160,7 +163,9 @@ define([
                     IndirectSelect,
                     Resizer,
                     Filter,
-                    FilterBar
+                    FilterBar,
+                    Pagination,
+                    PaginationBar
                 ]
             });
             grid.placeAt(this.grid);

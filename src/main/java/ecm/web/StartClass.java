@@ -59,7 +59,7 @@ public class StartClass implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         context = servletContextEvent.getServletContext();
-
+        //TODO paging logging docService
         Post post1 = new Post("tester");
         Post post2 = new Post("programmer");
         Post post3 = new Post("manager");

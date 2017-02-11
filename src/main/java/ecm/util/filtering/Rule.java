@@ -69,8 +69,9 @@ public class Rule {
         if (isFieldAString(paramName, clazz) || isFieldAString(paramName, clazz.getSuperclass())) {
             return builder.append(" LOWER(e.")
                     .append(getLeftField() + ") ")
-                    .append(op + " :")
+                    .append(op==Conditions.CONTAIN ? op + " CONCAT('%', :": op + " :")
                     .append((getLeftField() + " ").replaceAll("\\.", ""))
+                    .append(op==Conditions.CONTAIN ? ", '%')": "")
                     .toString();
         } else return toString();
     }

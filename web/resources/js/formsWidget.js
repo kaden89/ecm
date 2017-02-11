@@ -60,7 +60,7 @@ define([
             this.store = params.store;
             this.script = response.script;
             this.tree = params.tree;
-            if (params.deletable != undefined){
+            if (params.deletable != undefined) {
                 this.deletable = params.deletable;
             }
         }
@@ -85,7 +85,7 @@ define([
                 onClick: lang.hitch(this, close)
             });
             toolbar.addChild(createButton);
-            if (this.deletable){
+            if (this.deletable) {
                 toolbar.addChild(deleteButton);
             }
             toolbar.addChild(closeButton);
@@ -96,7 +96,7 @@ define([
                 var tabPane = registry.byId("TabContainer");
                 var pane;
                 if (this.model.id == undefined) {
-                    pane = registry.byId("newPane_"+this.model.restUrl);
+                    pane = registry.byId("newPane_" + this.model.restUrl);
                 }
                 else {
                     pane = registry.byId("pane_" + this.model.id);
@@ -141,7 +141,6 @@ define([
                     console.log("error");
                     myDialog.show();
                 }
-
             }
 
             function save() {
@@ -149,53 +148,36 @@ define([
                 //create new user
                 if (this.model.id == undefined) {
                     this.store.add(this.model).then(function (data) {
-                        for(var k in data) {
+                        for (var k in data) {
                             this.model.set(k, data[k]);
                         }
                         //Dojo can't correctly handle id changing, so close old pane and create new one
-                        var pane = registry.byId("newPane_"+data.restUrl);
+                        var pane = registry.byId("newPane_" + data.restUrl);
                         var tabContainer = registry.byId("TabContainer");
                         tabContainer.removeChild(pane);
                         pane.set("title", data.fullname);
-                        pane.set("id", "pane_"+data.id);
-                        registry.remove("newPane_"+data.restUrl);
+                        pane.set("id", "pane_" + data.id);
+                        registry.remove("newPane_" + data.restUrl);
                         registry.add(pane);
                         tabContainer.addChild(pane);
                         tabContainer.selectChild(pane);
-                        toolbar.addChild(deleteButton,1);
-                        this.uploader.set('url', '/ecm/rest/employees/'+ data.id+'/photo');
+                        toolbar.addChild(deleteButton, 1);
+                        //this.uploader.set('url', '/ecm/rest/employees/'+ data.id+'/photo');
                         updateTree.call(this, this.tree);
-                    }.bind(this), function (err) {
-                        // Handle the error condition
-                    }, function (evt) {
-                        // Handle a progress event from the request if the
-                        // browser supports XHR2
-                    });
+                    }.bind(this));
                 }
                 else {
                     this.store.put(this.model).then(function (data) {
-
                         var pane = registry.byId("pane_" + data.id);
                         pane.set("title", data.fullname);
-                        // pane.set("title", data.firstname+" "+data.surname+" "+data.patronymic);
                         updateTree.call(this, this.tree);
-                    }.bind(this), function (err) {
-                        // Handle the error condition
-                    }, function (evt) {
-                        // Handle a progress event from the request if the
-                        // browser supports XHR2
-                    });
+                    }.bind(this));
                 }
             }
 
-
-
             eval(this.script);
-        }
-
-        ,
+        },
         baseClass: "formsWidget",
-
         postCreate: function () {
             var a = 1;
         }

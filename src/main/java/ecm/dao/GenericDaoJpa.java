@@ -43,11 +43,6 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
     }
 
     @Override
-    public List<T> findAllByAuthorId(int id) {
-        return entityManager.createQuery("SELECT e FROM " + entityClass.getSimpleName() + " e where e.author.id = " + id).getResultList();
-    }
-
-    @Override
     public T find(int id) {
         return entityManager.find(entityClass, id);
     }

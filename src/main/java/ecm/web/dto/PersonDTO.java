@@ -28,7 +28,7 @@ public class PersonDTO extends AbstractStaffDTO {
         this.positionId = person.getPosition().getId();
         this.positionName = person.getPosition().getPost();
         this.birthday = person.getBirthday();
-        this.fullname = person.toString();
+        this.fullname = person.getFullname();
     }
 
     public String getFirstname() {
