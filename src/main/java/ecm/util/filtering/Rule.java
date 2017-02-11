@@ -33,28 +33,65 @@ public class Rule {
         this.data = data;
     }
 
-    public Field getLeftField(){
+    public Field getLeftField() {
         Field leftField = null;
         for (Field field : data) {
             if (field.isCol()) leftField = field;
         }
         return leftField;
     }
-    public Field getRightField(){
+
+    public Field getRightField() {
         Field rightField = null;
         for (Field field : data) {
             if (!field.isCol()) rightField = field;
         }
         return rightField;
     }
+
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         return builder.append(" e.")
-                .append(getLeftField()+" ")
-                .append(op+" :")
-                .append((getLeftField()+" ").replaceAll("\\.",""))
+                .append(getLeftField() + " ")
+                .append(op + " :")
+                .append((getLeftField() + " ").replaceAll("\\.", ""))
                 .toString();
 
+    }
+
+    public String getCaseInsensitiveString(Class clazz) {
+        StringBuilder builder = new StringBuilder();
+
+        String paramName = getLeftField().getData();
+
+        if (isFieldAString(paramName, clazz) || isFieldAString(paramName, clazz.getSuperclass())) {
+            return builder.append(" LOWER(e.")
+                    .append(getLeftField() + ") ")
+                    .append(op + " :")
+                    .append((getLeftField() + " ").replaceAll("\\.", ""))
+                    .toString();
+        } else return toString();
+    }
+
+    private boolean isFieldAString(String paramName, Class clazz) {
+        if (paramName.contains(".")){
+            try {
+                 Class childClass = clazz.getDeclaredField(paramName.split("\\.")[0]).getType();
+                 return isFieldAString(paramName.split("\\.")[1], childClass);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (java.lang.reflect.Field field : clazz.getDeclaredFields()) {
+            if (field.getName().equals(paramName)) {
+                Class paramClass = field.getType();
+                return paramClass == String.class;
+            }
+
+        }
+        return false;
     }
 }

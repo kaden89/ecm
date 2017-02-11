@@ -1,6 +1,9 @@
-#gridContainer, #personDiv, .gridx{
-    height: 100% !important;
+#gridContainer, #personDiv{
+    height: 100%;
     width: 100%;
+}
+.gridx{
+    height: 500px !important;
 }
 
 html, body {

@@ -99,7 +99,7 @@ public class StartClass implements ServletContextListener {
     }
 
     private void generateDocuments() throws InstantiationException, IllegalAccessException {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 30; i++) {
             try {
                 Incoming incoming = (Incoming) createDocument(INCOMING);
                 incomingDAO.save(incoming);

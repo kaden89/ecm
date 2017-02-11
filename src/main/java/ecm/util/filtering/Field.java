@@ -6,14 +6,15 @@ package ecm.util.filtering;
 public class Field {
     private String op;
     private String data;
+    private boolean isCol;
 
     public Field() {
     }
 
-    public Field(String op, String data) {
+    public Field(String op, String data, boolean isCol) {
         this.op = op;
         this.data = data;
-
+        this.isCol = isCol;
     }
 
     public String getOp() {
@@ -32,11 +33,16 @@ public class Field {
         this.data = data;
     }
 
+    public boolean isCol() {
+        return isCol;
+    }
+
+    public void setCol(boolean col) {
+        isCol = col;
+    }
 
     @Override
     public String toString() {
-
             return data;
-
     }
 }
