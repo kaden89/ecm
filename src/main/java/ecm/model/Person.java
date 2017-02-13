@@ -1,21 +1,15 @@
 package ecm.model;
 
 import ecm.dao.Storable;
-import ecm.util.xml.GsonExclude;
-import ecm.util.xml.LocalDateAdapter;
 import ecm.web.dto.PersonDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
 /**
  * Created by dkarachurin on 09.01.2017.
  */
-@XmlRootElement
 @Entity
 public class Person extends Staff implements Comparable<Person>, Storable {
     @NotNull
@@ -27,12 +21,9 @@ public class Person extends Staff implements Comparable<Person>, Storable {
     @NotNull
     @ManyToOne
     private Post position;
-    @XmlTransient
-    @GsonExclude
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "owner")
     private Image photo;
     @NotNull
-    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate birthday;
     //Auto fill field for simplest sorting
     @NotNull

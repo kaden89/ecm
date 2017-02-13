@@ -7,6 +7,7 @@ import ecm.service.GenericService;
 import ecm.service.ImageService;
 import ecm.util.paging.Page;
 import ecm.web.dto.*;
+import ecm.web.dto.converters.GenericDTOConverter;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
@@ -43,29 +44,36 @@ public class AbstractRestController {
     private ImageService imageService;
 
     @Inject
-    private DTOConverter<Document, AbstractDocumentDTO> documentDTOConverter;
+    private GenericDTOConverter<Incoming, IncomingDTO> incomingDTOConverter;
 
     @Inject
-    private DTOConverter<Staff, AbstractStaffDTO> staffDTOConverter;
+    private GenericDTOConverter<Outgoing, OutgoingDTO> outgoingDTOConverter;
+
+    @Inject
+    private GenericDTOConverter<Task, TaskDTO> taskDTOConverter;
+
+    @Inject
+    private GenericDTOConverter<Person, PersonDTO> personDTOConverter;
 
     public String toJson(Object obj) {
         return gson.toJson(obj);
     }
 
-    public Object fromJson(String json, Class clazz){
+    public Object fromJson(String json, Class clazz) {
         return gson.fromJson(json, clazz);
     }
 
-    public Response getStaffPageResponse(Page page){
-        return Response.ok(toJson(getStaffDTOConverter()
-                .toDtoCollection(new ArrayList<>(page.getItems()))))
-                .header("Content-Range", "items "+page.getStartIndex()+"-" + page.getEndIndex() + "/" + page.getAllItemsCount())
+    public Response getStaffPageResponse(Page page) {
+        return Response.ok(toJson(getPersonDTOConverter()
+                .toDtoCollection(page.getItems())))
+                .header("Content-Range", "items " + page.getStartIndex() + "-" + page.getEndIndex() + "/" + page.getAllItemsCount())
                 .build();
     }
-    public Response getDocPageResponse(Page page){
-        return Response.ok(toJson(getDocumentDTOConverter()
-                .toDtoCollection(new ArrayList<>(page.getItems()))))
-                .header("Content-Range", "items "+page.getStartIndex()+"-" + page.getEndIndex() + "/" + page.getAllItemsCount())
+
+    public Response getDocPageResponse(Page page) {
+        return Response.ok(toJson(getIncomingDTOConverter()
+                .toDtoCollection(page.getItems())))
+                .header("Content-Range", "items " + page.getStartIndex() + "-" + page.getEndIndex() + "/" + page.getAllItemsCount())
                 .build();
     }
 
@@ -125,20 +133,36 @@ public class AbstractRestController {
         this.imageService = imageService;
     }
 
-    public DTOConverter<Document, AbstractDocumentDTO> getDocumentDTOConverter() {
-        return documentDTOConverter;
+    public GenericDTOConverter<Incoming, IncomingDTO> getIncomingDTOConverter() {
+        return incomingDTOConverter;
     }
 
-    public void setDocumentDTOConverter(DTOConverter<Document, AbstractDocumentDTO> documentDTOConverter) {
-        this.documentDTOConverter = documentDTOConverter;
+    public void setIncomingDTOConverter(GenericDTOConverter<Incoming, IncomingDTO> incomingDTOConverter) {
+        this.incomingDTOConverter = incomingDTOConverter;
     }
 
-    public DTOConverter<Staff, AbstractStaffDTO> getStaffDTOConverter() {
-        return staffDTOConverter;
+    public GenericDTOConverter<Outgoing, OutgoingDTO> getOutgoingDTOConverter() {
+        return outgoingDTOConverter;
     }
 
-    public void setStaffDTOConverter(DTOConverter<Staff, AbstractStaffDTO> staffDTOConverter) {
-        this.staffDTOConverter = staffDTOConverter;
+    public void setOutgoingDTOConverter(GenericDTOConverter<Outgoing, OutgoingDTO> outgoingDTOConverter) {
+        this.outgoingDTOConverter = outgoingDTOConverter;
+    }
+
+    public GenericDTOConverter<Task, TaskDTO> getTaskDTOConverter() {
+        return taskDTOConverter;
+    }
+
+    public void setTaskDTOConverter(GenericDTOConverter<Task, TaskDTO> taskDTOConverter) {
+        this.taskDTOConverter = taskDTOConverter;
+    }
+
+    public GenericDTOConverter<Person, PersonDTO> getPersonDTOConverter() {
+        return personDTOConverter;
+    }
+
+    public void setPersonDTOConverter(GenericDTOConverter<Person, PersonDTO> personDTOConverter) {
+        this.personDTOConverter = personDTOConverter;
     }
 
     public GenericService<Post> getPostService() {

@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 /**
  * Created by dkarachurin on 13.01.2017.
  */
-public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
+public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
 
     @PersistenceContext(unitName = "EcmPersistence")
     EntityManager entityManager;
@@ -32,7 +32,7 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
     @Inject
     private transient Logger log;
 
-    public GenericDaoJpa() {
+    public AbstractGenericDaoJpaImpl() {
 
         Class obtainedClass = getClass();
         Type genericSuperclass;

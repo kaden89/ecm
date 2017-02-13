@@ -16,14 +16,14 @@ import java.util.Scanner;
  * Created by dkarachurin on 23.01.2017.
  */
 @Path(value = WidgetRestController.REST_URL)
-public class WidgetRestController extends AbstractRestController{
+public class WidgetRestController extends AbstractRestController {
     static final String REST_URL = "/widgets";
     private ClassLoader classLoader = getClass().getClassLoader();
 
     @GET
     @Path("/persons")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPersons(){
+    public Response getPersons() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/grid.html"));
         response.setScript(readFile("/js/personGrid.js"));
@@ -33,7 +33,7 @@ public class WidgetRestController extends AbstractRestController{
     @GET
     @Path("/persons/new")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getNewEmployeeTemplate(){
+    public Response getNewEmployeeTemplate() {
         StaffWidgetResponse response = new StaffWidgetResponse();
         response.setTemplate(readFile("/html/person.html"));
         response.setScript(readFile("/js/person.js"));
@@ -44,18 +44,19 @@ public class WidgetRestController extends AbstractRestController{
     @GET
     @Path("/persons/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEmployeeTemplate(@PathParam("id") int employeeId){
+    public Response getEmployeeTemplate(@PathParam("id") int employeeId) {
         StaffWidgetResponse response = new StaffWidgetResponse();
         response.setTemplate(readFile("/html/person.html"));
-        response.setEntity(getStaffDTOConverter().toDTO(getPersonService().find(employeeId)));
+        response.setEntity(getPersonDTOConverter().toDTO(getPersonService().find(employeeId)));
         response.setScript(readFile("/js/person.js"));
 
         return Response.ok(response).build();
     }
+
     @GET
     @Path("/incomings")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getIncomings(){
+    public Response getIncomings() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/grid.html"));
         response.setScript(readFile("/js/incomingGrid.js"));
@@ -65,7 +66,7 @@ public class WidgetRestController extends AbstractRestController{
     @GET
     @Path("/incomings/new")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getNewIncomingTemplate(){
+    public Response getNewIncomingTemplate() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/incoming.html"));
         response.setScript(readFile("/js/incoming.js"));
@@ -76,10 +77,10 @@ public class WidgetRestController extends AbstractRestController{
     @GET
     @Path("/incomings/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getIncomingTemplate(@PathParam("id") int incomingId){
+    public Response getIncomingTemplate(@PathParam("id") int incomingId) {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/incoming.html"));
-        response.setEntity(getDocumentDTOConverter().toDTO(getIncomingService().find(incomingId)));
+        response.setEntity(getIncomingDTOConverter().toDTO(getIncomingService().find(incomingId)));
         response.setScript(readFile("/js/incoming.js"));
 
         return Response.ok(response).build();
@@ -88,7 +89,7 @@ public class WidgetRestController extends AbstractRestController{
     @GET
     @Path("/outgoings")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOutgoings(){
+    public Response getOutgoings() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/grid.html"));
         response.setScript(readFile("/js/outgoingGrid.js"));
@@ -98,7 +99,7 @@ public class WidgetRestController extends AbstractRestController{
     @GET
     @Path("/outgoings/new")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getNewOutgoingTemplate(){
+    public Response getNewOutgoingTemplate() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/outgoing.html"));
         response.setScript(readFile("/js/outgoing.js"));
@@ -109,10 +110,10 @@ public class WidgetRestController extends AbstractRestController{
     @GET
     @Path("/outgoings/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOutgoingTemplate(@PathParam("id") int outgoingId){
+    public Response getOutgoingTemplate(@PathParam("id") int outgoingId) {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/outgoing.html"));
-        response.setEntity(getDocumentDTOConverter().toDTO(getOutgoingService().find(outgoingId)));
+        response.setEntity(getOutgoingDTOConverter().toDTO(getOutgoingService().find(outgoingId)));
         response.setScript(readFile("/js/outgoing.js"));
 
         return Response.ok(response).build();
@@ -121,7 +122,7 @@ public class WidgetRestController extends AbstractRestController{
     @GET
     @Path("/tasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTaskGrid(){
+    public Response getTaskGrid() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/grid.html"));
         response.setScript(readFile("/js/taskGrid.js"));
@@ -131,7 +132,7 @@ public class WidgetRestController extends AbstractRestController{
     @GET
     @Path("/tasks/new")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getNewTaskTemplate(){
+    public Response getNewTaskTemplate() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/task.html"));
         response.setScript(readFile("/js/task.js"));
@@ -142,15 +143,15 @@ public class WidgetRestController extends AbstractRestController{
     @GET
     @Path("/tasks/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTaskTemplate(@PathParam("id") int taskId){
+    public Response getTaskTemplate(@PathParam("id") int taskId) {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/task.html"));
-        response.setEntity(getDocumentDTOConverter().toDTO(getTaskService().find(taskId)));
+        response.setEntity(getTaskDTOConverter().toDTO(getTaskService().find(taskId)));
         response.setScript(readFile("/js/task.js"));
         return Response.ok(response).build();
     }
 
-    private String readFile(String fileName){
+    private String readFile(String fileName) {
         StringBuilder result = new StringBuilder("");
         File file = new File(classLoader.getResource(fileName).getFile());
         try (Scanner scanner = new Scanner(file)) {

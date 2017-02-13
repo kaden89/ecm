@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * Created by dkarachurin on 08.02.2017.
  */
-public abstract class GenericServiceImpl<T> implements GenericService<T> {
+public abstract class AbstractGenericServiceImpl<T> implements GenericService<T> {
 
     @Inject
     private GenericDAO<T> genericDao;
@@ -21,7 +21,7 @@ public abstract class GenericServiceImpl<T> implements GenericService<T> {
     @Inject
     private transient Logger log;
 
-    public GenericServiceImpl() {
+    public AbstractGenericServiceImpl() {
     }
 
     @Override

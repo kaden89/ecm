@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 /**
  * Created by dkarachurin on 13.02.2017.
  */
+//Not working. Don't know why. Have to create Filter via gson from string in controller
 @Provider
 public class FilterConverterProvider implements ParamConverterProvider {
     @Inject

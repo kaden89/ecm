@@ -10,5 +10,5 @@ import javax.transaction.Transactional;
  */
 @Singleton
 @Transactional
-public class PostService extends GenericServiceImpl<Post> {
+public class PostService extends AbstractGenericServiceImpl<Post> {
 }

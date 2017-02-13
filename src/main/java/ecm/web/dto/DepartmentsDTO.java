@@ -1,4 +1,4 @@
-package ecm.util.xml;
+package ecm.web.dto;
 
 import ecm.model.Department;
 
@@ -14,14 +14,14 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "departments")
-public class Departments {
+public class DepartmentsDTO {
     @XmlElement(name = "department", type = Department.class)
     private List<Department> departments = new ArrayList<>();
 
-    public Departments() {
+    public DepartmentsDTO() {
     }
 
-    public Departments(List<Department> departments) {
+    public DepartmentsDTO(List<Department> departments) {
         this.departments = departments;
     }
 

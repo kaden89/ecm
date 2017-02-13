@@ -36,7 +36,7 @@ public class EmployeeRestController extends AbstractRestController {
             Page<Person> page = getPersonService().findAllSortedAndPageable(sort, range);
             return getStaffPageResponse(page);
         } else {
-            Collection<AbstractStaffDTO> employees = getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAll()));
+            Collection<PersonDTO> employees = getPersonDTOConverter().toDtoCollection(getPersonService().findAll());
             return Response.ok(toJson(employees)).header("Content-Range", "items 0-" + employees.size() + "/" + employees.size()).build();
         }
     }
@@ -59,7 +59,7 @@ public class EmployeeRestController extends AbstractRestController {
     @GET
     @Path("/personTree")
     public Response getPersonRoot() {
-        List<AbstractStaffDTO> dtos = new ArrayList<>(getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAll())));
+        List<AbstractStaffDTO> dtos = new ArrayList<>(getPersonDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAll())));
         TreeNode<AbstractStaffDTO> root = new TreeNode<>("Employees", "", dtos, "employees");
         String jsonInString = toJson(root);
         return Response.ok(jsonInString).build();
@@ -69,7 +69,7 @@ public class EmployeeRestController extends AbstractRestController {
     @Path("/tree")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeRoot() {
-        List<AbstractStaffDTO> dtos = new ArrayList<>(getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAll())));
+        List<AbstractStaffDTO> dtos = new ArrayList<>(getPersonDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAll())));
         TreeNode<AbstractStaffDTO> root = new TreeNode<>("Employees", "root", dtos, "employees");
         String jsonInString = toJson(root);
         return Response.ok(jsonInString).build();
@@ -79,7 +79,7 @@ public class EmployeeRestController extends AbstractRestController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployee(@PathParam("id") int employeeId) {
-        AbstractStaffDTO person = getStaffDTOConverter().toDTO(getPersonService().find(employeeId));
+        AbstractStaffDTO person = getPersonDTOConverter().toDTO(getPersonService().find(employeeId));
         return Response.ok(person).build();
     }
 
@@ -101,8 +101,8 @@ public class EmployeeRestController extends AbstractRestController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateEmployee(@PathParam("id") int id, PersonDTO dto) {
         dto.setId(id);
-        Person updated = getPersonService().update((Person) getStaffDTOConverter().fromDTO(dto));
-        return Response.ok(getStaffDTOConverter().toDTO(updated)).build();
+        Person updated = getPersonService().update((Person) getPersonDTOConverter().fromDTO(dto));
+        return Response.ok(getPersonDTOConverter().toDTO(updated)).build();
     }
 
     @POST
@@ -110,8 +110,8 @@ public class EmployeeRestController extends AbstractRestController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createEmployee(PersonDTO dto) {
         dto.setId(null);
-        Person person = getPersonService().save((Person) getStaffDTOConverter().fromDTO(dto));
-        return Response.ok(getStaffDTOConverter().toDTO(person)).build();
+        Person person = getPersonService().save((Person) getPersonDTOConverter().fromDTO(dto));
+        return Response.ok(getPersonDTOConverter().toDTO(person)).build();
     }
 
 

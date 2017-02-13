@@ -1,9 +1,6 @@
 package ecm.model.documents_factory;
 
 import ecm.dao.GenericDAO;
-import ecm.dao.GenericDaoJpa;
-import ecm.dao.MemoryStore;
-import ecm.dao.PersonDaoJPA;
 import ecm.util.exceptions.DocumentExistsException;
 import ecm.model.Document;
 import ecm.model.Person;
@@ -11,12 +8,9 @@ import ecm.model.Person;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static ecm.web.StartClass.result;
 
 /**
  * Created by dkarachurin on 10.01.2017.

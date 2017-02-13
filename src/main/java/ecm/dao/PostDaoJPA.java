@@ -10,5 +10,5 @@ import javax.transaction.Transactional;
  */
 @Singleton
 @Transactional
-public class PostDaoJPA extends GenericDaoJpa<Post> {
+public class PostDaoJPA extends AbstractGenericDaoJpaImpl<Post> {
 }

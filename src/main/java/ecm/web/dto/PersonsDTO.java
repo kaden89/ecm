@@ -1,6 +1,7 @@
-package ecm.util.xml;
+package ecm.web.dto;
 
 import ecm.model.Person;
+import ecm.web.dto.PersonDTO;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -14,18 +15,18 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "persons")
-public class Persons {
-    @XmlElement(name = "person", type = Person.class)
-    private List<Person> persons = new ArrayList<>();
+public class PersonsDTO {
+    @XmlElement(name = "person", type = PersonDTO.class)
+    private List<PersonDTO> persons = new ArrayList<>();
 
-    public Persons() {
+    public PersonsDTO() {
     }
 
-    public Persons(List<Person> persons) {
+    public PersonsDTO(List<PersonDTO> persons) {
         this.persons = persons;
     }
 
-    public List<Person> getPersons() {
+    public List<PersonDTO> getPersons() {
         return persons;
     }
 

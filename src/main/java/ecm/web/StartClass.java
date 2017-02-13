@@ -3,15 +3,16 @@ package ecm.web;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import ecm.dao.MemoryStore;
 import ecm.model.*;
 import ecm.model.documents_factory.DocumentsFactory;
 import ecm.model.documents_factory.FactoryEnum;
 import ecm.service.GenericService;
 import ecm.util.exceptions.DocumentExistsException;
-import ecm.util.xml.Departments;
-import ecm.util.xml.Organizations;
-import ecm.util.xml.Persons;
+import ecm.web.dto.DepartmentsDTO;
+import ecm.web.dto.OrganizationsDTO;
+import ecm.web.dto.PersonsDTO;
+import ecm.web.dto.converters.GenericDTOConverter;
+import ecm.web.dto.PersonDTO;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
@@ -36,6 +37,9 @@ public class StartClass implements ServletContextListener {
 
     public static TreeMap<Person, TreeSet<Document>> result = new TreeMap<>();
     private ServletContext context;
+
+    @Inject
+    private GenericDTOConverter<Person, PersonDTO> personDTOConverter;
 
     @Inject
     private transient Logger log;
@@ -82,8 +86,8 @@ public class StartClass implements ServletContextListener {
         }
 
 
-        Person test = new Person("test person", "without", "documents", post1,  LocalDate.now());
-        Person test2 = new Person("test person2", "without", "documents", post2,  LocalDate.now());
+        Person test = new Person("test person", "without", "documents", post1, LocalDate.now());
+        Person test2 = new Person("test person2", "without", "documents", post2, LocalDate.now());
         personService.save(test);
         personService.save(test2);
 //        writeJSONtoDisk();
@@ -170,29 +174,22 @@ public class StartClass implements ServletContextListener {
     }
 
     private void loadStaff() {
-        try(
+        try (
                 InputStream personsStream = context.getResourceAsStream("/resources/xml/persons.xml");
-                InputStream organizationsStream = context.getResourceAsStream("/resources/xml/organizations.xml");
-                InputStream departmentsStream = context.getResourceAsStream("/resources/xml/departments.xml")
+//                InputStream organizationsStream = context.getResourceAsStream("/resources/xml/organizations.xml");
+//                InputStream departmentsStream = context.getResourceAsStream("/resources/xml/departments.xml")
         ) {
-            JAXBContext context = JAXBContext.newInstance(Organizations.class, Departments.class, Persons.class, Person.class);
+            JAXBContext context = JAXBContext.newInstance(OrganizationsDTO.class, DepartmentsDTO.class, PersonsDTO.class, PersonDTO.class);
             Unmarshaller um = context.createUnmarshaller();
+            PersonsDTO persons = (PersonsDTO) um.unmarshal(personsStream);
 
-            Organizations organizations = (Organizations) um.unmarshal(organizationsStream);
-            MemoryStore.organizationStore = organizations.getOrganizations();
-
-            Persons persons = (Persons) um.unmarshal(personsStream);
-            MemoryStore.personStore = persons.getPersons();
-            List<Person> personList = persons.getPersons();
+            Collection<Person> personList = personDTOConverter.fromDtoCollection(persons.getPersons());
 
             for (Person person : personList) {
                 personService.save(person);
                 //TODO костыль
                 result.put(person, new TreeSet<>());
             }
-
-            Departments departments = (Departments) um.unmarshal(departmentsStream);
-            MemoryStore.departmentStore = departments.getDepartments();
 
         } catch (JAXBException e) {
             log.warning(e.getMessage());

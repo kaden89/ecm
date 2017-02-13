@@ -17,6 +17,6 @@ public class GsonProducer {
     @Produces
     public Gson produceGson(InjectionPoint injectionPoint) {
         return new GsonBuilder().registerTypeAdapter(LocalDate.class, (JsonSerializer<LocalDate>) (localDate, type, jsonSerializationContext) -> new JsonPrimitive(localDate.toString())).
-                registerTypeAdapter(byte[].class, new ByteArrayAdapter()).setExclusionStrategies(new GsonExclusionStrategy()).create();
+                registerTypeAdapter(byte[].class, new ByteArrayAdapter()).create();
     }
 }

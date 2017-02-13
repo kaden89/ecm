@@ -7,14 +7,13 @@ import ecm.util.sorting.Sort;
 
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
-import java.util.List;
 
 /**
  * Created by dkarachurin on 08.02.2017.
  */
 @Singleton
 @Transactional
-public class IncomingService extends GenericServiceImpl<Incoming> {
+public class IncomingService extends AbstractGenericServiceImpl<Incoming> {
 
     public IncomingService() {
     }

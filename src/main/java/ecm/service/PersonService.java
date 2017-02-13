@@ -19,7 +19,7 @@ import java.util.List;
 @Singleton
 //Bug with rollback https://java.net/jira/browse/GLASSFISH-20699
 @Transactional(dontRollbackOn = HasLinksException.class)
-public class PersonService extends GenericServiceImpl<Person> {
+public class PersonService extends AbstractGenericServiceImpl<Person> {
 
     @Inject
     DocumentGenericDAO<Outgoing> outgoingDAO;
