@@ -28,14 +28,13 @@ public class EmployeeRestController extends AbstractRestController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployees(@HeaderParam("Range") RangeHeader range, @QueryParam("sort") Sort sort, @QueryParam("filter") String filterString) {
-        if (filterString!=null && sort!=null && range!=null){
+        if (filterString != null && sort != null && range != null) {
             Filter filter = (Filter) fromJson(filterString, Filter.class);
             Page<Person> page = getPersonService().findAllSortedFilteredAndPageable(sort, filter, range);
-            return Response.ok(toJson(getStaffDTOConverter().toDtoCollection(new ArrayList<>(page.getItems())))).header("Content-Range", "items "+page.getStartIndex()+"-" + page.getEndIndex() + "/" + page.getAllItemsCount()).build();
-        }
-        else if (sort != null && range!=null) {
+            return getStaffPageResponse(page);
+        } else if (sort != null && range != null) {
             Page<Person> page = getPersonService().findAllSortedAndPageable(sort, range);
-            return Response.ok(toJson(getStaffDTOConverter().toDtoCollection(new ArrayList<>(page.getItems())))).header("Content-Range", "items "+page.getStartIndex()+"-" + page.getEndIndex() + "/" + page.getAllItemsCount()).build();
+            return getStaffPageResponse(page);
         } else {
             Collection<AbstractStaffDTO> employees = getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAll()));
             return Response.ok(toJson(employees)).header("Content-Range", "items 0-" + employees.size() + "/" + employees.size()).build();
@@ -149,7 +148,6 @@ public class EmployeeRestController extends AbstractRestController {
             image.setImage(bytes);
             result = getImageService().update(image);
         }
-
         return Response.ok(result).build();
     }
 }

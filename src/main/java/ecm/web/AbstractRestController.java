@@ -6,13 +6,16 @@ import ecm.dao.ImageDaoJPA;
 import ecm.model.*;
 import ecm.service.GenericService;
 import ecm.service.ImageService;
+import ecm.util.paging.Page;
 import ecm.util.xml.ByteArrayAdapter;
 import ecm.util.xml.GsonExclusionStrategy;
 import ecm.util.xml.GsonUtil;
 import ecm.web.dto.*;
 
 import javax.inject.Inject;
+import javax.ws.rs.core.Response;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * Created by dkarachurin on 24.01.2017.
@@ -48,12 +51,25 @@ public class AbstractRestController {
     private DTOConverter<Staff, AbstractStaffDTO> staffDTOConverter;
 
 
-    String toJson(Object obj) {
+    public String toJson(Object obj) {
         return gsonUtil.getGson().toJson(obj);
     }
 
-    Object fromJson(String json, Class clazz){
+    public Object fromJson(String json, Class clazz){
         return getGsonUtil().getGson().fromJson(json, clazz);
+    }
+
+    public Response getStaffPageResponse(Page page){
+        return Response.ok(toJson(getStaffDTOConverter()
+                .toDtoCollection(new ArrayList<>(page.getItems()))))
+                .header("Content-Range", "items "+page.getStartIndex()+"-" + page.getEndIndex() + "/" + page.getAllItemsCount())
+                .build();
+    }
+    public Response getDocPageResponse(Page page){
+        return Response.ok(toJson(getDocumentDTOConverter()
+                .toDtoCollection(new ArrayList<>(page.getItems()))))
+                .header("Content-Range", "items "+page.getStartIndex()+"-" + page.getEndIndex() + "/" + page.getAllItemsCount())
+                .build();
     }
 
     public GsonUtil getGsonUtil() {
