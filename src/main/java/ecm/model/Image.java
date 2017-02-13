@@ -10,17 +10,17 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
-    @OneToOne
-    private Person owner;
     @Lob
     private byte[] image;
+
+    private Integer ownerId;
 
     public Image() {
     }
 
-    public Image(Person owner, byte[] image) {
-        this.owner = owner;
+    public Image(Integer ownerId, byte[] image) {
         this.image = image;
+        this.ownerId = ownerId;
     }
 
     public Integer getId() {
@@ -31,19 +31,19 @@ public class Image {
         this.id = id;
     }
 
-    public Person getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Person owner) {
-        this.owner = owner;
-    }
-
     public byte[] getImage() {
         return image;
     }
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public Integer getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 }

@@ -143,7 +143,7 @@ public class EmployeeRestController extends AbstractRestController {
         }
         Image image = getImageService().findByOwnerId(ownerId);
         if (image == null) {
-            result = getImageService().save(new Image(getPersonService().find(ownerId), bytes));
+            result = getImageService().save(new Image(ownerId, bytes));
         } else {
             image.setImage(bytes);
             result = getImageService().update(image);

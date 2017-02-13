@@ -20,7 +20,7 @@ public class ImageDaoJPA implements ImageDAO {
 
     public Image findByOwnerId(int ownerId) {
         try {
-            return entityManager.createQuery("SELECT i FROM Image i WHERE i.owner.id =" + ownerId, Image.class).getSingleResult();
+            return entityManager.createQuery("SELECT i FROM Image i WHERE i.ownerId =" + ownerId, Image.class).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
@@ -28,7 +28,7 @@ public class ImageDaoJPA implements ImageDAO {
 
     public Image save(Image image) {
         entityManager.persist(image);
-        return findByOwnerId(image.getOwner().getId());
+        return image;
     }
 
     public Image update(Image image) {

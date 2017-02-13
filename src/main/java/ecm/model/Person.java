@@ -21,7 +21,8 @@ public class Person extends Staff implements Comparable<Person>, Storable {
     @NotNull
     @ManyToOne
     private Post position;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "owner")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "ownerId")
     private Image photo;
     @NotNull
     private LocalDate birthday;
