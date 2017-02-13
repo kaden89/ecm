@@ -9,6 +9,7 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.util.logging.Logger;
 
 /**
  * Created by dkarachurin on 10.01.2017.
@@ -20,6 +21,7 @@ public enum FactoryEnum {
 
     private Class factoryClass;
     private Class docClass;
+    protected final Logger log = Logger.getLogger(getClass().getName());
 
     FactoryEnum(Class docClass, Class factoryClass) {
         this.factoryClass = factoryClass;
@@ -36,7 +38,7 @@ public enum FactoryEnum {
             factory = (AbstractDocumentsFactory) bm.getReference(bean, factoryClass, ctx);
 
         } catch (NamingException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
         return factory;
     }

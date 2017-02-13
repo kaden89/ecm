@@ -6,6 +6,7 @@ import ecm.util.paging.RangeHeader;
 import ecm.util.sorting.Sort;
 import org.hibernate.query.internal.QueryImpl;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Parameter;
 import javax.persistence.PersistenceContext;
@@ -16,6 +17,7 @@ import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Created by dkarachurin on 13.01.2017.
@@ -26,6 +28,9 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
     EntityManager entityManager;
 
     Class<T> entityClass;
+
+    @Inject
+    private transient Logger log;
 
     public GenericDaoJpa() {
 
@@ -126,7 +131,7 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
             }
 
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
         return result;
     }

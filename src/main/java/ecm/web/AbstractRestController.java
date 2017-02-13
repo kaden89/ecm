@@ -2,29 +2,27 @@
 package ecm.web;
 
 import com.google.gson.*;
-import ecm.dao.ImageDaoJPA;
 import ecm.model.*;
 import ecm.service.GenericService;
 import ecm.service.ImageService;
 import ecm.util.paging.Page;
-import ecm.util.xml.ByteArrayAdapter;
-import ecm.util.xml.GsonExclusionStrategy;
-import ecm.util.xml.GsonUtil;
 import ecm.web.dto.*;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * Created by dkarachurin on 24.01.2017.
  */
 public class AbstractRestController {
 
-    //TODO impl logger
     @Inject
-    private GsonUtil gsonUtil;
+    private transient Logger log;
+
+    @Inject
+    private Gson gson;
 
     @Inject
     private GenericService<Person> personService;
@@ -50,13 +48,12 @@ public class AbstractRestController {
     @Inject
     private DTOConverter<Staff, AbstractStaffDTO> staffDTOConverter;
 
-
     public String toJson(Object obj) {
-        return gsonUtil.getGson().toJson(obj);
+        return gson.toJson(obj);
     }
 
     public Object fromJson(String json, Class clazz){
-        return getGsonUtil().getGson().fromJson(json, clazz);
+        return gson.fromJson(json, clazz);
     }
 
     public Response getStaffPageResponse(Page page){
@@ -72,12 +69,20 @@ public class AbstractRestController {
                 .build();
     }
 
-    public GsonUtil getGsonUtil() {
-        return gsonUtil;
+    public Logger getLog() {
+        return log;
     }
 
-    public void setGsonUtil(GsonUtil gsonUtil) {
-        this.gsonUtil = gsonUtil;
+    public void setLog(Logger log) {
+        this.log = log;
+    }
+
+    public Gson getGson() {
+        return gson;
+    }
+
+    public void setGson(Gson gson) {
+        this.gson = gson;
     }
 
     public GenericService<Person> getPersonService() {

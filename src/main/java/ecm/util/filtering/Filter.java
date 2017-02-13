@@ -1,8 +1,4 @@
 package ecm.util.filtering;
-
-import ecm.util.xml.GsonUtil;
-
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -8,6 +8,7 @@ import ecm.util.sorting.Sort;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by dkarachurin on 08.02.2017.
@@ -16,6 +17,9 @@ public abstract class GenericServiceImpl<T> implements GenericService<T> {
 
     @Inject
     private GenericDAO<T> genericDao;
+
+    @Inject
+    private transient Logger log;
 
     public GenericServiceImpl() {
     }

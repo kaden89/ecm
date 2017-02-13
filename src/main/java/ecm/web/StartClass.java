@@ -3,17 +3,15 @@ package ecm.web;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import ecm.dao.GenericDAO;
 import ecm.dao.MemoryStore;
-import ecm.dao.PersonDaoJPA;
 import ecm.model.*;
 import ecm.model.documents_factory.DocumentsFactory;
 import ecm.model.documents_factory.FactoryEnum;
+import ecm.service.GenericService;
 import ecm.util.exceptions.DocumentExistsException;
 import ecm.util.xml.Departments;
 import ecm.util.xml.Organizations;
 import ecm.util.xml.Persons;
-import org.hibernate.annotations.common.util.impl.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
@@ -38,54 +36,56 @@ public class StartClass implements ServletContextListener {
 
     public static TreeMap<Person, TreeSet<Document>> result = new TreeMap<>();
     private ServletContext context;
-//    protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Inject
+    private transient Logger log;
 
     @Inject
     private DocumentsFactory factory;
 
     @Inject
-    private GenericDAO<Person> personDAO;
+    private GenericService<Person> personService;
 
     @Inject
-    private GenericDAO<Outgoing> outgoingDAO;
+    private GenericService<Outgoing> outgoingService;
 
     @Inject
-    private GenericDAO<Incoming> incomingDAO;
+    private GenericService<Incoming> incomingService;
 
     @Inject
-    private GenericDAO<Task> taskDAO;
+    private GenericService<Task> taskService;
 
     @Inject
-    private GenericDAO<Post> postDAO;
+    private GenericService<Post> postService;
 
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         context = servletContextEvent.getServletContext();
-        //TODO paging logging docService
+
         Post post1 = new Post("tester");
         Post post2 = new Post("programmer");
         Post post3 = new Post("manager");
 
-        postDAO.save(post1);
-        postDAO.save(post2);
-        postDAO.save(post3);
+        postService.save(post1);
+        postService.save(post2);
+        postService.save(post3);
 
         deleteOldDocuments();
         loadStaff();
         try {
             generateDocuments();
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
 
 
         Person test = new Person("test person", "without", "documents", post1,  LocalDate.now());
         Person test2 = new Person("test person2", "without", "documents", post2,  LocalDate.now());
-        personDAO.save(test);
-        personDAO.save(test2);
+        personService.save(test);
+        personService.save(test2);
 //        writeJSONtoDisk();
     }
 
@@ -95,26 +95,26 @@ public class StartClass implements ServletContextListener {
     }
 
     private void deleteOldDocuments() {
-        outgoingDAO.deleteAll();
-        incomingDAO.deleteAll();
-        taskDAO.deleteAll();
-        personDAO.deleteAll();
+        outgoingService.deleteAll();
+        incomingService.deleteAll();
+        taskService.deleteAll();
+        personService.deleteAll();
     }
 
     private void generateDocuments() throws InstantiationException, IllegalAccessException {
         for (int i = 0; i < 30; i++) {
             try {
                 Incoming incoming = (Incoming) createDocument(INCOMING);
-                incomingDAO.save(incoming);
+                incomingService.save(incoming);
 
                 Outgoing outgoing = (Outgoing) createDocument(OUTGOING);
-                outgoingDAO.save(outgoing);
+                outgoingService.save(outgoing);
 
                 Task task = (Task) createDocument(TASK);
-                taskDAO.save(task);
+                taskService.save(task);
 
             } catch (DocumentExistsException e) {
-                e.printStackTrace();
+                log.warning(e.getMessage());
             }
         }
 
@@ -122,8 +122,7 @@ public class StartClass implements ServletContextListener {
             System.out.println(entry.getKey());
             TreeSet<Document> documents = entry.getValue();
             for (Document document : documents) {
-                //TODO Log here
-                System.out.println("    " + document);
+                log.info("    " + document);
             }
         }
     }
@@ -152,7 +151,7 @@ public class StartClass implements ServletContextListener {
             try {
                 theDir.mkdir();
             } catch (SecurityException se) {
-                se.printStackTrace();
+                log.warning(se.getMessage());
             }
         }
 
@@ -164,7 +163,7 @@ public class StartClass implements ServletContextListener {
                     gson.toJson(jsonElement, writer);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                log.warning(e.getMessage());
             }
         }
 
@@ -186,10 +185,8 @@ public class StartClass implements ServletContextListener {
             MemoryStore.personStore = persons.getPersons();
             List<Person> personList = persons.getPersons();
 
-            List<Person> tmp = personDAO.findAll();
-
             for (Person person : personList) {
-                personDAO.save(person);
+                personService.save(person);
                 //TODO костыль
                 result.put(person, new TreeSet<>());
             }
@@ -198,9 +195,9 @@ public class StartClass implements ServletContextListener {
             MemoryStore.departmentStore = departments.getDepartments();
 
         } catch (JAXBException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         }
     }
 }
