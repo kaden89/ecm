@@ -17,7 +17,6 @@ import java.time.LocalDate;
 /**
  * Created by dkarachurin on 09.01.2017.
  */
-@XmlRootElement(name = "Incoming")
 @Entity
 public class Incoming extends Document {
     @ManyToOne

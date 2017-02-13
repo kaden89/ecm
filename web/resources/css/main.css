@@ -5,6 +5,9 @@
 .gridx{
     height: 320px !important;
 }
+.gridxRowHeaderRow{
+    height: 21px !important;
+}
 
 html, body {
     height: 100%;

@@ -13,6 +13,7 @@ import ecm.util.exceptions.DocumentExistsException;
 import ecm.util.xml.Departments;
 import ecm.util.xml.Organizations;
 import ecm.util.xml.Persons;
+import org.hibernate.annotations.common.util.impl.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
@@ -24,6 +25,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.Logger;
 
 import static ecm.model.documents_factory.FactoryEnum.INCOMING;
 import static ecm.model.documents_factory.FactoryEnum.OUTGOING;
@@ -36,6 +38,7 @@ public class StartClass implements ServletContextListener {
 
     public static TreeMap<Person, TreeSet<Document>> result = new TreeMap<>();
     private ServletContext context;
+//    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Inject
     private DocumentsFactory factory;
@@ -83,7 +86,7 @@ public class StartClass implements ServletContextListener {
         Person test2 = new Person("test person2", "without", "documents", post2,  LocalDate.now());
         personDAO.save(test);
         personDAO.save(test2);
-//        createJSON();
+//        writeJSONtoDisk();
     }
 
     @Override
@@ -103,18 +106,13 @@ public class StartClass implements ServletContextListener {
             try {
                 Incoming incoming = (Incoming) createDocument(INCOMING);
                 incomingDAO.save(incoming);
-            } catch (DocumentExistsException e) {
-                e.printStackTrace();
-            }
-            try {
+
                 Outgoing outgoing = (Outgoing) createDocument(OUTGOING);
                 outgoingDAO.save(outgoing);
-            } catch (DocumentExistsException e) {
-                e.printStackTrace();
-            }
-            try {
+
                 Task task = (Task) createDocument(TASK);
                 taskDAO.save(task);
+
             } catch (DocumentExistsException e) {
                 e.printStackTrace();
             }
@@ -124,6 +122,7 @@ public class StartClass implements ServletContextListener {
             System.out.println(entry.getKey());
             TreeSet<Document> documents = entry.getValue();
             for (Document document : documents) {
+                //TODO Log here
                 System.out.println("    " + document);
             }
         }
@@ -141,7 +140,7 @@ public class StartClass implements ServletContextListener {
     }
 
 
-    private void createJSON() {
+    private void writeJSONtoDisk() {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
@@ -177,8 +176,6 @@ public class StartClass implements ServletContextListener {
                 InputStream organizationsStream = context.getResourceAsStream("/resources/xml/organizations.xml");
                 InputStream departmentsStream = context.getResourceAsStream("/resources/xml/departments.xml")
         ) {
-
-
             JAXBContext context = JAXBContext.newInstance(Organizations.class, Departments.class, Persons.class, Person.class);
             Unmarshaller um = context.createUnmarshaller();
 

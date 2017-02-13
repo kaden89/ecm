@@ -1,8 +1,13 @@
 package ecm.dao;
 
 import ecm.util.filtering.Filter;
+import ecm.util.paging.Page;
+import ecm.util.paging.RangeHeader;
+import ecm.util.sorting.Sort;
+import org.hibernate.query.internal.QueryImpl;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Parameter;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.lang.reflect.Field;
@@ -70,12 +75,17 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
     }
 
     @Override
-    public List<T> findAllSorted(String sortField, String direction) {
-        return entityManager.createQuery("SELECT e FROM " + entityClass.getSimpleName() + " e ORDER BY e." + sortField + " " + direction).getResultList();
+    public Page<T> findAllSortedAndPageable(Sort sort, RangeHeader range) {
+        Query queryTotal = entityManager.createQuery("SELECT COUNT (e.id) FROM " + entityClass.getSimpleName() + " e");
+        Long countResult = (Long) queryTotal.getSingleResult();
+        Query query = entityManager.createQuery("SELECT e FROM " + entityClass.getSimpleName() + " e ORDER BY e." + sort.getField() + " " + sort.getDirection());
+        query.setFirstResult(range.getOffset());
+        query.setMaxResults(range.getLimit());
+        return new Page(query.getResultList(), range.getOffset(), range.getOffset() + range.getLimit(), countResult != null ? countResult.intValue() : 0);
     }
 
     @Override
-    public List<T> findAllSortedAndFiltered(String sortField, String direction, Filter filter) {
+    public Page<T> findAllSortedFilteredAndPageable(Sort sort, Filter filter, RangeHeader range) {
         Map<String, Object> params = filter.getQueryParams();
         StringBuilder builder = new StringBuilder();
         Query query = entityManager.createQuery(builder.append("SELECT e FROM ")
@@ -83,14 +93,25 @@ public abstract class GenericDaoJpa<T> implements GenericDAO<T> {
                 .append(" e WHERE")
                 .append(filter.getCaseInsensitiveQueryString(entityClass))
                 .append("ORDER BY e.")
-                .append(sortField)
+                .append(sort.getField())
                 .append(" ")
-                .append(direction).toString());
+                .append(sort.getDirection()).toString());
+        query.setFirstResult(range.getOffset());
+        query.setMaxResults(range.getLimit());
 
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             query.setParameter(entry.getKey().replaceAll("\\.", ""), getClassCastedParam(entry.getKey(), entry.getValue()));
         }
-        return query.getResultList();
+        //Count all possible items with current filter for Range header response
+        String countQueryString = ((QueryImpl) query).getQueryString();
+        countQueryString = countQueryString.replace("SELECT e FROM", "SELECT COUNT (e) FROM");
+        countQueryString = countQueryString.replace("ORDER BY e." + sort.getField() + " " + sort.getDirection(), "");
+        Query countQuery = entityManager.createQuery(countQueryString);
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            countQuery.setParameter(entry.getKey().replaceAll("\\.", ""), getClassCastedParam(entry.getKey(), entry.getValue()));
+        }
+        Long countResult = (Long) countQuery.getSingleResult();
+        return new Page(query.getResultList(), range.getOffset(), range.getOffset() + range.getLimit(), countResult != null ? countResult.intValue() : 0);
     }
 
     private Object getClassCastedParam(String paramName, Object param) {

@@ -22,6 +22,7 @@ public class AppConfig extends Application {
         classes.add(DocumentsRestController.class);
         classes.add(WidgetRestController.class);
         classes.add(MultiPartFeature.class);
+
         return classes;
     }
 }

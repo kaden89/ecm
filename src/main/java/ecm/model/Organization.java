@@ -3,7 +3,7 @@ package ecm.model;
 /**
  * Created by dkarachurin on 11.01.2017.
  */
-public class Organization extends Staff{
+public class Organization extends Staff {
     private String fullName;
     private String shortName;
     private Person manager;

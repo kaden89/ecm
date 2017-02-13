@@ -14,15 +14,14 @@ import javax.transaction.Transactional;
  */
 @Singleton
 @Transactional
-public class ImageDaoJPA implements ImageDAO{
-    @PersistenceContext(unitName="EcmPersistence")
+public class ImageDaoJPA implements ImageDAO {
+    @PersistenceContext(unitName = "EcmPersistence")
     EntityManager entityManager;
 
     public Image findByOwnerId(int ownerId) {
         try {
             return entityManager.createQuery("SELECT i FROM Image i WHERE i.owner.id =" + ownerId, Image.class).getSingleResult();
-        }
-        catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
     }
@@ -36,12 +35,12 @@ public class ImageDaoJPA implements ImageDAO{
         return entityManager.merge(image);
     }
 
-    public Image saveOrUpdate(Image image){
+    public Image saveOrUpdate(Image image) {
         return entityManager.merge(image);
     }
 
 
-    public void deleteByOwnerId(int id){
+    public void deleteByOwnerId(int id) {
         Image entity = findByOwnerId(id);
         entityManager.remove(entity);
     }

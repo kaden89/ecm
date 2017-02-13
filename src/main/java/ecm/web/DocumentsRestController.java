@@ -4,6 +4,9 @@ import ecm.model.Incoming;
 import ecm.model.Outgoing;
 import ecm.model.Task;
 import ecm.util.filtering.Filter;
+import ecm.util.paging.Page;
+import ecm.util.paging.RangeHeader;
+import ecm.util.sorting.Sort;
 import ecm.web.dto.*;
 
 import javax.ws.rs.*;
@@ -67,71 +70,91 @@ public class DocumentsRestController extends AbstractRestController {
     @GET
     @Path("/tasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTasks(@QueryParam("filter") String filterString, @QueryParam("sortField") String sortField, @QueryParam("direction") String direction) {
+    public Response getTasks(@HeaderParam("Range") RangeHeader range, @QueryParam("sort") Sort sort, @QueryParam("filter") String filterString) {
         GenericEntity<List<AbstractDocumentDTO>> tasks;
-        if (filterString!=null && sortField!=null){
-            Filter filter = (Filter) fromJson(filterString, Filter.class);
+        int startIndex = 0, endIndex, allCount;
 
-            tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter()
-                    .toDtoCollection(new ArrayList<>(getTaskService()
-                            .findAllSortedAndFiltered(sortField, direction, filter))))) {
-            };
+        if (filterString!=null && sort!=null && range!=null){
+            Filter filter = (Filter) fromJson(filterString, Filter.class);
+            Page<Task> page = getTaskService().findAllSortedFilteredAndPageable(sort, filter, range);
+            startIndex = page.getStartIndex();
+            endIndex = page.getEndIndex();
+            allCount = page.getAllItemsCount();
+            tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(page.getItems())))) {};
         }
-        else if (sortField != null) {
-            tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getTaskService().findAllSorted(sortField, direction))))) {};
+        else if (sort != null && range!=null) {
+            Page<Task> page = getTaskService().findAllSortedAndPageable(sort, range);
+            startIndex = page.getStartIndex();
+            endIndex = page.getEndIndex();
+            allCount = page.getAllItemsCount();
+            tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(page.getItems())))) {};
         }
         else {
             tasks = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getTaskService().findAll())))) {};
+            endIndex = tasks.getEntity().size();
+            allCount = endIndex;
         }
-        int size = tasks.getEntity().size();
-        return Response.ok(tasks).header("Content-Range", "items 0-" + size + "/" + size).build();
+        return Response.ok(tasks).header("Content-Range", "items "+startIndex+"-" + endIndex + "/" + allCount).build();
     }
 
     @GET
     @Path("/outgoings")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOutgoings(@QueryParam("filter") String filterString, @QueryParam("sortField") String sortField, @QueryParam("direction") String direction) {
+    public Response getOutgoings(@HeaderParam("Range") RangeHeader range, @QueryParam("sort") Sort sort, @QueryParam("filter") String filterString) {
         GenericEntity<List<AbstractDocumentDTO>> outgoings;
-        if (filterString!=null && sortField!=null){
-            Filter filter = (Filter) fromJson(filterString, Filter.class);
+        int startIndex = 0, endIndex, allCount;
 
-            outgoings = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter()
-                    .toDtoCollection(new ArrayList<>(getOutgoingService()
-                            .findAllSortedAndFiltered(sortField, direction, filter))))) {
+        if (filterString!=null && sort!=null && range!=null){
+            Filter filter = (Filter) fromJson(filterString, Filter.class);
+            Page<Outgoing> page = getOutgoingService().findAllSortedFilteredAndPageable(sort, filter, range);
+            startIndex = page.getStartIndex();
+            endIndex = page.getEndIndex();
+            allCount = page.getAllItemsCount();
+            outgoings = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(page.getItems())))) {
             };
         }
-        else if (sortField != null) {
-            outgoings = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getOutgoingService().findAllSorted(sortField, direction))))) {};
+        else if (sort != null && range!=null) {
+            Page<Outgoing> page = getOutgoingService().findAllSortedAndPageable(sort, range);
+            startIndex = page.getStartIndex();
+            endIndex = page.getEndIndex();
+            allCount = page.getAllItemsCount();
+            outgoings = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(page.getItems())))) {};
         }
         else {
             outgoings = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getOutgoingService().findAll())))) {};
+            endIndex = outgoings.getEntity().size();
+            allCount = endIndex;
         }
-        int size = outgoings.getEntity().size();
-        return Response.ok(outgoings).header("Content-Range", "items 0-" + size + "/" + size).build();
+        return Response.ok(outgoings).header("Content-Range", "items "+startIndex+"-" + endIndex + "/" + allCount).build();
     }
 
     @GET
     @Path("/incomings")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getIncomings(@QueryParam("filter") String filterString, @QueryParam("sortField") String sortField, @QueryParam("direction") String direction) {
+    public Response getIncomings(@HeaderParam("Range") RangeHeader range, @QueryParam("sort") Sort sort, @QueryParam("filter") String filterString) {
         GenericEntity<List<AbstractDocumentDTO>> incoming;
-        if (filterString!=null && sortField!=null){
+        int startIndex = 0, endIndex, allCount;
+
+        if (filterString!=null && sort!=null && range!=null){
             Filter filter = (Filter) fromJson(filterString, Filter.class);
-
-            incoming = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter()
-                    .toDtoCollection(new ArrayList<>(getIncomingService()
-                            .findAllSortedAndFiltered(sortField, direction, filter))))) {
-            };
-
-        }  else if (sortField != null) {
-            incoming = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getIncomingService().findAllSorted(sortField, direction))))) {};
+            Page<Incoming> page = getIncomingService().findAllSortedFilteredAndPageable(sort, filter, range);
+            startIndex = page.getStartIndex();
+            endIndex = page.getEndIndex();
+            allCount = page.getAllItemsCount();
+            incoming = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(page.getItems())))) {};
+        }  else if (sort != null && range!=null) {
+            Page<Incoming> page = getIncomingService().findAllSortedAndPageable(sort, range);
+            startIndex = page.getStartIndex();
+            endIndex = page.getEndIndex();
+            allCount = page.getAllItemsCount();
+            incoming = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(page.getItems())))) {};
         }
         else {
             incoming = new GenericEntity<List<AbstractDocumentDTO>>(new ArrayList<>(getDocumentDTOConverter().toDtoCollection(new ArrayList<>(getIncomingService().findAll())))) {};
+            endIndex = incoming.getEntity().size();
+            allCount = endIndex;
         }
-
-        int size = incoming.getEntity().size();
-        return Response.ok(incoming).header("Content-Range", "items 0-" + size + "/" + size).build();
+        return Response.ok(incoming).header("Content-Range", "items "+startIndex+"-" + endIndex + "/" + allCount).build();
     }
 
     @POST

@@ -17,7 +17,7 @@ import java.time.LocalDate;
  */
 @XmlRootElement
 @Entity
-public class Person extends Staff implements Comparable<Person>, Storable{
+public class Person extends Staff implements Comparable<Person>, Storable {
     @NotNull
     private String firstname;
     @NotNull
@@ -34,7 +34,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
     @NotNull
     @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate birthday;
-
+    //Auto fill field for simplest sorting
     @NotNull
     private String fullname;
 
@@ -119,7 +119,7 @@ public class Person extends Staff implements Comparable<Person>, Storable{
 
     @PostLoad
     @PrePersist
-    private void calculateFullname(){
+    private void calculateFullname() {
         this.fullname = firstname + " " + surname + " " + patronymic;
     }
 

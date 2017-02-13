@@ -1,7 +1,9 @@
 package ecm.service;
 
-import ecm.dao.GenericDAO;
 import ecm.model.Outgoing;
+import ecm.util.paging.Page;
+import ecm.util.paging.RangeHeader;
+import ecm.util.sorting.Sort;
 
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
@@ -18,17 +20,17 @@ public class OutgoingService extends GenericServiceImpl<Outgoing> {
     }
 
     @Override
-    public List<Outgoing> findAllSorted(String field, String direction) {
-        switch (field){
+    public Page<Outgoing> findAllSortedAndPageable(Sort sort, RangeHeader range) {
+        switch (sort.getField()){
             case "authorName": {
-                field = "author.firstname";
+                sort.setField("author.fullname");
                 break;
             }
             case "recipientName": {
-                field = "recipient.firstname";
+                sort.setField("recipient.fullname");
                 break;
             }
         }
-        return super.findAllSorted(field, direction);
+        return super.findAllSortedAndPageable(sort, range);
     }
 }

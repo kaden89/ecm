@@ -8,5 +8,4 @@ import ecm.util.exceptions.DocumentExistsException;
  */
 public abstract class AbstractDocumentsFactory {
     public abstract Document createDocument() throws DocumentExistsException;
-
 }

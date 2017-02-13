@@ -1,6 +1,9 @@
 package ecm.web;
 
 import ecm.model.*;
+import ecm.util.paging.Page;
+import ecm.util.paging.RangeHeader;
+import ecm.util.sorting.Sort;
 import ecm.web.dto.AbstractStaffDTO;
 import ecm.web.dto.PersonDTO;
 import ecm.web.dto.TreeNode;
@@ -22,30 +25,21 @@ import java.util.List;
 public class EmployeeRestController extends AbstractRestController {
     static final String REST_URL = "/employees";
 
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEmployees(@QueryParam("filter") String filterString, @QueryParam("sortField") String sortField, @QueryParam("direction") String direction) {
-        GenericEntity<List<AbstractStaffDTO>> employees;
-        if (filterString!=null && sortField!=null){
+    public Response getEmployees(@HeaderParam("Range") RangeHeader range, @QueryParam("sort") Sort sort, @QueryParam("filter") String filterString) {
+        if (filterString!=null && sort!=null && range!=null){
             Filter filter = (Filter) fromJson(filterString, Filter.class);
-
-            employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(getStaffDTOConverter()
-                            .toDtoCollection(new ArrayList<>(getPersonService()
-                            .findAllSortedAndFiltered(sortField, direction, filter))))) {
-            };
+            Page<Person> page = getPersonService().findAllSortedFilteredAndPageable(sort, filter, range);
+            return Response.ok(toJson(getStaffDTOConverter().toDtoCollection(new ArrayList<>(page.getItems())))).header("Content-Range", "items "+page.getStartIndex()+"-" + page.getEndIndex() + "/" + page.getAllItemsCount()).build();
         }
-        else if (sortField != null) {
-            employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAllSorted(sortField, direction))))) {
-            };
+        else if (sort != null && range!=null) {
+            Page<Person> page = getPersonService().findAllSortedAndPageable(sort, range);
+            return Response.ok(toJson(getStaffDTOConverter().toDtoCollection(new ArrayList<>(page.getItems())))).header("Content-Range", "items "+page.getStartIndex()+"-" + page.getEndIndex() + "/" + page.getAllItemsCount()).build();
         } else {
-            employees = new GenericEntity<List<AbstractStaffDTO>>(new ArrayList<>(getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAll())))) {
-            };
+            Collection<AbstractStaffDTO> employees = getStaffDTOConverter().toDtoCollection(new ArrayList<>(getPersonService().findAll()));
+            return Response.ok(toJson(employees)).header("Content-Range", "items 0-" + employees.size() + "/" + employees.size()).build();
         }
-        int size = employees.getEntity().size();
-
-        //TODO Paging need to implementing
-        return Response.ok(employees).header("Content-Range", "items 0-" + size + "/" + size).build();
     }
 
     @GET

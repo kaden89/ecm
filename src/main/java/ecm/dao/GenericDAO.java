@@ -1,6 +1,9 @@
 package ecm.dao;
 
 import ecm.util.filtering.Filter;
+import ecm.util.paging.Page;
+import ecm.util.paging.RangeHeader;
+import ecm.util.sorting.Sort;
 
 import javax.transaction.TransactionalException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -22,7 +25,7 @@ public interface GenericDAO<T> {
 
     void deleteAll();
 
-    List<T> findAllSorted(String sortField, String direction);
+    Page<T> findAllSortedAndPageable(Sort sort, RangeHeader range);
 
-    List<T> findAllSortedAndFiltered(String sortField, String direction, Filter filter);
+    Page<T> findAllSortedFilteredAndPageable(Sort sort, Filter filter, RangeHeader range);
 }

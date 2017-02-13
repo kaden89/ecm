@@ -1,7 +1,9 @@
 package ecm.service;
 
-import ecm.dao.GenericDAO;
 import ecm.model.Task;
+import ecm.util.paging.Page;
+import ecm.util.paging.RangeHeader;
+import ecm.util.sorting.Sort;
 
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
@@ -18,21 +20,21 @@ public class TaskService extends GenericServiceImpl<Task> {
     }
 
     @Override
-    public List<Task> findAllSorted(String field, String direction) {
-        switch (field){
+    public Page<Task> findAllSortedAndPageable(Sort sort, RangeHeader range) {
+        switch (sort.getField()) {
             case "authorName": {
-                field = "author.firstname";
+                sort.setField("author.fullname");
                 break;
             }
             case "executorName": {
-                field = "executor.firstname";
+                sort.setField("executor.fullname");
                 break;
             }
             case "controllerName": {
-                field = "controller.firstname";
+                sort.setField("controller.fullname");
                 break;
             }
         }
-        return super.findAllSorted(field, direction);
+        return super.findAllSortedAndPageable(sort, range);
     }
 }

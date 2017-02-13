@@ -16,9 +16,6 @@ import java.time.LocalDate;
  * Created by dkarachurin on 09.01.2017.
  */
 @MappedSuperclass
-@XmlSeeAlso({Incoming.class, Outgoing.class, Task.class})
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
 public abstract class Document implements Comparable<Document>, Storable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -104,12 +101,11 @@ public abstract class Document implements Comparable<Document>, Storable {
     public int compareTo(Document document) {
         if (this.getDate().equals(document.getDate())) {
             return this.getRegNumber().compareTo(document.getRegNumber());
-        }
-        else return this.getDate().compareTo(document.getDate());
+        } else return this.getDate().compareTo(document.getDate());
     }
 
     @Override
     public String toString() {
-        return getRegNumber()+" from " + getDate() + ". " + getName();
+        return getRegNumber() + " from " + getDate() + ". " + getName();
     }
 }

@@ -2,6 +2,9 @@ package ecm.service;
 
 import ecm.dao.GenericDAO;
 import ecm.util.filtering.Filter;
+import ecm.util.paging.Page;
+import ecm.util.paging.RangeHeader;
+import ecm.util.sorting.Sort;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -53,8 +56,8 @@ public abstract class GenericServiceImpl<T> implements GenericService<T> {
     }
 
     @Override
-    public List<T> findAllSorted(String field, String direction) {
-        return genericDao.findAllSorted(field, direction);
+    public Page<T> findAllSortedAndPageable(Sort sort, RangeHeader range) {
+        return genericDao.findAllSortedAndPageable(sort, range);
     }
 
     @Override
@@ -63,7 +66,7 @@ public abstract class GenericServiceImpl<T> implements GenericService<T> {
     }
 
     @Override
-    public List<T> findAllSortedAndFiltered(String field, String direction, Filter filter) {
-        return genericDao.findAllSortedAndFiltered(field, direction, filter);
+    public Page<T> findAllSortedFilteredAndPageable(Sort sort, Filter filter, RangeHeader range) {
+        return genericDao.findAllSortedFilteredAndPageable(sort, filter, range);
     }
 }

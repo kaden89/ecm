@@ -5,5 +5,6 @@ package ecm.dao;
  */
 public interface Storable {
     Integer getId();
+
     String getStorageName();
 }

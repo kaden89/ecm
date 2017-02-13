@@ -14,7 +14,6 @@ import java.time.LocalDate;
 /**
  * Created by dkarachurin on 09.01.2017.
  */
-@XmlRootElement(name = "Outgoing")
 @Entity
 public class Outgoing extends Document {
     @ManyToOne
@@ -36,6 +35,7 @@ public class Outgoing extends Document {
         this.deliveryMethod = dto.getDeliveryMethod();
         this.setId(dto.getId());
     }
+
     public Person getRecipient() {
         return recipient;
     }
@@ -54,6 +54,6 @@ public class Outgoing extends Document {
 
     @Override
     public String toString() {
-        return "Outgoing №"+super.toString();
+        return "Outgoing №" + super.toString();
     }
 }

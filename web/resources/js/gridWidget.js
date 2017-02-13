@@ -134,6 +134,7 @@ define([
                 cacheClass: Cache,
                 store: this.store,
                 structure: columns,
+                pageSize: 11,
                 selectRowMultiple: false,
                 filterServerMode: true,
                 filterSetupQuery: function(expr){

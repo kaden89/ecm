@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 public class Image {
     @Id
-    @GeneratedValue(strategy=GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
     @OneToOne
     private Person owner;

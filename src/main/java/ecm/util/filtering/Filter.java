@@ -1,5 +1,8 @@
 package ecm.util.filtering;
 
+import ecm.util.xml.GsonUtil;
+
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +11,7 @@ import java.util.Map;
  * Created by dkarachurin on 10.02.2017.
  */
 public class Filter {
+
     private Conditions op;
     private List<Rule> data;
 
