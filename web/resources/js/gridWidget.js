@@ -135,7 +135,7 @@ define([
                 store: this.store,
                 structure: columns,
                 pageSize: 11,
-                selectRowMultiple: false,
+                selectRowMultiple: true,
                 filterServerMode: true,
                 filterSetupQuery: function(expr){
                     console.log(JSON.stringify(expr));

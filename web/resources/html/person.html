@@ -136,11 +136,13 @@
                     </div>
                 </div>
 
-
-                <form data-dojo-type="dijit/form/Form" data-dojo-attach-point="uploadedform"
-                      enctype="multipart/form-data" method="post">
-                </form>
-                <div class="${baseClass}Uploader" data-dojo-attach-point="uploader"></div>
+                <div data-dojo-type="dojox/form/Uploader"
+                     data-dojo-attach-point="uploader"
+                     data-dojo-props='id:"uploader"'></div>
+                <div data-dojo-type="dojox/form/uploader/FileList"
+                     data-dojo-attach-point="filelist"
+                     data-dojo-props='uploaderId:"uploader"'></div>
+                <div data-dojo-type="dijit/form/Button" data-dojo-attach-point="button"></div>
 
             </div>
 

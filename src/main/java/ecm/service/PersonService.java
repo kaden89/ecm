@@ -46,12 +46,9 @@ public class PersonService extends AbstractGenericServiceImpl<Person> {
         all.addAll(taskDAO.findAllWithPersonId(id));
 
         boolean haveDocuments = all.size() != 0;
-        StringBuilder builder = new StringBuilder("Cannot delete " + find(id).toString() + ". He has links to next documents:");
-        for (Document document : all) {
-            builder.append(System.lineSeparator());
-            builder.append(document.toString());
-        }
-        if (haveDocuments) throw new HasLinksException(builder.toString());
+        String err = "Cannot delete " + find(id).toString() + ". He has links to "+all.size()+" documents.";
+
+        if (haveDocuments) throw new HasLinksException(err);
     }
 
     @Override

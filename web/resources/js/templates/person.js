@@ -1,37 +1,25 @@
+var disabled = false;
+if (this.model.id == undefined) {
+    disabled = true
+}
+var up = this.uploader;
+up.set('label', 'Select photo');
+up.set('disabled', disabled);
+up.set('name', "file");
+up.set('onComplete', lang.hitch(this, function(file) {
+    domAttr.set(this.avatar, "src", "data:image/png;base64, " + file.image);
+}));
+up.set('url', '/ecm/rest/employees/'+ this.model.id+'/photo');
 
+var list = this.filelist;
+list.set('uploader', up);
 
-var form = domConstruct.create('form', {
-    method: 'post',
-    enctype: 'multipart/form-data',
-    class: 'Uploader'
-}, this.uploader);
-
-var up = new Uploader({
-    label: 'Select photo',
-    multiple: true,
-    url: '/ecm/rest/employees/'+ this.model.id+'/photo',
-    name: "file",
-    onComplete:  lang.hitch(this, function(file) {
-        domAttr.set(this.avatar, "src", "data:image/png;base64, " + file.image);
-    })
-}).placeAt(form);
-
-var list = new FileList({
-    uploader: up
-}).placeAt(form);
-
-var btn = new Button({
-    label: 'Upload',
-    onClick: function() {
-        up.upload();
-    }
-}).placeAt(form);
-
-
-btn.startup();
-up.startup();
-list.startup();
-
+var btn = this.button;
+btn.set('label', 'Upload');
+btn.set('disabled', disabled);
+btn.set('onClick', function() {
+    up.upload();
+});
 
 var avatar = this.avatar;
 if (this.model.id != undefined){

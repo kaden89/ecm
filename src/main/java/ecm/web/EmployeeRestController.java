@@ -133,7 +133,7 @@ public class EmployeeRestController extends AbstractRestController {
     @Path("/{id}/photo")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response uploadPhoto(@PathParam("id") int ownerId, @FormDataParam("files[]") File photo) {
+    public Response uploadPhoto(@PathParam("id") int ownerId, @FormDataParam("uploadedfile") File photo) {
         byte[] bytes = null;
         Image result;
         try {
