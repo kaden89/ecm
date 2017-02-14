@@ -187,7 +187,6 @@ public class StartClass implements ServletContextListener {
 
             for (Person person : personList) {
                 personService.save(person);
-                //TODO костыль
                 result.put(person, new TreeSet<>());
             }
 

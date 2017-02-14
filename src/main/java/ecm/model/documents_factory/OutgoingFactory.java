@@ -11,8 +11,6 @@ import javax.inject.Inject;
  * Created by dkarachurin on 10.01.2017.
  */
 public class OutgoingFactory extends AbstractDocumentsFactory {
-    @Inject
-    DocumentPopulator populator;
 
     @Override
     public Document createDocument() throws DocumentExistsException {

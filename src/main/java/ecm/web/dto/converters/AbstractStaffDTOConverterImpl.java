@@ -17,22 +17,6 @@ public abstract class AbstractStaffDTOConverterImpl<E, D> implements GenericDTOC
     @Inject
     private GenericDAO<Post> postDAO;
 
-    public E fromDTO(D dto) {
-        if (dto instanceof PersonDTO) {
-            Person person = new Person((PersonDTO) dto);
-            person.setPosition(postDAO.find(((PersonDTO) dto).getPositionId()));
-            return (E) person;
-        }
-        return null;
-    }
-
-    public D toDTO(E staff) {
-        if (staff instanceof Person) {
-            return (D) new PersonDTO((Person) staff);
-        }
-        return null;
-    }
-
     public Collection<D> toDtoCollection(Collection<E> staffs) {
         Collection<D> result = new ArrayList<>();
         for (E staff : staffs) {
@@ -49,4 +33,11 @@ public abstract class AbstractStaffDTOConverterImpl<E, D> implements GenericDTOC
         return result;
     }
 
+    public GenericDAO<Post> getPostDAO() {
+        return postDAO;
+    }
+
+    public void setPostDAO(GenericDAO<Post> postDAO) {
+        this.postDAO = postDAO;
+    }
 }

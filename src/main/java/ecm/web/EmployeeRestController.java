@@ -31,10 +31,10 @@ public class EmployeeRestController extends AbstractRestController {
         if (filterString != null && sort != null && range != null) {
             Filter filter = (Filter) fromJson(filterString, Filter.class);
             Page<Person> page = getPersonService().findAllSortedFilteredAndPageable(sort, filter, range);
-            return getStaffPageResponse(page);
+            return getPageResponseFromClass(page, Person.class);
         } else if (sort != null && range != null) {
             Page<Person> page = getPersonService().findAllSortedAndPageable(sort, range);
-            return getStaffPageResponse(page);
+            return getPageResponseFromClass(page, Person.class);
         } else {
             Collection<PersonDTO> employees = getPersonDTOConverter().toDtoCollection(getPersonService().findAll());
             return Response.ok(toJson(employees)).header("Content-Range", "items 0-" + employees.size() + "/" + employees.size()).build();

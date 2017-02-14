@@ -10,7 +10,6 @@ import ecm.util.sorting.Sort;
 import ecm.web.dto.*;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -74,10 +73,10 @@ public class DocumentsRestController extends AbstractRestController {
         if (filterString != null && sort != null && range != null) {
             Filter filter = (Filter) fromJson(filterString, Filter.class);
             Page<Task> page = getTaskService().findAllSortedFilteredAndPageable(sort, filter, range);
-            return getDocPageResponse(page);
+            return getPageResponseFromClass(page, Task.class);
         } else if (sort != null && range != null) {
             Page<Task> page = getTaskService().findAllSortedAndPageable(sort, range);
-            return getDocPageResponse(page);
+            return getPageResponseFromClass(page, Task.class);
         } else {
             Collection<TaskDTO> tasks = getTaskDTOConverter().toDtoCollection(getTaskService().findAll());
             return Response.ok(toJson(tasks)).header("Content-Range", "items 0-" + tasks.size() + "/" + tasks.size()).build();
@@ -91,10 +90,10 @@ public class DocumentsRestController extends AbstractRestController {
         if (filterString != null && sort != null && range != null) {
             Filter filter = (Filter) fromJson(filterString, Filter.class);
             Page<Outgoing> page = getOutgoingService().findAllSortedFilteredAndPageable(sort, filter, range);
-            return getDocPageResponse(page);
+            return getPageResponseFromClass(page, Outgoing.class);
         } else if (sort != null && range != null) {
             Page<Outgoing> page = getOutgoingService().findAllSortedAndPageable(sort, range);
-            return getDocPageResponse(page);
+            return getPageResponseFromClass(page, Outgoing.class);
         } else {
             Collection<OutgoingDTO> outgoings = getOutgoingDTOConverter().toDtoCollection(getOutgoingService().findAll());
             return Response.ok(toJson(outgoings)).header("Content-Range", "items 0-" + outgoings.size() + "/" + outgoings.size()).build();
@@ -108,10 +107,10 @@ public class DocumentsRestController extends AbstractRestController {
         if (filterString != null && sort != null && range != null) {
             Filter filter = (Filter) fromJson(filterString, Filter.class);
             Page<Incoming> page = getIncomingService().findAllSortedFilteredAndPageable(sort, filter, range);
-            return getDocPageResponse(page);
+            return getPageResponseFromClass(page, Incoming.class);
         } else if (sort != null && range != null) {
             Page<Incoming> page = getIncomingService().findAllSortedAndPageable(sort, range);
-            return getDocPageResponse(page);
+            return getPageResponseFromClass(page, Incoming.class);
         } else {
             Collection<IncomingDTO> incoming = getIncomingDTOConverter().toDtoCollection(getIncomingService().findAll());
             return Response.ok(toJson(incoming)).header("Content-Range", "items 0-" + incoming.size() + "/" + incoming.size()).build();

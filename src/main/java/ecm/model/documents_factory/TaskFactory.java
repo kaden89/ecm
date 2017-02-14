@@ -11,8 +11,6 @@ import java.time.LocalDate;
  * Created by dkarachurin on 10.01.2017.
  */
 public class TaskFactory extends AbstractDocumentsFactory {
-    @Inject
-    DocumentPopulator populator;
 
     @Override
     public Document createDocument() throws DocumentExistsException {

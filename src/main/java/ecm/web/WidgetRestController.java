@@ -26,7 +26,7 @@ public class WidgetRestController extends AbstractRestController {
     public Response getPersons() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/grid.html"));
-        response.setScript(readFile("/js/personGrid.js"));
+        response.setScript(readFile("/js/templates/personGrid.js"));
         return Response.ok(response).build();
     }
 
@@ -36,7 +36,7 @@ public class WidgetRestController extends AbstractRestController {
     public Response getNewEmployeeTemplate() {
         StaffWidgetResponse response = new StaffWidgetResponse();
         response.setTemplate(readFile("/html/person.html"));
-        response.setScript(readFile("/js/person.js"));
+        response.setScript(readFile("/js/templates/person.js"));
         response.setEntity(new PersonDTO());
         return Response.ok(response).build();
     }
@@ -48,7 +48,7 @@ public class WidgetRestController extends AbstractRestController {
         StaffWidgetResponse response = new StaffWidgetResponse();
         response.setTemplate(readFile("/html/person.html"));
         response.setEntity(getPersonDTOConverter().toDTO(getPersonService().find(employeeId)));
-        response.setScript(readFile("/js/person.js"));
+        response.setScript(readFile("/js/templates/person.js"));
 
         return Response.ok(response).build();
     }
@@ -59,7 +59,7 @@ public class WidgetRestController extends AbstractRestController {
     public Response getIncomings() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/grid.html"));
-        response.setScript(readFile("/js/incomingGrid.js"));
+        response.setScript(readFile("/js/templates/incomingGrid.js"));
         return Response.ok(response).build();
     }
 
@@ -69,7 +69,7 @@ public class WidgetRestController extends AbstractRestController {
     public Response getNewIncomingTemplate() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/incoming.html"));
-        response.setScript(readFile("/js/incoming.js"));
+        response.setScript(readFile("/js/templates/incoming.js"));
         response.setEntity(new IncomingDTO());
         return Response.ok(response).build();
     }
@@ -81,7 +81,7 @@ public class WidgetRestController extends AbstractRestController {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/incoming.html"));
         response.setEntity(getIncomingDTOConverter().toDTO(getIncomingService().find(incomingId)));
-        response.setScript(readFile("/js/incoming.js"));
+        response.setScript(readFile("/js/templates/incoming.js"));
 
         return Response.ok(response).build();
     }
@@ -92,7 +92,7 @@ public class WidgetRestController extends AbstractRestController {
     public Response getOutgoings() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/grid.html"));
-        response.setScript(readFile("/js/outgoingGrid.js"));
+        response.setScript(readFile("/js/templates/outgoingGrid.js"));
         return Response.ok(response).build();
     }
 
@@ -102,7 +102,7 @@ public class WidgetRestController extends AbstractRestController {
     public Response getNewOutgoingTemplate() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/outgoing.html"));
-        response.setScript(readFile("/js/outgoing.js"));
+        response.setScript(readFile("/js/templates/outgoing.js"));
         response.setEntity(new OutgoingDTO());
         return Response.ok(response).build();
     }
@@ -114,7 +114,7 @@ public class WidgetRestController extends AbstractRestController {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/outgoing.html"));
         response.setEntity(getOutgoingDTOConverter().toDTO(getOutgoingService().find(outgoingId)));
-        response.setScript(readFile("/js/outgoing.js"));
+        response.setScript(readFile("/js/templates/outgoing.js"));
 
         return Response.ok(response).build();
     }
@@ -125,7 +125,7 @@ public class WidgetRestController extends AbstractRestController {
     public Response getTaskGrid() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/grid.html"));
-        response.setScript(readFile("/js/taskGrid.js"));
+        response.setScript(readFile("/js/templates/taskGrid.js"));
         return Response.ok(response).build();
     }
 
@@ -135,7 +135,7 @@ public class WidgetRestController extends AbstractRestController {
     public Response getNewTaskTemplate() {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/task.html"));
-        response.setScript(readFile("/js/task.js"));
+        response.setScript(readFile("/js/templates/task.js"));
         response.setEntity(new TaskDTO());
         return Response.ok(response).build();
     }
@@ -147,7 +147,7 @@ public class WidgetRestController extends AbstractRestController {
         DocumentWidgetResponse response = new DocumentWidgetResponse();
         response.setTemplate(readFile("/html/task.html"));
         response.setEntity(getTaskDTOConverter().toDTO(getTaskService().find(taskId)));
-        response.setScript(readFile("/js/task.js"));
+        response.setScript(readFile("/js/templates/task.js"));
         return Response.ok(response).build();
     }
 

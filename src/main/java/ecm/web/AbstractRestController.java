@@ -63,19 +63,30 @@ public class AbstractRestController {
         return gson.fromJson(json, clazz);
     }
 
-    public Response getStaffPageResponse(Page page) {
-        return Response.ok(toJson(getPersonDTOConverter()
-                .toDtoCollection(page.getItems())))
+    public Response getPageResponseFromClass(Page page, Class clazz) {
+        return Response.ok(toJson(getConverterFromClass(clazz).toDtoCollection(page.getItems())))
                 .header("Content-Range", "items " + page.getStartIndex() + "-" + page.getEndIndex() + "/" + page.getAllItemsCount())
                 .build();
     }
 
-    public Response getDocPageResponse(Page page) {
-        return Response.ok(toJson(getIncomingDTOConverter()
-                .toDtoCollection(page.getItems())))
-                .header("Content-Range", "items " + page.getStartIndex() + "-" + page.getEndIndex() + "/" + page.getAllItemsCount())
-                .build();
+    private GenericDTOConverter getConverterFromClass(Class clazz){
+        GenericDTOConverter converter = null;
+
+        if (clazz.isAssignableFrom(Incoming.class)){
+            converter = getIncomingDTOConverter();
+        }
+        else if (clazz.isAssignableFrom(Outgoing.class)){
+            converter = getOutgoingDTOConverter();
+        }
+        else if (clazz.isAssignableFrom(Task.class)){
+            converter = getTaskDTOConverter();
+        }
+        else if (clazz.isAssignableFrom(Person.class)){
+            converter = getPersonDTOConverter();
+        }
+        return converter;
     }
+
 
     public Logger getLog() {
         return log;

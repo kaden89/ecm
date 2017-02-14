@@ -10,4 +10,18 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class IncomingDTOConverter extends AbstractDocumentDTOConverterImpl<Incoming, IncomingDTO> {
+    @Override
+    public Incoming fromDTO(IncomingDTO dto) {
+        Incoming incoming = new Incoming(dto);
+        incoming.setAuthor(getPersonDAO().find(dto.getAuthorId()));
+        incoming.setSender(getPersonDAO().find(dto.getSenderId()));
+        incoming.setRecipient(getPersonDAO().find(dto.getRecipientId()));
+        return incoming;
+    }
+
+    @Override
+    public IncomingDTO toDTO(Incoming document) {
+        IncomingDTO incomingDTO = new IncomingDTO(document);
+        return incomingDTO;
+    }
 }
