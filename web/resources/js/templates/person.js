@@ -13,6 +13,7 @@ up.set('url', '/ecm/rest/employees/'+ this.model.id+'/photo');
 
 var list = this.filelist;
 list.set('uploader', up);
+list.set('uploaderId', up.id);
 
 var btn = this.button;
 btn.set('label', 'Upload');

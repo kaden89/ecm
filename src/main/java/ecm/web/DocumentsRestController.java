@@ -40,7 +40,7 @@ public class DocumentsRestController extends AbstractRestController {
     @Path("/tree/incomings")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeIncomingDocuments() {
-        List<IncomingDTO> dtos = new ArrayList<>(getIncomingDTOConverter().toDtoCollection(new ArrayList<>(getIncomingService().findAll())));
+        List<IncomingDTO> dtos = (List<IncomingDTO>) getIncomingDTOConverter().toDtoCollection(getIncomingService().findAll());
         TreeNode<IncomingDTO> root = new TreeNode<>("Incomings", "", dtos, "incomings");
         String jsonInString = toJson(root);
         return Response.ok(jsonInString).build();
@@ -50,7 +50,7 @@ public class DocumentsRestController extends AbstractRestController {
     @Path("/tree/outgoings")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeOutgoingDocuments() {
-        List<OutgoingDTO> dtos = new ArrayList<>(getOutgoingDTOConverter().toDtoCollection(new ArrayList<>(getOutgoingService().findAll())));
+        List<OutgoingDTO> dtos = (List<OutgoingDTO>) getOutgoingDTOConverter().toDtoCollection(getOutgoingService().findAll());
         TreeNode<OutgoingDTO> root = new TreeNode<>("Outgoings", "", dtos, "outgoings");
         String jsonInString = toJson(root);
         return Response.ok(jsonInString).build();
@@ -60,7 +60,7 @@ public class DocumentsRestController extends AbstractRestController {
     @Path("/tree/tasks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEmployeeTaskDocuments() {
-        List<TaskDTO> dtos = new ArrayList<>(getTaskDTOConverter().toDtoCollection(new ArrayList<>(getTaskService().findAll())));
+        List<TaskDTO> dtos = (List<TaskDTO>) getTaskDTOConverter().toDtoCollection(getTaskService().findAll());
         TreeNode<TaskDTO> root = new TreeNode<>("Tasks", "", dtos, "tasks");
         String jsonInString = toJson(root);
         return Response.ok(jsonInString).build();
