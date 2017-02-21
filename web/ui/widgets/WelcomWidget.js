@@ -2,6 +2,7 @@
 define([
     "dojo/_base/lang",
     "dojo/_base/declare",
+    "dojo/topic",
     "dijit/registry",
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
@@ -20,11 +21,13 @@ define([
     // "widgets/MyTree",
     "dojo/data/ObjectStore",
     "dijit/tree/ForestStoreModel",
-    "dojo/text!/ecm/ui/templates/HomePage.html",
+    "dojo/text!/ecm/ui/templates/WelcomWidget.html",
     "myApp/ecm/ui/widgets/NavigationWidget",
+    "myApp/ecm/ui/modules/AppController",
     "dojo/i18n"
 ], function (lang,
              declare,
+             topic,
              registry,
              _WidgetBase,
              _TemplatedMixin,
@@ -43,18 +46,33 @@ define([
              ForestStoreModel,
              template,
              NavigationWidget,
+             AppController,
              i18n) {
-    return declare("HomePage", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+    return declare("WelcomWidget", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         templateString: template,
         widgetsInTemplate: true,
+        personStore: null,
+        incomingStore: null,
+        outgoingStore: null,
+        taskStore: null,
         constructor: function (params) {
-            var nav = new NavigationWidget({}, this.navigation);
-            nav.startup();
+
         }
         ,
         startup: function () {
             this.inherited(arguments);
+            var nav = new NavigationWidget({}, this.navigation);
+            nav.startup();
+            new AppController({
+                welcomWidget: this,
+                navWidget: nav
+            }).startup();
+        },
+        getTabContainer: function () {
+            return this.tabContainer;
         }
+
+
 
     });
 });

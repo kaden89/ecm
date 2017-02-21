@@ -1,8 +1,12 @@
-<div data-dojo-type="dijit/layout/AccordionContainer" data-dojo-props="region:'leading'">
-    <div data-dojo-type="dijit/layout/AccordionPane" title="Employees">
-
-    </div>
-    <div data-dojo-type="dijit/layout/AccordionPane" title="Documents">
-
+<div style="width: 100%; height:100%;">
+    <div data-dojo-type="dijit/layout/AccordionContainer" data-dojo-props="region:'leading'" style="width: 100%; height:100%;">
+        <div data-dojo-type="dijit/layout/AccordionPane" title="Staff">
+            <div data-dojo-attach-point="employees"></div>
+        </div>
+        <div data-dojo-type="dijit/layout/AccordionPane" title="Documents">
+            <div data-dojo-attach-point="incoming"></div>
+            <div data-dojo-attach-point="outgoings"></div>
+            <div data-dojo-attach-point="tasks"></div>
+        </div>
     </div>
 </div>

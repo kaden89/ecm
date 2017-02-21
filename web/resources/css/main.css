@@ -1,7 +1,7 @@
-/*#home,#gridContainer, #personDiv{*/
-    /*height: 100%;*/
-    /*width: 100%;*/
-/*}*/
+#gridContainer, #personDiv{
+    height: 100%;
+    width: 100%;
+}
 .gridx{
     height: 320px !important;
 }

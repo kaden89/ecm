@@ -3,24 +3,10 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <!--<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/dojo.js'-->
-            <!--data-dojo-config="async: true, parseOnLoad: true"></script>-->
-    <!--<link rel="stylesheet" type="text/css"-->
-          <!--href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.1/dijit/themes/claro/claro.css">-->
-    <!--<link rel="stylesheet" type="text/css" href="resources/css/main.css">-->
-    <!--<link rel="stylesheet" type="text/css" href="http://cdn.rawgit.com/oria/gridx/1.3/resources/claro/Gridx.css">-->
-
-    <!--<link rel="stylesheet" type="text/css"-->
-          <!--href="http://ajax.googleapis.com/ajax/libs/dojo/1.10.1/dijit/themes/claro/document.css">-->
-
     <style type="text/css">
         @import "vendor/dijit/themes/claro/claro.css";
         @import "vendor/dijit/themes/claro/document.css";
-        /*@import "webjars/gridx/1.3.9/resources/claro/Gridx.css";*/
         @import "resources/css/main.css";
-        /*@import "css/AppWidget.css";*/
-        /*@import "css/CommonFormWidget.css";*/
-        /*@import "css/WelcomeWidget.css";*/
     </style>
 
 
@@ -31,28 +17,19 @@
             cacheBust: 1,
             parseOnLoad: true,
             packages: [ // paths are relative to vendor/dojo/dojo/dojo.js
-                { name: 'myApp', location: '../../..' },
-                { name: "dijit", location: "../dijit" }
+                {name: 'myApp', location: '../../..'},
+                {name: "dijit", location: "../dijit"}
             ]
         };
     </script>
 
     <script src="/ecm/vendor/dojo/dojo.js"></script>
-    <script>require([ 'myApp/ecm/ui/widgets/HomePage']);</script>
-
-    <!--<script>-->
-        <!--require(['myApp/ecm/ui/widgets/HomePage', 'dojo/domReady!', "dojo/parser"], function(HomePage) {-->
-            <!--var page = new HomePage({}, 'app');-->
-            <!--page.startup();-->
-            <!--// page.startup();-->
-        <!--});-->
-    <!--</script>-->
+    <script>require(['myApp/ecm/ui/widgets/WelcomWidget']);</script>
 
 </head>
 
 
 <body class="claro">
-<div data-dojo-type="myApp/ecm/ui/widgets/HomePage"></div>
-
+<div data-dojo-type="myApp/ecm/ui/widgets/WelcomWidget"></div>
 </body>
 </html>
