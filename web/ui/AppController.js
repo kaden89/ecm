@@ -9,6 +9,7 @@ define([
     "dojo/store/Observable",
     "dijit/registry",
     "dijit/layout/ContentPane",
+    "dijit/ConfirmDialog",
     "myApp/ecm/ui/widgets/CommonForm",
     "myApp/ecm/ui/widgets/NavigationWidget",
     "myApp/ecm/ui/widgets/WelcomWidget",
@@ -27,6 +28,7 @@ define([
              Observable,
              Registry,
              ContentPane,
+             ConfirmDialog,
              CommonForm,
              NavigationWidget,
              WelcomWidget,
@@ -60,8 +62,8 @@ define([
         initSubscribes: function () {
             topic.subscribe("navigation/tree/openItem", lang.hitch(this, this.openItem));
             topic.subscribe("commonForm/Close", lang.hitch(this, this.closeTab));
-            topic.subscribe("commonForm/Save", lang.hitch(this, this.closeTab));
-            topic.subscribe("commonForm/Delete", lang.hitch(this, this.closeTab));
+            topic.subscribe("commonForm/Save", lang.hitch(this, this.saveItem));
+            topic.subscribe("commonForm/Delete", lang.hitch(this, this.deleteItem));
         },
         initStores: function () {
             var restUrl = 'http://localhost:8080/ecm/rest/';
@@ -100,7 +102,6 @@ define([
                 }
             }));
 
-
         },
         openItem: function (model) {
             console.log(model);
@@ -109,7 +110,7 @@ define([
             this.welcomWidget.switchOnTabIfOpened(model.id);
 
             var formWidget = new CommonForm({
-                templateString: this.getTemplateByModelType(model),
+                templateString: this.getTemplateByModelType(model.type),
                 model: new Stateful(model)
             });
 
@@ -118,8 +119,61 @@ define([
         closeTab: function close(model) {
             this.welcomWidget.closeModelTab(model);
         },
-        getStoreByModelType: function (model) {
-            switch (model.type) {
+        saveItem: function (model) {
+            var store = this.getStoreByModelType(model.type);
+            //create new user
+            if (model.id == undefined) {
+                store.add(model).then(function (data) {
+                    this.welcomWidget.reopenTab(data);
+                    this.navWidget.updateTreeByModelType(model.type);
+                }.bind(this));
+            }
+            else {
+                store.put(model).then(function (data) {
+                    var pane = Registry.byId("pane_" + data.id);
+                    pane.set("title", data.fullname);
+                    this.navWidget.updateTreeByModelType(model.type);
+                }.bind(this));
+            }
+        },
+        deleteItem: function (model) {
+            var id = model.id;
+            var store = this.getStoreByModelType(model.type);
+            deleteDialog = new ConfirmDialog({
+                title: "Delete",
+                content: "Are you sure that you want to delete " + model.fullname + "?",
+                style: "width: 300px",
+                onCancel: function () {
+                    return;
+                },
+                onExecute: function () {
+                    store.remove(id).then(success.bind(this), error);
+                }.bind(this)
+
+            });
+            deleteDialog.show();
+
+            function success() {
+                var tabPane = Registry.byId("TabContainer");
+                pane = Registry.byId("pane_" + id);
+                tabPane.removeChild(pane);
+                tabPane.selectChild(Registry.byId("WelcomPane"));
+                pane.destroy();
+                // updateTree.call(this, this.tree);
+            }
+
+            function error(err) {
+                myDialog = new Dialog({
+                    title: "Error!",
+                    content: err.responseText,
+                    style: "width: 300px"
+                });
+                console.log("error");
+                myDialog.show();
+            }
+        },
+        getStoreByModelType: function (type) {
+            switch (type) {
                 case 'task':
                     return this.taskStore;
                     break;
@@ -134,8 +188,8 @@ define([
                     break;
             }
         },
-        getTemplateByModelType: function (model) {
-            switch (model.type) {
+        getTemplateByModelType: function (type) {
+            switch (type) {
                 case 'task':
                     return taskTemplate;
                     break;

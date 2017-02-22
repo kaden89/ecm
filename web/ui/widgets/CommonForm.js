@@ -64,6 +64,7 @@ define([
                 label: "Save",
                 iconClass: "dijitEditorIcon dijitEditorIconSave",
                 onClick: lang.hitch(this, function () {
+                    if (!this.form.validate()) return;
                     topic.publish("commonForm/Save", this.model);
                 })
             });
@@ -81,17 +82,15 @@ define([
                     topic.publish("commonForm/Close", this.model);
                 })
             });
-            toolbar.addChild(createButton);
-            if (!this.isNew) {
-                toolbar.addChild(deleteButton);
+
+            if (this.isNew) {
+                deleteButton.set('disabled', true);
+            } else {
+                deleteButton.set('disabled', false);
             }
+            toolbar.addChild(createButton);
+            toolbar.addChild(deleteButton);
             toolbar.addChild(closeButton);
-
-
-        },
-        baseClass: "formsWidget",
-        postCreate: function () {
-            var a = 1;
         }
     });
 });

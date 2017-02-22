@@ -86,6 +86,21 @@ define([
             pane.setContent(widget);
             Registry.add(pane);
         },
+        reopenTab: function (model) {
+            var pane = Registry.byId("newPane_" + model.type);
+            var tabContainer = this.tabContainer;
+            tabContainer.removeChild(pane);
+            pane.set("title", model.fullname);
+            pane.set("id", "pane_" + model.id);
+            Registry.remove("newPane_" + model.type);
+            Registry.add(pane);
+            tabContainer.addChild(pane);
+            tabContainer.selectChild(pane);
+            // toolbar.addChild(deleteButton, 1);
+            this.uploader.set('disabled', false);
+            this.uploader.set('url', '/ecm/rest/employees/'+ model.id+'/photo');
+            this.button.set('disabled', false);
+        },
         closeModelTab: function (model) {
             var tabPane = this.tabContainer;
             var pane;
@@ -96,7 +111,7 @@ define([
                 pane = Registry.byId("pane_" + model.id);
             }
             tabPane.removeChild(pane);
-            tabPane.selectChild(this.welcomPane);
+            // tabPane.selectChild(this.welcomPane);
             pane.destroy();
         }
 

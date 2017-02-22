@@ -94,4 +94,9 @@ public class PersonDTO extends AbstractStaffDTO {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return firstname + " " + surname + " " + patronymic;
+    }
 }

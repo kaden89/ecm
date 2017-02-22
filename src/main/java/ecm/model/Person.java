@@ -43,13 +43,9 @@ public class Person extends Staff implements Comparable<Person>, Storable {
     }
 
     public Person(PersonDTO dto) {
+        this(dto.getFirstname(), dto.getSurname(), dto.getPatronymic(), null, dto.getBirthday());
         this.setId(dto.getId());
-        this.firstname = dto.getFirstname();
-        this.surname = dto.getSurname();
-        this.patronymic = dto.getPatronymic();
-        this.position = null;
-        this.birthday = dto.getBirthday();
-        this.fullname = dto.getFullname();
+        this.setFullname(dto.toString());
     }
 
 

@@ -105,7 +105,6 @@ define([
                         return item.name;
                     }
                 }
-
             });
 
             return tree = new Tree({
@@ -115,20 +114,21 @@ define([
                 }
             }, node);
         },
-        updatePersonTree: function () {
-            this.personTree.update();
-        },
-        updateIncomingTree: function () {
-            this.incomingTree.update();
-        },
-        updateOutgoingsTree: function () {
-            this.outgoingsTree.update();
+        updateTreeByModelType: function (type) {
+            switch (type) {
+                case 'task':
+                    this.tasksTree.update();
+                    break;
+                case 'incoming':
+                    this.incomingTree.update();
+                    break;
+                case 'outgoing':
+                    this.outgoingsTree.update();
+                    break;
+                case 'person':
+                    this.personTree.update();
+                    break;
+            }
         }
-        ,
-        updateTasksTree: function () {
-            this.tasksTree.update();
-        }
-
-
     });
 });
