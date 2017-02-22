@@ -15,7 +15,7 @@
             async: 1,
             isDebug: true,
             cacheBust: 1,
-            parseOnLoad: true,
+//            parseOnLoad: true,
             packages: [ // paths are relative to vendor/dojo/dojo/dojo.js
                 {name: 'myApp', location: '../../..'},
                 {name: "dijit", location: "../dijit"}
@@ -24,12 +24,16 @@
     </script>
 
     <script src="/ecm/vendor/dojo/dojo.js"></script>
-    <script>require(['myApp/ecm/ui/widgets/WelcomWidget']);</script>
+    <script>require(['myApp/ecm/ui/AppController'], function (AppController) {
+        var app = new AppController();
+        app.startup();
+    });</script>
 
 </head>
 
 
 <body class="claro">
-<div data-dojo-type="myApp/ecm/ui/widgets/WelcomWidget"></div>
+<!--<div data-dojo-type="myApp/ecm/ui/widgets/WelcomWidget"></div>-->
+<div id="app"></div>
 </body>
 </html>

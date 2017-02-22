@@ -65,7 +65,7 @@ define([
                 label: "Save",
                 iconClass: "dijitEditorIcon dijitEditorIconSave",
                 onClick: lang.hitch(this, function () {
-                    topic.publish("commonForm/save", this.model, store);
+                    topic.publish("commonForm/Save", this.model, store);
                 })
             });
             var deleteButton = new Button({

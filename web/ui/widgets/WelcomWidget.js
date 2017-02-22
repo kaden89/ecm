@@ -23,7 +23,7 @@ define([
     "dijit/tree/ForestStoreModel",
     "dojo/text!/ecm/ui/templates/WelcomWidget.html",
     "myApp/ecm/ui/widgets/NavigationWidget",
-    "myApp/ecm/ui/modules/AppController",
+    "myApp/ecm/ui/AppController",
     "dojo/i18n"
 ], function (lang,
              declare,
@@ -55,18 +55,21 @@ define([
         incomingStore: null,
         outgoingStore: null,
         taskStore: null,
+        navWidget: null,
         constructor: function (params) {
-
+            lang.mixin(this, params);
         }
         ,
         startup: function () {
             this.inherited(arguments);
-            var nav = new NavigationWidget({}, this.navigation);
-            nav.startup();
-            new AppController({
-                welcomWidget: this,
-                navWidget: nav
-            }).startup();
+            this.navWidget.placeAt(this.navigation);
+            // this.navWidget.startup();
+            // var nav = new NavigationWidget({}, this.navigation);
+            // nav.startup();
+            // new AppController({
+            //     welcomWidget: this,
+            //     navWidget: nav
+            // }).startup();
         },
         getTabContainer: function () {
             return this.tabContainer;

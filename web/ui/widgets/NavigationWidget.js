@@ -114,6 +114,19 @@ define([
                     topic.publish("navigation/tree/openItem", item);
                 }
             }, node);
+        },
+        updatePersonTree: function () {
+            this.personTree.update();
+        },
+        updateIncomingTree: function () {
+            this.incomingTree.update();
+        },
+        updateOutgoingsTree: function () {
+            this.outgoingsTree.update();
+        }
+        ,
+        updateTasksTree: function () {
+            this.tasksTree.update();
         }
 
 

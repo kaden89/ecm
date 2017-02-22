@@ -1,21 +1,27 @@
 define([
     "dijit/_WidgetBase",
     "dojo/_base/declare",
+    "dojo/dom",
     "dojo/topic",
     "dojo/_base/lang",
     "dojo/Stateful",
     "dijit/registry",
     "dijit/layout/ContentPane",
     "myApp/ecm/ui/widgets/CommonForm",
+    "myApp/ecm/ui/widgets/NavigationWidget",
+    "myApp/ecm/ui/widgets/WelcomWidget",
     "dojo/text!/ecm/ui/templates/Person.html"
 ], function (_WidgetBase,
              declare,
+             dom,
              topic,
              lang,
              Stateful,
              Registry,
              ContentPane,
              CommonForm,
+             NavigationWidget,
+             WelcomWidget,
              personTemplate) {
     return declare("AppController", [_WidgetBase], {
         navWidget: null,
@@ -29,8 +35,15 @@ define([
         },
         startup: function () {
             this.inherited(arguments);
+            this.initWidgets();
             this.initStores();
             this.initSubscribes();
+        },
+        initWidgets: function () {
+            var appDiv = dom.byId("app");
+            this.navWidget = new NavigationWidget();
+            this.welcomWidget = new WelcomWidget({navWidget:  this.navWidget}, appDiv);
+            this.welcomWidget.startup();
         },
         initStores: function () {
 
@@ -72,6 +85,12 @@ define([
             tabContainer.selectChild(pane);
             pane.setContent(formWidget);
             Registry.add(pane);
+        },
+        getStoreByModelType: function () {
+
+        },
+        getTemplateByModelType: function () {
+
         }
     });
 });
