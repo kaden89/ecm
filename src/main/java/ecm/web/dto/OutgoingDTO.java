@@ -11,7 +11,7 @@ public class OutgoingDTO extends AbstractDocumentDTO {
     private Integer recipientId;
     private String recipientName;
     private String deliveryMethod;
-    private String restUrl = "outgoings";
+    private String type = "outgoing";
 
     public OutgoingDTO() {
     }
@@ -40,19 +40,19 @@ public class OutgoingDTO extends AbstractDocumentDTO {
         this.deliveryMethod = deliveryMethod;
     }
 
-    public String getRestUrl() {
-        return restUrl;
-    }
-
-    public void setRestUrl(String restUrl) {
-        this.restUrl = restUrl;
-    }
-
     public String getRecipientName() {
         return recipientName;
     }
 
     public void setRecipientName(String recipientName) {
         this.recipientName = recipientName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

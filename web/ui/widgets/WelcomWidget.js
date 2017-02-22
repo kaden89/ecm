@@ -28,7 +28,7 @@ define([
 ], function (lang,
              declare,
              topic,
-             registry,
+             Registry,
              _WidgetBase,
              _TemplatedMixin,
              _WidgetsInTemplateMixin,
@@ -63,16 +63,41 @@ define([
         startup: function () {
             this.inherited(arguments);
             this.navWidget.placeAt(this.navigation);
-            // this.navWidget.startup();
-            // var nav = new NavigationWidget({}, this.navigation);
-            // nav.startup();
-            // new AppController({
-            //     welcomWidget: this,
-            //     navWidget: nav
-            // }).startup();
         },
         getTabContainer: function () {
             return this.tabContainer;
+        },
+        switchOnTabIfOpened: function (id) {
+            var tabContainer = this.tabContainer;
+            var existPane = Registry.byId("pane_" + id);
+            if (existPane != undefined) {
+                tabContainer.selectChild(existPane);
+                return;
+            }
+        },
+        openNewTab: function (widget, model) {
+            var tabContainer = this.tabContainer;
+            var pane = new ContentPane({
+                title: model.fullname, closable: true
+            });
+            pane.set("id", "pane_" + model.id);
+            tabContainer.addChild(pane);
+            tabContainer.selectChild(pane);
+            pane.setContent(widget);
+            Registry.add(pane);
+        },
+        closeModelTab: function (model) {
+            var tabPane = this.tabContainer;
+            var pane;
+            if (model.id == undefined) {
+                pane = Registry.byId("newPane_" + model.type);
+            }
+            else {
+                pane = Registry.byId("pane_" + model.id);
+            }
+            tabPane.removeChild(pane);
+            tabPane.selectChild(this.welcomPane);
+            pane.destroy();
         }
 
 

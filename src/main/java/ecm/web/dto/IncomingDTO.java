@@ -14,7 +14,7 @@ public class IncomingDTO extends AbstractDocumentDTO {
     private String recipientName;
     private String referenceNumber;
     private LocalDate outboundRegDate;
-    private String restUrl = "incomings";
+    private String type = "incoming";
 
     public IncomingDTO() {
     }
@@ -63,14 +63,6 @@ public class IncomingDTO extends AbstractDocumentDTO {
         this.outboundRegDate = outboundRegDate;
     }
 
-    public String getRestUrl() {
-        return restUrl;
-    }
-
-    public void setRestUrl(String restUrl) {
-        this.restUrl = restUrl;
-    }
-
     public String getSenderName() {
         return senderName;
     }
@@ -85,5 +77,13 @@ public class IncomingDTO extends AbstractDocumentDTO {
 
     public void setRecipientName(String recipientName) {
         this.recipientName = recipientName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

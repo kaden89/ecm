@@ -15,7 +15,7 @@ public class TaskDTO extends AbstractDocumentDTO {
     private Integer controllerId;
     private String controllerName;
     private boolean isControlled;
-    private String restUrl = "tasks";
+    private String type = "task";
 
     public TaskDTO() {
     }
@@ -72,14 +72,6 @@ public class TaskDTO extends AbstractDocumentDTO {
         this.controllerId = controllerId;
     }
 
-    public String getRestUrl() {
-        return restUrl;
-    }
-
-    public void setRestUrl(String restUrl) {
-        this.restUrl = restUrl;
-    }
-
     public String getExecutorName() {
         return executorName;
     }
@@ -94,5 +86,13 @@ public class TaskDTO extends AbstractDocumentDTO {
 
     public void setControllerName(String controllerName) {
         this.controllerName = controllerName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

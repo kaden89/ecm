@@ -50,7 +50,6 @@ define([
              domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
-        store: null,
         templateString: null,
         isNew: false,
         constructor: function (params) {
@@ -65,21 +64,21 @@ define([
                 label: "Save",
                 iconClass: "dijitEditorIcon dijitEditorIconSave",
                 onClick: lang.hitch(this, function () {
-                    topic.publish("commonForm/Save", this.model, store);
+                    topic.publish("commonForm/Save", this.model);
                 })
             });
             var deleteButton = new Button({
                 label: "Delete",
                 iconClass: "dijitEditorIcon dijitEditorIconDelete",
                 onClick:  lang.hitch(this, function () {
-                    topic.publish("commonForm/Delete", this.model, store);
+                    topic.publish("commonForm/Delete", this.model);
                 })
             });
             var closeButton = new Button({
                 label: "Close",
                 iconClass: "dijitEditorIcon dijitEditorIconCancel",
                 onClick:  lang.hitch(this, function () {
-                    topic.publish("commonForm/Close", this.model.id);
+                    topic.publish("commonForm/Close", this.model);
                 })
             });
             toolbar.addChild(createButton);
