@@ -1,8 +1,7 @@
 define([
     "dojo/_base/declare",
-    "dojo/Stateful",
-    "widgets/models/ModelPerson"
-], function (declare, Stateful, ModelPerson) {
+    "dojo/Stateful"
+], function (declare, Stateful) {
     return declare([Stateful], {
     })
 })

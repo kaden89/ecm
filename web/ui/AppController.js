@@ -14,7 +14,15 @@ define([
     "myApp/ecm/ui/widgets/CommonForm",
     "myApp/ecm/ui/widgets/NavigationWidget",
     "myApp/ecm/ui/widgets/WelcomWidget",
-    "myApp/ecm/ui/widgets/CommonGrid"
+    "myApp/ecm/ui/widgets/CommonGrid",
+    "myApp/ecm/ui/models/Incoming",
+    "myApp/ecm/ui/models/Outgoing",
+    "myApp/ecm/ui/models/Person",
+    "myApp/ecm/ui/models/Task",
+    "dojo/text!/ecm/ui/templates/Person.html",
+    "dojo/text!/ecm/ui/templates/Incoming.html",
+    "dojo/text!/ecm/ui/templates/Outgoing.html",
+    "dojo/text!/ecm/ui/templates/Task.html"
 ], function (_WidgetBase,
              declare,
              dom,
@@ -30,7 +38,7 @@ define([
              CommonForm,
              NavigationWidget,
              WelcomWidget,
-             CommonGrid) {
+             CommonGrid, Incoming, Outgoing, Person, Task, personTemplate, incomingTemplate, outgoingTemplate, taskTemplate) {
     return declare("AppController", [_WidgetBase], {
         navWidget: null,
         welcomWidget: null,
@@ -54,7 +62,7 @@ define([
             this.welcomWidget.startup();
         },
         initSubscribes: function () {
-            topic.subscribe("navigation/tree/openItem", lang.hitch(this, this.openItem));
+            topic.subscribe("navigation/openItem", lang.hitch(this, this.openItem));
             topic.subscribe("commonForm/Close", lang.hitch(this, this.closeTab));
             topic.subscribe("commonForm/Save", lang.hitch(this, this.saveItem));
             topic.subscribe("commonForm/Delete", lang.hitch(this, this.deleteItem));
@@ -102,37 +110,32 @@ define([
             if (model.children) return;
 
             this.welcomWidget.switchOnTabIfOpened(model.id);
-
-            var formWidget = new CommonForm({
-                type: model.type,
-                model: new Stateful(model)
-            });
-
+            var formWidget = new CommonForm({model: model, templateString: this.getTemplateByModel(model)});
             this.welcomWidget.openNewTab(formWidget, model);
         },
         closeTab: function close(model) {
             this.welcomWidget.closeTabByModel(model);
         },
         saveItem: function (model) {
-            var store = this.getStoreByModelType(model.type);
+            var store = this.getStoreByModel(model);
             //create new user
             if (model.id == undefined) {
                 store.add(model).then(function (data) {
                     this.welcomWidget.reopenTabForModel(data);
-                    this.navWidget.updateTreeByModelType(model.type);
+                    this.updateTreeByModel(model);
                 }.bind(this));
             }
             else {
                 store.put(model).then(function (data) {
                     var pane = Registry.byId("pane_" + data.id);
                     pane.set("title", data.fullname);
-                    this.navWidget.updateTreeByModelType(model.type);
+                    this.updateTreeByModel(model);
                 }.bind(this));
             }
         },
         deleteItem: function (model) {
             var id = model.id;
-            var store = this.getStoreByModelType(model.type);
+            var store = this.getStoreByModel(model);
             deleteDialog = new ConfirmDialog({
                 title: "Delete",
                 content: "Are you sure that you want to delete " + model.fullname + "?",
@@ -149,7 +152,7 @@ define([
 
             function success(model) {
                 this.welcomWidget.closeTabByModel(model);
-                this.navWidget.updateTreeByModelType(model.type);
+                this.updateTreeByModel(model);
             }
 
             function error(err) {
@@ -162,20 +165,37 @@ define([
                 myDialog.show();
             }
         },
-        getStoreByModelType: function (type) {
-            switch (type) {
-                case 'task':
-                    return this.taskStore;
-                    break;
-                case 'incoming':
-                    return this.incomingStore;
-                    break;
-                case 'outgoing':
-                    return this.outgoingStore;
-                    break;
-                case 'person':
-                    return this.personStore;
-                    break;
+        getStoreByModel: function (model) {
+            if (model instanceof Person){
+                return this.personStore;
+            } else  if (model instanceof Incoming) {
+                return this.incomingStore;
+            } else  if (model instanceof Outgoing) {
+                return this.outgoingStore;
+            } else  if (model instanceof Task) {
+                return this.taskStore;
+            }
+        },
+        updateTreeByModel: function (model) {
+            if (model instanceof Person){
+                this.navWidget.updatePersonTree();
+            } else  if (model instanceof Incoming) {
+                this.navWidget.updateIncomingTree();
+            } else  if (model instanceof Outgoing) {
+                this.navWidget.updateOutgoingTree();
+            } else  if (model instanceof Task) {
+                this.navWidget.updateTaskTree();
+            }
+        },
+        getTemplateByModel: function (model) {
+            if (model instanceof Person){
+                return personTemplate;
+            } else  if (model instanceof Incoming) {
+                return incomingTemplate;
+            } else  if (model instanceof Outgoing) {
+                return outgoingTemplate;
+            } else  if (model instanceof Task) {
+                return taskTemplate;
             }
         }
     });

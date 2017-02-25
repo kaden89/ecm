@@ -3,13 +3,9 @@ define([
     "dojo/_base/lang",
     "dojo/_base/declare",
     "dojo/topic",
-    "dijit/registry",
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
-    "dijit/layout/ContentPane",
-    "dijit/layout/TabContainer",
-    "dijit/layout/BorderContainer",
     "dijit/layout/AccordionContainer",
     "dijit/layout/AccordionPane",
     "dijit/tree/ObjectStoreModel",
@@ -18,23 +14,20 @@ define([
     "dojo/store/Observable",
     "dojo/store/Memory",
     "dojo/_base/array",
-    // "widgets/CommonFormWidget",
-    // "widgets/MyTree",
     "dojo/data/ObjectStore",
     "dijit/tree/ForestStoreModel",
     "dojo/text!/ecm/ui/templates/NavigationWidget.html",
     "myApp/ecm/ui/modules/Tree",
-    "dojo/i18n"
+    "myApp/ecm/ui/models/Incoming",
+    "myApp/ecm/ui/models/Outgoing",
+    "myApp/ecm/ui/models/Person",
+    "myApp/ecm/ui/models/Task"
 ], function (lang,
              declare,
              topic,
-             registry,
              _WidgetBase,
              _TemplatedMixin,
              _WidgetsInTemplateMixin,
-             ContentPane,
-             TabContainer,
-             BorderContainer,
              AccordionContainer,
              AccordionPane,
              ObjectStoreModel,
@@ -47,7 +40,7 @@ define([
              ForestStoreModel,
              template,
              Tree,
-             i18n) {
+             Incoming, Outgoing, Person, Task) {
     return declare("NavigationWidget", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         templateString: template,
         widgetsInTemplate: true,
@@ -69,10 +62,10 @@ define([
             var outgoingsTreeStore = new Observable(this.initStore("/rest/documents/tree/outgoings"));
             var tasksTreeStore = new Observable(this.initStore("/rest/documents/tree/tasks"));
 
-            this.personTree = this.initTree(personTreeStore, this.employees);
-            this.incomingTree = this.initTree(incomingTreeStore, this.incoming);
-            this.outgoingsTree = this.initTree(outgoingsTreeStore, this.outgoings);
-            this.tasksTree = this.initTree(tasksTreeStore, this.tasks);
+            this.personTree = this.initTree(personTreeStore, this.employees, Person);
+            this.incomingTree = this.initTree(incomingTreeStore, this.incoming, Incoming);
+            this.outgoingsTree = this.initTree(outgoingsTreeStore, this.outgoings, Outgoing);
+            this.tasksTree = this.initTree(tasksTreeStore, this.tasks, Task);
 
         },
         initStore: function(url){
@@ -89,7 +82,7 @@ define([
                 }
             });
         },
-        initTree: function (store, node) {
+        initTree: function (store, node, statefulModel) {
             var model = new ObjectStoreModel({
                 store: store,
                 getRoot: function (onItem) {
@@ -110,25 +103,21 @@ define([
             return tree = new Tree({
                 model: model,
                 onDblClick: function (item) {
-                    topic.publish("navigation/tree/openItem", item);
+                    topic.publish("navigation/openItem", new statefulModel(item));
                 }
             }, node);
         },
-        updateTreeByModelType: function (type) {
-            switch (type) {
-                case 'task':
-                    this.tasksTree.update();
-                    break;
-                case 'incoming':
-                    this.incomingTree.update();
-                    break;
-                case 'outgoing':
-                    this.outgoingsTree.update();
-                    break;
-                case 'person':
-                    this.personTree.update();
-                    break;
-            }
+        updatePersonTree: function () {
+            this.personTree.update();
+        },
+        updateIncomingTree: function () {
+            this.incomingTree.update();
+        },
+        updateOutgoingTree: function () {
+            this.outgoingsTree.update();
+        },
+        updateTaskTree: function () {
+            this.tasksTree.update();
         }
     });
 });
