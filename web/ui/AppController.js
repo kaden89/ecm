@@ -14,7 +14,7 @@ define([
     "myApp/ecm/ui/widgets/CommonForm",
     "myApp/ecm/ui/widgets/NavigationWidget",
     "myApp/ecm/ui/widgets/WelcomWidget",
-    "dojo/text!/ecm/ui/templates/Grid.html"
+    "myApp/ecm/ui/widgets/CommonGrid"
 ], function (_WidgetBase,
              declare,
              dom,
@@ -30,7 +30,7 @@ define([
              CommonForm,
              NavigationWidget,
              WelcomWidget,
-             gridTemplate) {
+             CommonGrid) {
     return declare("AppController", [_WidgetBase], {
         navWidget: null,
         welcomWidget: null,
@@ -43,14 +43,14 @@ define([
         },
         startup: function () {
             this.inherited(arguments);
-            this.initWidgets();
             this.initStores();
+            this.initWidgets();
             this.initSubscribes();
         },
         initWidgets: function () {
             var appDiv = dom.byId("app");
             this.navWidget = new NavigationWidget();
-            this.welcomWidget = new WelcomWidget({navWidget: this.navWidget}, appDiv);
+            this.welcomWidget = new WelcomWidget({navWidget: this.navWidget, welcomStore: this.personStore}, appDiv);
             this.welcomWidget.startup();
         },
         initSubscribes: function () {

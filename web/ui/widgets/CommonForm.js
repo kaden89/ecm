@@ -25,10 +25,14 @@ define([
     "dojo/text!/ecm/ui/templates/Person.html",
     "dojo/text!/ecm/ui/templates/Incoming.html",
     "dojo/text!/ecm/ui/templates/Outgoing.html",
-    "dojo/text!/ecm/ui/templates/Task.html"
+    "dojo/text!/ecm/ui/templates/Task.html",
+    "myApp/ecm/ui/models/Incoming",
+    "myApp/ecm/ui/models/Outgoing",
+    "myApp/ecm/ui/models/Person",
+    "myApp/ecm/ui/models/Task",
 
 ], function (declare, topic, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, registry, request, xhr,
-             domConstruct, Uploader, FileList, IFrame, Form, lang,  personTemplate, incomingTemplate, outgoingTemplate, taskTemplate) {
+             domConstruct, Uploader, FileList, IFrame, Form, lang, personTemplate, incomingTemplate, outgoingTemplate, taskTemplate, Incoming, Outgoing, Person, Task) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
         templateString: null,
@@ -36,7 +40,7 @@ define([
         type: null,
         constructor: function (params) {
             lang.mixin(this, params);
-            this.setTemplateByModelType(this.type);
+            this.setTemplateByModelClass(params.model);
         }
         ,
         startup: function () {
@@ -54,14 +58,14 @@ define([
             var deleteButton = new Button({
                 label: "Delete",
                 iconClass: "dijitEditorIcon dijitEditorIconDelete",
-                onClick:  lang.hitch(this, function () {
+                onClick: lang.hitch(this, function () {
                     topic.publish("commonForm/Delete", this.model);
                 })
             });
             var closeButton = new Button({
                 label: "Close",
                 iconClass: "dijitEditorIcon dijitEditorIconCancel",
-                onClick:  lang.hitch(this, function () {
+                onClick: lang.hitch(this, function () {
                     topic.publish("commonForm/Close", this.model);
                 })
             });
@@ -76,20 +80,32 @@ define([
             toolbar.addChild(closeButton);
         },
         setTemplateByModelType: function (type) {
-        switch (type) {
-            case 'task':
-                this.templateString = taskTemplate;
-                break;
-            case 'incoming':
-                this.templateString = incomingTemplate;
-                break;
-            case 'outgoing':
-                this.templateString = outgoingTemplate;
-                break;
-            case 'person':
+            switch (type) {
+                case 'task':
+                    this.templateString = taskTemplate;
+                    break;
+                case 'incoming':
+                    this.templateString = incomingTemplate;
+                    break;
+                case 'outgoing':
+                    this.templateString = outgoingTemplate;
+                    break;
+                case 'person':
+                    this.templateString = personTemplate;
+                    break;
+            }
+        },
+        setTemplateByModelClass: function (model) {
+            if (model instanceof Person){
                 this.templateString = personTemplate;
-                break;
+            } else  if (model instanceof Incoming) {
+                this.templateString = incomingTemplate;
+            } else  if (model instanceof Outgoing) {
+                this.templateString = outgoingTemplate;
+            } else  if (model instanceof Task) {
+                this.templateString = taskTemplate;
+            }
+
         }
-    }
     });
 });

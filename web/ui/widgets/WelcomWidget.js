@@ -22,9 +22,7 @@ define([
     "dojo/data/ObjectStore",
     "dijit/tree/ForestStoreModel",
     "dojo/text!/ecm/ui/templates/WelcomWidget.html",
-    "myApp/ecm/ui/widgets/NavigationWidget",
-    "myApp/ecm/ui/AppController",
-    "dojo/i18n"
+    "myApp/ecm/ui/widgets/CommonGrid"
 ], function (lang,
              declare,
              topic,
@@ -45,17 +43,15 @@ define([
              ObjectStore,
              ForestStoreModel,
              template,
-             NavigationWidget,
+             CommonGrid,
              AppController,
              i18n) {
     return declare("WelcomWidget", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         templateString: template,
         widgetsInTemplate: true,
-        personStore: null,
-        incomingStore: null,
-        outgoingStore: null,
-        taskStore: null,
         navWidget: null,
+        welcomStore: null,
+        welcomGridWidget: null,
         constructor: function (params) {
             lang.mixin(this, params);
         }
@@ -63,6 +59,15 @@ define([
         startup: function () {
             this.inherited(arguments);
             this.navWidget.placeAt(this.navigation);
+            var columns = [
+                {id: 'id', field: 'id', name: 'id', width: '5%'},
+                {id: 'firstname', field: 'firstname', name: 'Firstname', width: '19%'},
+                {id: 'surname', field: 'surname', name: 'Surname', width: '19%'},
+                {id: 'patronymic', field: 'patronymic', name: 'Patronymic', width: '19%'},
+                {id: 'position.post', field: 'positionName', name: 'Position', width: '19%'},
+                {id: 'birthday', field: 'birthday', name: 'Birthday', width: '19%'}
+            ];
+            new CommonGrid({store: this.welcomStore, columns: columns}).placeAt(this.welcomGrid);
         },
         getTabContainer: function () {
             return this.tabContainer;
