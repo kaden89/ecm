@@ -32,11 +32,8 @@ define([
                 this._itemNodesMap = {};
                 this.rootNode.state = "UNCHECKED";
                 this.model.childrenCache = null;
-                // Destroy the widget
                 this.rootNode.destroyRecursive();
-                // Recreate the model, (with the model again)
                 this.model.constructor(this.model);
-                // Rebuild the tree
                 this.postMixInProperties();
                 this._load();
             },

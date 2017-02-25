@@ -10,13 +10,10 @@ define([
     "dijit/registry",
     "dijit/layout/ContentPane",
     "dijit/ConfirmDialog",
+    "dijit/Dialog",
     "myApp/ecm/ui/widgets/CommonForm",
     "myApp/ecm/ui/widgets/NavigationWidget",
     "myApp/ecm/ui/widgets/WelcomWidget",
-    "dojo/text!/ecm/ui/templates/Person.html",
-    "dojo/text!/ecm/ui/templates/Incoming.html",
-    "dojo/text!/ecm/ui/templates/Outgoing.html",
-    "dojo/text!/ecm/ui/templates/Task.html",
     "dojo/text!/ecm/ui/templates/Grid.html"
 ], function (_WidgetBase,
              declare,
@@ -29,13 +26,10 @@ define([
              Registry,
              ContentPane,
              ConfirmDialog,
+             Dialog,
              CommonForm,
              NavigationWidget,
              WelcomWidget,
-             personTemplate,
-             incomingTemplate,
-             outgoingTemplate,
-             taskTemplate,
              gridTemplate) {
     return declare("AppController", [_WidgetBase], {
         navWidget: null,
@@ -110,21 +104,21 @@ define([
             this.welcomWidget.switchOnTabIfOpened(model.id);
 
             var formWidget = new CommonForm({
-                templateString: this.getTemplateByModelType(model.type),
+                type: model.type,
                 model: new Stateful(model)
             });
 
             this.welcomWidget.openNewTab(formWidget, model);
         },
         closeTab: function close(model) {
-            this.welcomWidget.closeModelTab(model);
+            this.welcomWidget.closeTabByModel(model);
         },
         saveItem: function (model) {
             var store = this.getStoreByModelType(model.type);
             //create new user
             if (model.id == undefined) {
                 store.add(model).then(function (data) {
-                    this.welcomWidget.reopenTab(data);
+                    this.welcomWidget.reopenTabForModel(data);
                     this.navWidget.updateTreeByModelType(model.type);
                 }.bind(this));
             }
@@ -147,19 +141,15 @@ define([
                     return;
                 },
                 onExecute: function () {
-                    store.remove(id).then(success.bind(this), error);
+                    store.remove(id).then(success.bind(this, model), error);
                 }.bind(this)
 
             });
             deleteDialog.show();
 
-            function success() {
-                var tabPane = Registry.byId("TabContainer");
-                pane = Registry.byId("pane_" + id);
-                tabPane.removeChild(pane);
-                tabPane.selectChild(Registry.byId("WelcomPane"));
-                pane.destroy();
-                // updateTree.call(this, this.tree);
+            function success(model) {
+                this.welcomWidget.closeTabByModel(model);
+                this.navWidget.updateTreeByModelType(model.type);
             }
 
             function error(err) {
@@ -185,22 +175,6 @@ define([
                     break;
                 case 'person':
                     return this.personStore;
-                    break;
-            }
-        },
-        getTemplateByModelType: function (type) {
-            switch (type) {
-                case 'task':
-                    return taskTemplate;
-                    break;
-                case 'incoming':
-                    return incomingTemplate;
-                    break;
-                case 'outgoing':
-                    return outgoingTemplate;
-                    break;
-                case 'person':
-                    return personTemplate;
                     break;
             }
         }

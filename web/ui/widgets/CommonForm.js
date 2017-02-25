@@ -22,38 +22,21 @@ define([
     "dojox/form/uploader/plugins/IFrame",
     "dijit/form/Form",
     "dojo/_base/lang",
-    'dojo/_base/json',
-    "dojo/date/locale",
-    "dijit/ConfirmDialog",
-    "dijit/Dialog",
-    "dijit/Editor",
-    "dijit/form/Select",
-    "/ecm/resources/js/myJsonRest.js",
-    "dijit/form/FilteringSelect",
-    "dojox/mvc/at",
-    "dojo/store/Memory",
-    "dijit/form/CheckBox",
-    "dojo/on",
-    "dojo/require",
-    "dijit/layout/ContentPane",
-    "dijit/layout/BorderContainer",
-    "dijit/form/TextBox",
-    "dijit/form/ValidationTextBox",
-    "dijit/form/DateTextBox",
-    "dojox/form/Uploader",
-    "dojox/form/uploader/FileList",
-    "dojox/mvc/Output",
-    "/ecm/resources/js/util.js"
-
+    "dojo/text!/ecm/ui/templates/Person.html",
+    "dojo/text!/ecm/ui/templates/Incoming.html",
+    "dojo/text!/ecm/ui/templates/Outgoing.html",
+    "dojo/text!/ecm/ui/templates/Task.html"
 
 ], function (declare, topic, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, registry, request, xhr,
-             domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog) {
+             domConstruct, Uploader, FileList, IFrame, Form, lang,  personTemplate, incomingTemplate, outgoingTemplate, taskTemplate) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
         templateString: null,
         isNew: false,
+        type: null,
         constructor: function (params) {
             lang.mixin(this, params);
+            this.setTemplateByModelType(this.type);
         }
         ,
         startup: function () {
@@ -91,6 +74,22 @@ define([
             toolbar.addChild(createButton);
             toolbar.addChild(deleteButton);
             toolbar.addChild(closeButton);
+        },
+        setTemplateByModelType: function (type) {
+        switch (type) {
+            case 'task':
+                this.templateString = taskTemplate;
+                break;
+            case 'incoming':
+                this.templateString = incomingTemplate;
+                break;
+            case 'outgoing':
+                this.templateString = outgoingTemplate;
+                break;
+            case 'person':
+                this.templateString = personTemplate;
+                break;
         }
+    }
     });
 });

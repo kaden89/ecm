@@ -86,7 +86,7 @@ define([
             pane.setContent(widget);
             Registry.add(pane);
         },
-        reopenTab: function (model) {
+        reopenTabForModel: function (model) {
             var pane = Registry.byId("newPane_" + model.type);
             var tabContainer = this.tabContainer;
             tabContainer.removeChild(pane);
@@ -101,7 +101,7 @@ define([
             this.uploader.set('url', '/ecm/rest/employees/'+ model.id+'/photo');
             this.button.set('disabled', false);
         },
-        closeModelTab: function (model) {
+        closeTabByModel: function (model) {
             var tabPane = this.tabContainer;
             var pane;
             if (model.id == undefined) {
