@@ -1,4 +1,3 @@
-
 define([
     "dojo/_base/lang",
     "dojo/_base/declare",
@@ -50,8 +49,10 @@ define([
         templateString: template,
         navWidget: null,
         welcomGridWidget: null,
+        paneSuffix: null,
         constructor: function (params) {
             lang.mixin(this, params);
+            this.paneSuffix = "pane_";
         }
         ,
         startup: function () {
@@ -62,20 +63,29 @@ define([
         getTabContainer: function () {
             return this.tabContainer;
         },
-        switchOnTabIfOpened: function (id) {
+        switchOnTabIfOpened: function (model) {
             var tabContainer = this.tabContainer;
-            var existPane = Registry.byId("pane_" + id);
+            var existPane = Registry.byId(this.paneSuffix + (model.id == undefined ? model.declaredClass : model.id));
             if (existPane != undefined) {
                 tabContainer.selectChild(existPane);
-                return;
+                return true;
             }
         },
-        openNewTab: function (widget, model) {
+        openNewTab: function (widget) {
             var tabContainer = this.tabContainer;
+            var title, id;
+            if (widget.isNew) {
+                title = "New " + widget.model.declaredClass;
+                id = this.paneSuffix+ widget.model.declaredClass;
+            } else {
+                title = widget.model.fullname;
+                id = this.paneSuffix+ widget.model.id;
+            }
             var pane = new ContentPane({
-                title: model.fullname, closable: true
+
+                title: title, closable: true
             });
-            pane.set("id", "pane_" + model.id);
+            pane.set("id", id);
             tabContainer.addChild(pane);
             tabContainer.selectChild(pane);
             pane.setContent(widget);
@@ -86,41 +96,35 @@ define([
             var pane = new ContentPane({
                 title: widget.modelClass.tableName, closable: true
             });
-            pane.set("id", "pane_" + widget.modelClass.tableName);
+            pane.set("id", this.paneSuffix + widget.modelClass.tableName);
             tabContainer.addChild(pane);
             tabContainer.selectChild(pane);
             pane.setContent(widget);
             Registry.add(pane);
         },
         reopenTabForModel: function (model) {
-            var pane = Registry.byId("newPane_" + model.type);
+            var pane = Registry.byId(this.paneSuffix + model.declaredClass);
             var tabContainer = this.tabContainer;
             tabContainer.removeChild(pane);
             pane.set("title", model.fullname);
-            pane.set("id", "pane_" + model.id);
-            Registry.remove("newPane_" + model.type);
+            pane.set("id", this.paneSuffix + model.id);
+            Registry.remove(this.paneSuffix + model.declaredClass);
             Registry.add(pane);
             tabContainer.addChild(pane);
             tabContainer.selectChild(pane);
             // toolbar.addChild(deleteButton, 1);
-            this.uploader.set('disabled', false);
-            this.uploader.set('url', '/ecm/rest/employees/'+ model.id+'/photo');
-            this.button.set('disabled', false);
+            // this.uploader.set('disabled', false);
+            // this.uploader.set('url', '/ecm/rest/employees/' + model.id + '/photo');
+            // this.button.set('disabled', false);
         },
         closeTabById: function (id) {
             var tabPane = this.tabContainer;
-            var pane;
-            if (id == undefined) {
-                pane = Registry.byId("newPane_" + model.type);
-            }
-            else {
-                pane = Registry.byId("pane_" + id);
-            }
+            var pane = Registry.byId(this.paneSuffix + id);
+
             tabPane.removeChild(pane);
             // tabPane.selectChild(this.welcomPane);
             pane.destroy();
         }
-
 
 
     });

@@ -36,7 +36,7 @@ define([
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
         templateString: null,
-        isNew: false,
+        isNew: null,
         constructor: function (params) {
             lang.mixin(this, params);
         }
@@ -50,7 +50,7 @@ define([
                 iconClass: "dijitEditorIcon dijitEditorIconSave",
                 onClick: lang.hitch(this, function () {
                     if (!this.form.validate()) return;
-                    topic.publish("commonForm/Save", this.model);
+                    topic.publish("commonForm/Save", this);
                 })
             });
             var deleteButton = new Button({
@@ -64,7 +64,7 @@ define([
                 label: "Close",
                 iconClass: "dijitEditorIcon dijitEditorIconCancel",
                 onClick: lang.hitch(this, function () {
-                    topic.publish("commonForm/Close", this.model.id);
+                    topic.publish("commonForm/Close", this.isNew ? this.model.declaredClass : this.model.id);
                 })
             });
 

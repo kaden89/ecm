@@ -67,8 +67,9 @@ define([
             topic.subscribe("commonForm/Close", lang.hitch(this, this.closeTab));
             topic.subscribe("commonForm/Save", lang.hitch(this, this.saveItem));
             topic.subscribe("commonForm/Delete", lang.hitch(this, this.deleteItem));
-            topic.subscribe("commonGrid/openItem", lang.hitch(this, this.openTab));
+            topic.subscribe("commonGrid/openItem", lang.hitch(this, this.openItem));
             topic.subscribe("commonGrid/Close", lang.hitch(this, this.closeTab));
+            topic.subscribe("commonGrid/Create", lang.hitch(this, this.createItem));
         },
         initStores: function () {
             var restUrl = 'http://localhost:8080/ecm/rest/';
@@ -112,25 +113,31 @@ define([
             console.log(model);
             if (model.children) return;
 
-            this.welcomWidget.switchOnTabIfOpened(model.id);
-            var formWidget = new CommonForm({model: model, templateString: this.getTemplateByModel(model)});
-            this.welcomWidget.openNewTab(formWidget, model);
+            if (this.welcomWidget.switchOnTabIfOpened(model)) return;
+            var formWidget = new CommonForm({model: model, templateString: this.getTemplateByModel(model), isNew: model.id==undefined});
+            this.welcomWidget.openNewTab(formWidget);
+        },
+        createItem: function (ModelClass) {
+            var model = new ModelClass();
+            this.openItem(model);
         },
         openGrid: function (ModelClass) {
-            this.welcomWidget.switchOnTabIfOpened(ModelClass.tableName);
+            if (this.welcomWidget.switchOnTabIfOpened(ModelClass.tableName)) return;
             var gridWidget = new CommonGrid({store: this.getStoreByModel(new ModelClass()), id: ModelClass.tableName, modelClass: ModelClass});
             this.welcomWidget.openNewGridTab(gridWidget);
         },
         closeTab: function close(id) {
             this.welcomWidget.closeTabById(id);
         },
-        saveItem: function (model) {
-            var store = this.getStoreByModel(model);
+        saveItem: function (widget) {
+            var store = this.getStoreByModel(widget.model);
             //create new user
-            if (model.id == undefined) {
-                store.add(model).then(function (data) {
-                    this.welcomWidget.reopenTabForModel(data);
-                    this.updateTreeByModel(model);
+            if (widget.isNew) {
+                store.add(widget.model).then(function (data) {
+                    widget.set('isNew', false);
+                    widget.set('model', new widget.model.constructor(data));
+                    this.welcomWidget.reopenTabForModel(widget.model);
+                    this.updateTreeByModel(widget.model);
                 }.bind(this));
             }
             else {
@@ -159,7 +166,7 @@ define([
             deleteDialog.show();
 
             function success(model) {
-                this.welcomWidget.closeTabById(model);
+                this.welcomWidget.closeTabById(model.id);
                 this.updateTreeByModel(model);
             }
 
@@ -172,40 +179,6 @@ define([
                 console.log("error");
                 myDialog.show();
             }
-        },
-        openTab: function openTab(item) {
-            var id = item.rowId;
-
-            //if the tab is already open, switch on it
-            var tabContainer = Registry.byId("TabContainer");
-            var pane = Registry.byId("pane_" + id);
-            if (pane != undefined) {
-                tabContainer.selectChild(pane);
-                return;
-            }
-
-            xhr("/ecm/rest/widgets/" + this.restUrl + "/" + id, {
-                handleAs: "json"
-            }).then(function (data) {
-                var params = {store: this.store, tree: this.tree};
-                var widget = new formsWidget(data, params);
-                var id = data.entity.id;
-                var pane = new ContentPane({
-                    title: data.entity.fullname, closable: true
-                });
-                pane.set("id", "pane_" + id);
-                tabContainer.addChild(pane);
-                tabContainer.selectChild(pane);
-                pane.setContent(widget);
-                Registry.add(pane);
-
-            }.bind(this), function (err) {
-                console.log(err);
-            }, function (evt) {
-                // Handle a progress event from the request if the
-                // browser supports XHR2
-            });
-
         },
         getStoreByModel: function (model) {
             if (model instanceof Person) {

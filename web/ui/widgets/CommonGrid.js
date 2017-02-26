@@ -161,127 +161,14 @@ define([
             });
             this.grid.placeAt(this.gridWidget);
 
-            this.grid.connect(this.grid, "onRowDblClick", function (item) {
-                topic.publish("commonGrid/openItem", item);
-            });
+            this.grid.connect(this.grid, "onRowDblClick", lang.hitch(this, function (item) {
+                this.grid.store.get(item.rowId).then(function (data) {
+                    topic.publish("commonGrid/openItem", new this.modelClass(data));
+                }.bind(this));
+            }));
             this.grid.startup();
 
-            function deleteSelected() {
-                var items = grid.select.row.getSelected();
-                if (items.length) {
-                    dojo.forEach(items, function (selectedItem) {
-                        if (selectedItem !== null) {
-                            deleteDialog = new ConfirmDialog({
-                                title: "Delete",
-                                content: "Are you sure that you want to delete "+this.restUrl.slice(0, -1)+" with id " + selectedItem + "?",
-                                style: "width: 300px",
-                                onCancel: function () {
-                                    return;
-                                },
-                                onExecute: function () {
-                                    var pane = Registry.byId("pane_"+selectedItem);
-                                    if (pane){
-                                        var tabContainer = Registry.byId("TabContainer");
-                                        tabContainer.removeChild(pane);
-                                        Registry.remove(pane);
-                                        pane.destroy();
-                                    }
-                                    grid.store.remove(selectedItem).then(success.bind(this), error);
-                                }.bind(this)
 
-                            });
-                            deleteDialog.show();
-                        }
-                    }.bind(this));
-                }
-            }
-
-            function success() {
-                updateTree.call(this, this.tree);
-            }
-
-            function error(err) {
-                myDialog = new Dialog({
-                    title: "Error!",
-                    content: err.responseText,
-                    style: "width: 300px"
-                });
-                console.log("error");
-                myDialog.show();
-            }
-
-
-            function createNewTab() {
-                xhr("/ecm/rest/widgets/"+this.restUrl+"/new", {
-                    handleAs: "json"
-                }).then(function (data) {
-                    var params = {store: this.store, tree: this.tree, deletable: false};
-                    var widget = new formsWidget(data, params);
-                    var tabContainer = Registry.byId("TabContainer");
-                    var pane = Registry.byId("newPane_"+this.restUrl);
-                    if (pane != undefined) {
-                        tabContainer.selectChild(pane);
-                        return;
-                    }
-                    var pane = new ContentPane({
-                        title: "New "+this.restUrl.slice(0, -1)+ " (Unsaved)",
-                        closable: true
-                        // onClose: function () {
-                        //     return confirm("Do you really want to Close this?");
-                        // }
-                    });
-                    pane.set("id", "newPane_"+this.restUrl);
-                    tabContainer.addChild(pane);
-                    tabContainer.selectChild(pane);
-                    pane.setContent(widget);
-                    Registry.add(pane);
-
-                }.bind(this), function (err) {
-                    console.log(err);
-                }, function (evt) {
-                    // Handle a progress event from the request if the
-                    // browser supports XHR2
-                });
-            }
-
-            function openTab(item) {
-                var id = item.rowId;
-
-                //if the tab is already open, switch on it
-                var tabContainer = Registry.byId("TabContainer");
-                var pane = Registry.byId("pane_" + id);
-                if (pane != undefined) {
-                    tabContainer.selectChild(pane);
-                    return;
-                }
-
-                xhr("/ecm/rest/widgets/"+this.restUrl+"/" + id, {
-                    handleAs: "json"
-                }).then(function (data) {
-                    var params = {store: this.store, tree: this.tree};
-                    var widget = new formsWidget(data, params);
-                    var id = data.entity.id;
-                    var pane = new ContentPane({
-                        title: data.entity.fullname, closable: true
-                    });
-                    pane.set("id", "pane_" + id);
-                    tabContainer.addChild(pane);
-                    tabContainer.selectChild(pane);
-                    pane.setContent(widget);
-                    Registry.add(pane);
-
-                }.bind(this), function (err) {
-                    console.log(err);
-                }, function (evt) {
-                    // Handle a progress event from the request if the
-                    // browser supports XHR2
-                });
-
-            }
-
-            function myButtonHandler() {
-                console.log('Clicked button');
-            }
         }
     });
 });
