@@ -1,6 +1,7 @@
 
 define([
     "dojo/_base/declare",
+    "dojo/topic",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
     "dijit/_WidgetBase",
@@ -51,16 +52,19 @@ define([
     "dojo/text!/ecm/ui/templates/Grid.html"
 
 
-], function (declare, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, Registry, request, xhr,
+], function (declare, topic, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, Registry, request, xhr,
              domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor, Select, JsonRest, FilteringSelect,
              at, Memory, CheckBox,formsWidget, GridX, Dod, Cache, RowHeader, Row, IndirectSelect, SingleSort, Bar, Observable, ContentPane,Resizer,
              NestedSort, Filter, FilterBar, QuickFilter, Pagination, PaginationBar, template) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         store: null,
+        grid: null,
+        id: null,
         columns: null,
         tree: null,
         restUrl: null,
         closable: true,
+        modelClass: null,
         constructor: function (params) {
             lang.mixin(this, params);
             this.templateString = template;
@@ -77,19 +81,25 @@ define([
             var createButton = new Button({
                 label: "Create",
                 iconClass: "dijitEditorIcon dijitEditorIconPaste",
-                onClick: lang.hitch(this, createNewTab)
+                onClick: lang.hitch(this, function () {
+                    topic.publish("commonGrid/Create", this.modelClass);
+                })
             });
 
             var deleteButton = new Button({
                 label: "Delete",
                 iconClass: "dijitEditorIcon dijitEditorIconDelete",
-                onClick: lang.hitch(this, deleteSelected)
+                onClick: lang.hitch(this, function () {
+                    topic.publish("commonGrid/Delete", this.grid);
+                })
             });
 
             var closeButton = new Button({
                 label: "Close",
                 iconClass: "dijitEditorIcon dijitEditorIconCancel",
-                onClick: lang.hitch(this, close)
+                onClick: lang.hitch(this, function () {
+                    topic.publish("commonGrid/Close", this.id);
+                })
             });
 
             toolbar.addChild(createButton);
@@ -110,11 +120,11 @@ define([
 
 
             //Create grid widget.
-            var grid = GridX({
+            this.grid = GridX({
                 id: this.restUrl,
                 cacheClass: Cache,
                 store: this.store,
-                structure: this.columns,
+                structure: this.modelClass.columns,
                 pageSize: 11,
                 selectRowMultiple: true,
                 filterServerMode: true,
@@ -150,10 +160,12 @@ define([
                     PaginationBar
                 ]
             });
-            grid.placeAt(this.grid);
+            this.grid.placeAt(this.gridWidget);
 
-            grid.connect(grid, "onRowDblClick", lang.hitch(this, openTab));
-            grid.startup();
+            this.grid.connect(this.grid, "onRowDblClick", function (item) {
+                topic.publish("commonGrid/openItem", item);
+            });
+            this.grid.startup();
 
             function deleteSelected() {
                 var items = grid.select.row.getSelected();

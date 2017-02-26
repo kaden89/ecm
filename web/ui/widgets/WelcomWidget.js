@@ -48,9 +48,7 @@ define([
              i18n) {
     return declare("WelcomWidget", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         templateString: template,
-        widgetsInTemplate: true,
         navWidget: null,
-        welcomStore: null,
         welcomGridWidget: null,
         constructor: function (params) {
             lang.mixin(this, params);
@@ -59,15 +57,7 @@ define([
         startup: function () {
             this.inherited(arguments);
             this.navWidget.placeAt(this.navigation);
-            var columns = [
-                {id: 'id', field: 'id', name: 'id', width: '5%'},
-                {id: 'firstname', field: 'firstname', name: 'Firstname', width: '19%'},
-                {id: 'surname', field: 'surname', name: 'Surname', width: '19%'},
-                {id: 'patronymic', field: 'patronymic', name: 'Patronymic', width: '19%'},
-                {id: 'position.post', field: 'positionName', name: 'Position', width: '19%'},
-                {id: 'birthday', field: 'birthday', name: 'Birthday', width: '19%'}
-            ];
-            new CommonGrid({store: this.welcomStore, columns: columns}).placeAt(this.welcomGrid);
+            this.welcomGridWidget.placeAt(this.welcomGrid);
         },
         getTabContainer: function () {
             return this.tabContainer;

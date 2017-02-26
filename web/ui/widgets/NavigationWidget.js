@@ -10,7 +10,7 @@ define([
     "dijit/layout/AccordionPane",
     "dijit/tree/ObjectStoreModel",
     "dojo/store/Cache",
-    "dojo/store/JsonRest",
+    "myApp/ecm/ui/modules/JsonRest",
     "dojo/store/Observable",
     "dojo/store/Memory",
     "dojo/_base/array",
@@ -103,7 +103,11 @@ define([
             return tree = new Tree({
                 model: model,
                 onDblClick: function (item) {
-                    topic.publish("navigation/openItem", new statefulModel(item));
+                    if (item.hasOwnProperty("children")){
+                        topic.publish("navigation/openGrid", statefulModel, item.id);
+                    } else {
+                        topic.publish("navigation/openItem", new statefulModel(item));
+                    }
                 }
             }, node);
         },

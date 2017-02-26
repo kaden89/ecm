@@ -5,7 +5,7 @@ define([
     "dojo/topic",
     "dojo/_base/lang",
     "dojo/Stateful",
-    "dojo/store/JsonRest",
+    "myApp/ecm/ui/modules/JsonRest",
     "dojo/store/Observable",
     "dijit/registry",
     "dijit/layout/ContentPane",
@@ -56,16 +56,18 @@ define([
             this.initSubscribes();
         },
         initWidgets: function () {
-            var appDiv = dom.byId("app");
             this.navWidget = new NavigationWidget();
-            this.welcomWidget = new WelcomWidget({navWidget: this.navWidget, welcomStore: this.personStore}, appDiv);
+            var welcomGrid = new CommonGrid({store: this.personStore, id: "Persons", modelClass: Person});
+            this.welcomWidget = new WelcomWidget({navWidget: this.navWidget, welcomGridWidget: welcomGrid}, dom.byId("app"));
             this.welcomWidget.startup();
         },
         initSubscribes: function () {
             topic.subscribe("navigation/openItem", lang.hitch(this, this.openItem));
+            topic.subscribe("navigation/openGrid", lang.hitch(this, this.openGrid));
             topic.subscribe("commonForm/Close", lang.hitch(this, this.closeTab));
             topic.subscribe("commonForm/Save", lang.hitch(this, this.saveItem));
             topic.subscribe("commonForm/Delete", lang.hitch(this, this.deleteItem));
+            topic.subscribe("commonGrid/openItem", lang.hitch(this, this.openTab));
         },
         initStores: function () {
             var restUrl = 'http://localhost:8080/ecm/rest/';
@@ -112,6 +114,11 @@ define([
             this.welcomWidget.switchOnTabIfOpened(model.id);
             var formWidget = new CommonForm({model: model, templateString: this.getTemplateByModel(model)});
             this.welcomWidget.openNewTab(formWidget, model);
+        },
+        openGrid: function (ModelClass, id) {
+            this.welcomWidget.switchOnTabIfOpened(id);
+            var gridWidget = new CommonGrid({store: this.getStoreByModel(new ModelClass()), id: id, modelClass: ModelClass});
+            this.welcomWidget.openNewTab(gridWidget, new ModelClass);
         },
         closeTab: function close(model) {
             this.welcomWidget.closeTabByModel(model);
@@ -165,36 +172,70 @@ define([
                 myDialog.show();
             }
         },
+        openTab: function openTab(item) {
+            var id = item.rowId;
+
+            //if the tab is already open, switch on it
+            var tabContainer = Registry.byId("TabContainer");
+            var pane = Registry.byId("pane_" + id);
+            if (pane != undefined) {
+                tabContainer.selectChild(pane);
+                return;
+            }
+
+            xhr("/ecm/rest/widgets/" + this.restUrl + "/" + id, {
+                handleAs: "json"
+            }).then(function (data) {
+                var params = {store: this.store, tree: this.tree};
+                var widget = new formsWidget(data, params);
+                var id = data.entity.id;
+                var pane = new ContentPane({
+                    title: data.entity.fullname, closable: true
+                });
+                pane.set("id", "pane_" + id);
+                tabContainer.addChild(pane);
+                tabContainer.selectChild(pane);
+                pane.setContent(widget);
+                Registry.add(pane);
+
+            }.bind(this), function (err) {
+                console.log(err);
+            }, function (evt) {
+                // Handle a progress event from the request if the
+                // browser supports XHR2
+            });
+
+        },
         getStoreByModel: function (model) {
-            if (model instanceof Person){
+            if (model instanceof Person) {
                 return this.personStore;
-            } else  if (model instanceof Incoming) {
+            } else if (model instanceof Incoming) {
                 return this.incomingStore;
-            } else  if (model instanceof Outgoing) {
+            } else if (model instanceof Outgoing) {
                 return this.outgoingStore;
-            } else  if (model instanceof Task) {
+            } else if (model instanceof Task) {
                 return this.taskStore;
             }
         },
         updateTreeByModel: function (model) {
-            if (model instanceof Person){
+            if (model instanceof Person) {
                 this.navWidget.updatePersonTree();
-            } else  if (model instanceof Incoming) {
+            } else if (model instanceof Incoming) {
                 this.navWidget.updateIncomingTree();
-            } else  if (model instanceof Outgoing) {
+            } else if (model instanceof Outgoing) {
                 this.navWidget.updateOutgoingTree();
-            } else  if (model instanceof Task) {
+            } else if (model instanceof Task) {
                 this.navWidget.updateTaskTree();
             }
         },
         getTemplateByModel: function (model) {
-            if (model instanceof Person){
+            if (model instanceof Person) {
                 return personTemplate;
-            } else  if (model instanceof Incoming) {
+            } else if (model instanceof Incoming) {
                 return incomingTemplate;
-            } else  if (model instanceof Outgoing) {
+            } else if (model instanceof Outgoing) {
                 return outgoingTemplate;
-            } else  if (model instanceof Task) {
+            } else if (model instanceof Task) {
                 return taskTemplate;
             }
         }
