@@ -104,7 +104,7 @@ define([
                 model: model,
                 onDblClick: function (item) {
                     if (item.hasOwnProperty("children")){
-                        topic.publish("navigation/openGrid", statefulModel, item.id);
+                        topic.publish("navigation/openGrid", statefulModel);
                     } else {
                         topic.publish("navigation/openItem", new statefulModel(item));
                     }

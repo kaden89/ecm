@@ -16,6 +16,7 @@ define([
         {id: 'referenceNumber', field: 'referenceNumber', name: 'Reference number', width: '5%'},
         {id: 'outboundRegDate', field: 'outboundRegDate', name: 'Outbound reg. date', width: '5%'},
         {id: 'text', field: 'text', name: 'Text', width: '20%'}
-    ]
+    ];
+    Incoming.tableName = "Incoming";
     return Incoming;
 })

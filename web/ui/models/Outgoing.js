@@ -15,6 +15,6 @@ define([
         {id: 'date', field: 'date', name: 'Date'},
         {id: 'text', field: 'text', name: 'Text'}
     ];
-
+    Outgoing.tableName = "Outgoings";
     return Outgoing;
 })

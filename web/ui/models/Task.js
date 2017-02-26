@@ -18,6 +18,6 @@ define([
         {id: 'deadline', field: 'deadline', name: 'Deadline', width: '5%'},
         {id: 'text', field: 'text', name: 'Text', width: '20%'}
     ];
-
+    Task.tableName = "Tasks";
     return Task;
 })

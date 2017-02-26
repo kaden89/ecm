@@ -12,7 +12,8 @@ define([
         {id: 'patronymic', field: 'patronymic', name: 'Patronymic', width: '19%'},
         {id: 'position.post', field: 'positionName', name: 'Position', width: '19%'},
         {id: 'birthday', field: 'birthday', name: 'Birthday', width: '19%'}
-    ]
+    ];
+    Person.tableName = "Persons";
     return Person;
 
 })

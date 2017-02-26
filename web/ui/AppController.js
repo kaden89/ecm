@@ -57,7 +57,7 @@ define([
         },
         initWidgets: function () {
             this.navWidget = new NavigationWidget();
-            var welcomGrid = new CommonGrid({store: this.personStore, id: "Persons", modelClass: Person});
+            var welcomGrid = new CommonGrid({store: this.personStore, id: Person.tableName, modelClass: Person, closable: false});
             this.welcomWidget = new WelcomWidget({navWidget: this.navWidget, welcomGridWidget: welcomGrid}, dom.byId("app"));
             this.welcomWidget.startup();
         },
@@ -68,6 +68,7 @@ define([
             topic.subscribe("commonForm/Save", lang.hitch(this, this.saveItem));
             topic.subscribe("commonForm/Delete", lang.hitch(this, this.deleteItem));
             topic.subscribe("commonGrid/openItem", lang.hitch(this, this.openTab));
+            topic.subscribe("commonGrid/Close", lang.hitch(this, this.closeTab));
         },
         initStores: function () {
             var restUrl = 'http://localhost:8080/ecm/rest/';
@@ -115,13 +116,13 @@ define([
             var formWidget = new CommonForm({model: model, templateString: this.getTemplateByModel(model)});
             this.welcomWidget.openNewTab(formWidget, model);
         },
-        openGrid: function (ModelClass, id) {
-            this.welcomWidget.switchOnTabIfOpened(id);
-            var gridWidget = new CommonGrid({store: this.getStoreByModel(new ModelClass()), id: id, modelClass: ModelClass});
-            this.welcomWidget.openNewTab(gridWidget, new ModelClass);
+        openGrid: function (ModelClass) {
+            this.welcomWidget.switchOnTabIfOpened(ModelClass.tableName);
+            var gridWidget = new CommonGrid({store: this.getStoreByModel(new ModelClass()), id: ModelClass.tableName, modelClass: ModelClass});
+            this.welcomWidget.openNewGridTab(gridWidget);
         },
-        closeTab: function close(model) {
-            this.welcomWidget.closeTabByModel(model);
+        closeTab: function close(id) {
+            this.welcomWidget.closeTabById(id);
         },
         saveItem: function (model) {
             var store = this.getStoreByModel(model);
@@ -158,7 +159,7 @@ define([
             deleteDialog.show();
 
             function success(model) {
-                this.welcomWidget.closeTabByModel(model);
+                this.welcomWidget.closeTabById(model);
                 this.updateTreeByModel(model);
             }
 

@@ -81,6 +81,17 @@ define([
             pane.setContent(widget);
             Registry.add(pane);
         },
+        openNewGridTab: function (widget) {
+            var tabContainer = this.tabContainer;
+            var pane = new ContentPane({
+                title: widget.modelClass.tableName, closable: true
+            });
+            pane.set("id", "pane_" + widget.modelClass.tableName);
+            tabContainer.addChild(pane);
+            tabContainer.selectChild(pane);
+            pane.setContent(widget);
+            Registry.add(pane);
+        },
         reopenTabForModel: function (model) {
             var pane = Registry.byId("newPane_" + model.type);
             var tabContainer = this.tabContainer;
@@ -96,14 +107,14 @@ define([
             this.uploader.set('url', '/ecm/rest/employees/'+ model.id+'/photo');
             this.button.set('disabled', false);
         },
-        closeTabByModel: function (model) {
+        closeTabById: function (id) {
             var tabPane = this.tabContainer;
             var pane;
-            if (model.id == undefined) {
+            if (id == undefined) {
                 pane = Registry.byId("newPane_" + model.type);
             }
             else {
-                pane = Registry.byId("pane_" + model.id);
+                pane = Registry.byId("pane_" + id);
             }
             tabPane.removeChild(pane);
             // tabPane.selectChild(this.welcomPane);

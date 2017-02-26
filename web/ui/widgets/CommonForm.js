@@ -64,7 +64,7 @@ define([
                 label: "Close",
                 iconClass: "dijitEditorIcon dijitEditorIconCancel",
                 onClick: lang.hitch(this, function () {
-                    topic.publish("commonForm/Close", this.model);
+                    topic.publish("commonForm/Close", this.model.id);
                 })
             });
 

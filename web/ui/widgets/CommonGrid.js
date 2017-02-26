@@ -60,7 +60,6 @@ define([
         store: null,
         grid: null,
         id: null,
-        columns: null,
         tree: null,
         restUrl: null,
         closable: true,
@@ -98,7 +97,7 @@ define([
                 label: "Close",
                 iconClass: "dijitEditorIcon dijitEditorIconCancel",
                 onClick: lang.hitch(this, function () {
-                    topic.publish("commonGrid/Close", this.id);
+                    topic.publish("commonGrid/Close", this.modelClass.tableName);
                 })
             });
 
