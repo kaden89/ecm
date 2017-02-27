@@ -111,9 +111,7 @@ define([
         },
         openItem: function (model) {
             console.log(model);
-            if (model.children) return;
-
-            if (this.welcomWidget.switchOnTabIfOpened(model)) return;
+            if (this.welcomWidget.switchOnTabById(model.id==undefined ? model.declaredClass : model.id)) return;
             var formWidget = new CommonForm({model: model, templateString: this.getTemplateByModel(model), isNew: model.id==undefined});
             this.welcomWidget.openNewTab(formWidget);
         },
@@ -122,22 +120,21 @@ define([
             this.openItem(model);
         },
         openGrid: function (ModelClass) {
-            if (this.welcomWidget.switchOnTabIfOpened(ModelClass.tableName)) return;
+            if (this.welcomWidget.switchOnTabById(ModelClass.tableName)) return;
             var gridWidget = new CommonGrid({store: this.getStoreByModel(new ModelClass()), id: ModelClass.tableName, modelClass: ModelClass});
             this.welcomWidget.openNewGridTab(gridWidget);
         },
         closeTab: function close(id) {
             this.welcomWidget.closeTabById(id);
         },
-        saveItem: function (widget) {
-            var store = this.getStoreByModel(widget.model);
-            //create new user
-            if (widget.isNew) {
-                store.add(widget.model).then(function (data) {
-                    widget.set('isNew', false);
-                    widget.set('model', new widget.model.constructor(data));
-                    this.welcomWidget.reopenTabForModel(widget.model);
-                    this.updateTreeByModel(widget.model);
+        saveItem: function (formWidget) {
+            var store = this.getStoreByModel(formWidget.model);
+            //save new
+            if (formWidget.isNew) {
+                store.add(formWidget.model).then(function (data) {
+                    formWidget.updateAfterSave(data);
+                    this.welcomWidget.reopenTabForModel(formWidget.model);
+                    this.updateTreeByModel(formWidget.model);
                 }.bind(this));
             }
             else {

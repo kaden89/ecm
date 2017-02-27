@@ -63,9 +63,9 @@ define([
         getTabContainer: function () {
             return this.tabContainer;
         },
-        switchOnTabIfOpened: function (model) {
+        switchOnTabById: function (id) {
             var tabContainer = this.tabContainer;
-            var existPane = Registry.byId(this.paneSuffix + (model.id == undefined ? model.declaredClass : model.id));
+            var existPane = Registry.byId(this.paneSuffix + id);
             if (existPane != undefined) {
                 tabContainer.selectChild(existPane);
                 return true;
@@ -112,20 +112,12 @@ define([
             Registry.add(pane);
             tabContainer.addChild(pane);
             tabContainer.selectChild(pane);
-            // toolbar.addChild(deleteButton, 1);
-            // this.uploader.set('disabled', false);
-            // this.uploader.set('url', '/ecm/rest/employees/' + model.id + '/photo');
-            // this.button.set('disabled', false);
         },
         closeTabById: function (id) {
             var tabPane = this.tabContainer;
             var pane = Registry.byId(this.paneSuffix + id);
-
             tabPane.removeChild(pane);
-            // tabPane.selectChild(this.welcomPane);
             pane.destroy();
         }
-
-
     });
 });

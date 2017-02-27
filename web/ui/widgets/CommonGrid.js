@@ -167,8 +167,6 @@ define([
                 }.bind(this));
             }));
             this.grid.startup();
-
-
         }
     });
 });

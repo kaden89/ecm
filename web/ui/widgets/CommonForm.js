@@ -53,7 +53,7 @@ define([
                     topic.publish("commonForm/Save", this);
                 })
             });
-            var deleteButton = new Button({
+            this.deleteButton = new Button({
                 label: "Delete",
                 iconClass: "dijitEditorIcon dijitEditorIconDelete",
                 onClick: lang.hitch(this, function () {
@@ -69,13 +69,18 @@ define([
             });
 
             if (this.isNew) {
-                deleteButton.set('disabled', true);
+                this.deleteButton.set('disabled', true);
             } else {
-                deleteButton.set('disabled', false);
+                this.deleteButton.set('disabled', false);
             }
             toolbar.addChild(createButton);
-            toolbar.addChild(deleteButton);
+            toolbar.addChild(this.deleteButton);
             toolbar.addChild(closeButton);
+        },
+        updateAfterSave: function (data) {
+            this.isNew = false;
+            this.model = new this.model.constructor(data);
+            this.deleteButton.set('disabled', false);
         }
     });
 });
