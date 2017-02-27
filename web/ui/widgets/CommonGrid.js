@@ -65,7 +65,7 @@ define([
                 label: "Close",
                 iconClass: "dijitEditorIcon dijitEditorIconCancel",
                 onClick: lang.hitch(this, function () {
-                    topic.publish("commonGrid/Close", this.modelClass.tableName);
+                    topic.publish("commonEvent/Close", this.modelClass.tableName);
                 })
             });
 
@@ -115,7 +115,7 @@ define([
 
             this.grid.connect(this.grid, "onRowDblClick", lang.hitch(this, function (item) {
                 this.grid.store.get(item.rowId).then(function (data) {
-                    topic.publish("commonGrid/openItem", new this.modelClass(data));
+                    topic.publish("commonEvent/openItem", new this.modelClass(data));
                 }.bind(this));
             }));
             this.grid.startup();

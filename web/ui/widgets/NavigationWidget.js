@@ -40,6 +40,7 @@ define([
         incomingTree: null,
         outgoingsTree: null,
         tasksTree: null,
+        urlConfig: null,
         constructor: function (params) {
             lang.mixin(this, params);
         }
@@ -49,10 +50,10 @@ define([
             this.initTrees();
         },
         initTrees: function () {
-            var personTreeStore = new Observable(this.initStore("/rest/employees/personTree"));
-            var incomingTreeStore = new Observable(this.initStore("/rest/documents/tree/incomings"));
-            var outgoingsTreeStore = new Observable(this.initStore("/rest/documents/tree/outgoings"));
-            var tasksTreeStore = new Observable(this.initStore("/rest/documents/tree/tasks"));
+            var personTreeStore = new Observable(this.initStore(this.urlConfig.employeeTree));
+            var incomingTreeStore = new Observable(this.initStore(this.urlConfig.incomingTree));
+            var outgoingsTreeStore = new Observable(this.initStore(this.urlConfig.outgoingTree));
+            var tasksTreeStore = new Observable(this.initStore(this.urlConfig.taskTree));
 
             this.personTree = this.initTree(personTreeStore, this.employees, Person);
             this.incomingTree = this.initTree(incomingTreeStore, this.incoming, Incoming);
@@ -98,22 +99,21 @@ define([
                     if (item.hasOwnProperty("children")){
                         topic.publish("navigation/openGrid", statefulModel);
                     } else {
-                        topic.publish("navigation/openItem", new statefulModel(item));
+                        topic.publish("commonEvent/openItem", new statefulModel(item));
                     }
                 }
             }, node);
         },
-        updatePersonTree: function () {
-            this.personTree.update();
-        },
-        updateIncomingTree: function () {
-            this.incomingTree.update();
-        },
-        updateOutgoingTree: function () {
-            this.outgoingsTree.update();
-        },
-        updateTaskTree: function () {
-            this.tasksTree.update();
+        updateTreeByModel: function (model) {
+            if (model instanceof Person) {
+                this.personTree.update();
+            } else if (model instanceof Incoming) {
+                this.incomingTree.update();
+            } else if (model instanceof Outgoing) {
+                this.outgoingsTree.update();
+            } else if (model instanceof Task) {
+                this.tasksTree.update();
+            }
         }
     });
 });

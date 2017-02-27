@@ -6,10 +6,10 @@ define([
     "dojo/_base/lang",
     "dojo/_base/json",
     "dojo/Stateful",
+    "dojo/request/xhr",
     "myApp/ecm/ui/modules/JsonRest",
     "dojo/store/Observable",
     "dijit/registry",
-    "dijit/layout/ContentPane",
     "dijit/ConfirmDialog",
     "dijit/Dialog",
     "myApp/ecm/ui/widgets/CommonForm",
@@ -31,10 +31,10 @@ define([
              lang,
              dojo,
              Stateful,
+             xhr,
              JsonRest,
              Observable,
              Registry,
-             ContentPane,
              ConfirmDialog,
              Dialog,
              CommonForm,
@@ -48,74 +48,67 @@ define([
         incomingStore: null,
         outgoingStore: null,
         taskStore: null,
+        urlConfig: null,
         constructor: function (params) {
             lang.mixin(this, params);
         },
         startup: function () {
             this.inherited(arguments);
-            this.initStores();
-            this.initWidgets();
-            this.initSubscribes();
+            xhr(window.location.href + "rest/config", {
+                handleAs: "json"
+            }).then(function (data) {
+                this.urlConfig = data;
+                this.initStores();
+                this.initWidgets();
+                this.initSubscribes();
+            }.bind(this))
         },
         initWidgets: function () {
-            this.navWidget = new NavigationWidget();
-            var welcomGrid = new CommonGrid({store: this.personStore, id: Person.tableName, modelClass: Person, closable: false});
-            this.welcomWidget = new WelcomWidget({navWidget: this.navWidget, welcomGridWidget: welcomGrid}, dom.byId("app"));
+            this.navWidget = new NavigationWidget({urlConfig: this.urlConfig});
+            var welcomGrid = new CommonGrid({
+                store: this.personStore,
+                id: Person.tableName,
+                modelClass: Person,
+                closable: false
+            });
+            this.welcomWidget = new WelcomWidget({
+                navWidget: this.navWidget,
+                welcomGridWidget: welcomGrid
+            }, dom.byId("app"));
             this.welcomWidget.startup();
         },
         initSubscribes: function () {
-            topic.subscribe("navigation/openItem", lang.hitch(this, this.openItem));
+            topic.subscribe("commonEvent/openItem", lang.hitch(this, this.openItem));
+            topic.subscribe("commonEvent/Close", lang.hitch(this, this.closeTab));
             topic.subscribe("navigation/openGrid", lang.hitch(this, this.openGrid));
-            topic.subscribe("commonForm/Close", lang.hitch(this, this.closeTab));
             topic.subscribe("commonForm/Save", lang.hitch(this, this.saveItem));
             topic.subscribe("commonForm/Delete", lang.hitch(this, this.deleteItem));
-            topic.subscribe("commonGrid/openItem", lang.hitch(this, this.openItem));
-            topic.subscribe("commonGrid/Close", lang.hitch(this, this.closeTab));
             topic.subscribe("commonGrid/Create", lang.hitch(this, this.createItem));
             topic.subscribe("commonGrid/Delete", lang.hitch(this, this.deleteFromGrid));
         },
         initStores: function () {
-            var restUrl = 'http://localhost:8080/ecm/rest/';
-            this.personStore = new Observable(new JsonRest({
+            this.personStore = this.initStore(this.urlConfig.employeeURL);
+            this.outgoingStore = this.initStore(this.urlConfig.outgoingURL);
+            this.incomingStore = this.initStore(this.urlConfig.incomingURL);
+            this.taskStore = this.initStore(this.urlConfig.taskURL);
+        },
+        initStore: function (url) {
+            return new Observable(new JsonRest({
                 idProperty: 'id',
-                target: restUrl + "employees/",
-                headers: {
-                    'Content-Type': "application/json; charset=UTF-8"
-                },
+                target: window.location.href + url,
                 getChildren: function (object) {
                     return object;
                 }
             }));
-
-            this.taskStore = new Observable(new JsonRest({
-                idProperty: 'id',
-                target: restUrl + "documents/tasks",
-                getChildren: function (object) {
-                    return object;
-                }
-            }));
-
-            this.incomingStore = new Observable(new JsonRest({
-                idProperty: 'id',
-                target: restUrl + "documents/incomings",
-                getChildren: function (object) {
-                    return object;
-                }
-            }));
-
-            this.outgoingStore = new Observable(new JsonRest({
-                idProperty: 'id',
-                target: restUrl + "documents/outgoings",
-                getChildren: function (object) {
-                    return object;
-                }
-            }));
-
         },
         openItem: function (model) {
             console.log(model);
-            if (this.welcomWidget.switchOnTabById(model.id==undefined ? model.declaredClass : model.id)) return;
-            var formWidget = new CommonForm({model: model, templateString: this.getTemplateByModel(model), isNew: model.id==undefined});
+            if (this.welcomWidget.switchOnTabById(model.id == undefined ? model.declaredClass : model.id)) return;
+            var formWidget = new CommonForm({
+                model: model,
+                templateString: this.getTemplateByModel(model),
+                isNew: model.id == undefined
+            });
             this.welcomWidget.openNewTab(formWidget);
         },
         createItem: function (ModelClass) {
@@ -124,7 +117,11 @@ define([
         },
         openGrid: function (ModelClass) {
             if (this.welcomWidget.switchOnTabById(ModelClass.tableName)) return;
-            var gridWidget = new CommonGrid({store: this.getStoreByModel(new ModelClass()), id: ModelClass.tableName, modelClass: ModelClass});
+            var gridWidget = new CommonGrid({
+                store: this.getStoreByModel(new ModelClass()),
+                id: ModelClass.tableName,
+                modelClass: ModelClass
+            });
             this.welcomWidget.openNewGridTab(gridWidget);
         },
         closeTab: function close(id) {
@@ -137,14 +134,14 @@ define([
                 store.add(formWidget.model).then(function (data) {
                     formWidget.updateAfterSave(data);
                     this.welcomWidget.reopenTabForModel(formWidget.model);
-                    this.updateTreeByModel(formWidget.model);
+                    this.navWidget.updateTreeByModel(formWidget.model);
                 }.bind(this));
             }
             else {
                 store.put(formWidget.model).then(function (data) {
                     var pane = Registry.byId(this.welcomWidget.paneSuffix + data.id);
                     pane.set("title", data.fullname);
-                    this.updateTreeByModel(formWidget.model);
+                    this.navWidget.updateTreeByModel(formWidget.model);
                 }.bind(this));
             }
         },
@@ -167,7 +164,7 @@ define([
 
             function success(model) {
                 this.welcomWidget.closeTabById(model.id);
-                this.updateTreeByModel(model);
+                this.navWidget.updateTreeByModel(model);
             }
         },
         deleteFromGrid: function (items, ModelClass) {
@@ -181,16 +178,14 @@ define([
                     }
                 }.bind(this));
             }
-
         },
         errorHandler: function (err) {
-            myDialog = new Dialog({
+            new Dialog({
                 title: "Error!",
                 content: err.responseText,
                 style: "width: 300px"
-            });
+            }).show();
             console.log("error");
-            myDialog.show();
         },
         getStoreByModel: function (model) {
             if (model instanceof Person) {
@@ -201,17 +196,6 @@ define([
                 return this.outgoingStore;
             } else if (model instanceof Task) {
                 return this.taskStore;
-            }
-        },
-        updateTreeByModel: function (model) {
-            if (model instanceof Person) {
-                this.navWidget.updatePersonTree();
-            } else if (model instanceof Incoming) {
-                this.navWidget.updateIncomingTree();
-            } else if (model instanceof Outgoing) {
-                this.navWidget.updateOutgoingTree();
-            } else if (model instanceof Task) {
-                this.navWidget.updateTaskTree();
             }
         },
         getTemplateByModel: function (model) {
