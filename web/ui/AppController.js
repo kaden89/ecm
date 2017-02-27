@@ -138,10 +138,10 @@ define([
                 }.bind(this));
             }
             else {
-                store.put(model).then(function (data) {
-                    var pane = Registry.byId("pane_" + data.id);
+                store.put(formWidget.model).then(function (data) {
+                    var pane = Registry.byId(this.welcomWidget.paneSuffix + data.id);
                     pane.set("title", data.fullname);
-                    this.updateTreeByModel(model);
+                    this.updateTreeByModel(formWidget.model);
                 }.bind(this));
             }
         },

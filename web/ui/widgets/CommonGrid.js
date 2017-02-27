@@ -1,37 +1,13 @@
-
 define([
     "dojo/_base/declare",
     "dojo/topic",
+    "dijit/registry",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
     "dijit/_WidgetBase",
-    "dojo/Stateful",
-    "dojo/dom",
     "dijit/Toolbar",
     "dijit/form/Button",
-    "dojo/dom-form",
-    "dojo/dom-attr",
-    "dijit/registry",
-    "dojo/request",
-    "dojo/request/xhr",
-    "dojo/dom-construct",
-    "dojox/form/Uploader",
-    "dojox/form/uploader/FileList",
-    "dojox/form/uploader/plugins/IFrame",
-    "dijit/form/Form",
     "dojo/_base/lang",
-    'dojo/_base/json',
-    "dojo/date/locale",
-    "dijit/ConfirmDialog",
-    "dijit/Dialog",
-    "dijit/Editor",
-    "dijit/form/Select",
-    "/ecm/resources/js/myJsonRest.js",
-    "dijit/form/FilteringSelect",
-    "dojox/mvc/at",
-    "dojo/store/Memory",
-    "dijit/form/CheckBox",
-    "/ecm/resources/js/formsWidget.js",
     'gridx/Grid',
     'gridx/modules/Dod',
     'gridx/core/model/cache/Async',
@@ -40,8 +16,6 @@ define([
     "gridx/modules/IndirectSelect",
     "gridx/modules/SingleSort",
     "gridx/modules/Bar",
-    "dojo/store/Observable",
-    "dijit/layout/ContentPane",
     "gridx/modules/ColumnResizer",
     "gridx/modules/NestedSort",
     "gridx/modules/Filter",
@@ -51,10 +25,8 @@ define([
     "gridx/modules/pagination/PaginationBar",
     "dojo/text!/ecm/ui/templates/Grid.html"
 
-
-], function (declare, topic, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Stateful, dom, Toolbar, Button, domForm, domAttr, Registry, request, xhr,
-             domConstruct, Uploader, FileList, IFrame, Form, lang, dojo, locale, ConfirmDialog, Dialog, Editor, Select, JsonRest, FilteringSelect,
-             at, Memory, CheckBox,formsWidget, GridX, Dod, Cache, RowHeader, Row, IndirectSelect, SingleSort, Bar, Observable, ContentPane,Resizer,
+], function (declare, topic, Registry, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Toolbar, Button, lang,
+             GridX, Dod, Cache, RowHeader, Row, IndirectSelect, SingleSort, Bar, Resizer,
              NestedSort, Filter, FilterBar, QuickFilter, Pagination, PaginationBar, template) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         store: null,
@@ -104,19 +76,18 @@ define([
             toolbar.addChild(createButton);
             toolbar.addChild(deleteButton);
 
-            if (this.closable){
+            if (this.closable) {
                 toolbar.addChild(closeButton);
             }
 
             function close() {
                 var tabPane = Registry.byId("TabContainer");
-                var pane = Registry.byId("pane_"+this.restUrl);
+                var pane = Registry.byId("pane_" + this.restUrl);
                 tabPane.removeChild(pane);
                 tabPane.selectChild(Registry.byId("WelcomPane"));
                 Registry.remove(pane);
                 pane.destroy();
             }
-
 
             //Create grid widget.
             this.grid = GridX({
@@ -127,7 +98,7 @@ define([
                 pageSize: 11,
                 selectRowMultiple: true,
                 filterServerMode: true,
-                filterSetupQuery: function(expr){
+                filterSetupQuery: function (expr) {
                     console.log(JSON.stringify(expr));
                     console.log(expr);
 
@@ -142,10 +113,8 @@ define([
                     toolbar
                 ],
                 modules: [
-                    //Declare sort module in the "modules" parameter.
                     {
                         moduleClass: SingleSort,
-                        //Declare initialOrder as module parameter:
                         initialOrder: {colId: 'id', descending: false}
                     },
                     Bar,
