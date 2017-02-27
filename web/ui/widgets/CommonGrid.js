@@ -32,8 +32,6 @@ define([
         store: null,
         grid: null,
         id: null,
-        tree: null,
-        restUrl: null,
         closable: true,
         modelClass: null,
         constructor: function (params) {
@@ -45,8 +43,6 @@ define([
         ,
         startup: function () {
             this.inherited(arguments);
-
-            var store = this.store;
 
             var toolbar = new Toolbar({}, "toolbar");
             var createButton = new Button({
@@ -61,7 +57,7 @@ define([
                 label: "Delete",
                 iconClass: "dijitEditorIcon dijitEditorIconDelete",
                 onClick: lang.hitch(this, function () {
-                    topic.publish("commonGrid/Delete", this.grid);
+                    topic.publish("commonGrid/Delete", this.grid.select.row.getSelected(), this.modelClass);
                 })
             });
 
@@ -80,15 +76,6 @@ define([
                 toolbar.addChild(closeButton);
             }
 
-            function close() {
-                var tabPane = Registry.byId("TabContainer");
-                var pane = Registry.byId("pane_" + this.restUrl);
-                tabPane.removeChild(pane);
-                tabPane.selectChild(Registry.byId("WelcomPane"));
-                Registry.remove(pane);
-                pane.destroy();
-            }
-
             //Create grid widget.
             this.grid = GridX({
                 id: this.restUrl,
@@ -99,15 +86,11 @@ define([
                 selectRowMultiple: true,
                 filterServerMode: true,
                 filterSetupQuery: function (expr) {
-                    console.log(JSON.stringify(expr));
-                    console.log(expr);
-
                     if (!expr) {
                         return;
                     }
                     var exprJson = JSON.stringify(expr);
                     return {filter: exprJson}
-
                 },
                 barTop: [
                     toolbar

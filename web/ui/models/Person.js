@@ -2,8 +2,7 @@ define([
     "dojo/_base/declare",
     "dojo/Stateful"
 ], function (declare, Stateful) {
-    var Person =  declare("Person",[Stateful], {
-    });
+    var Person = declare("Person", [Stateful], {});
     //static field
     Person.columns = [
         {id: 'id', field: 'id', name: 'id', width: '5%'},
@@ -14,6 +13,6 @@ define([
         {id: 'birthday', field: 'birthday', name: 'Birthday', width: '19%'}
     ];
     Person.tableName = "Persons";
-    return Person;
 
+    return Person;
 })

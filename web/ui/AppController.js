@@ -4,6 +4,7 @@ define([
     "dojo/dom",
     "dojo/topic",
     "dojo/_base/lang",
+    "dojo/_base/json",
     "dojo/Stateful",
     "myApp/ecm/ui/modules/JsonRest",
     "dojo/store/Observable",
@@ -28,6 +29,7 @@ define([
              dom,
              topic,
              lang,
+             dojo,
              Stateful,
              JsonRest,
              Observable,
@@ -70,6 +72,7 @@ define([
             topic.subscribe("commonGrid/openItem", lang.hitch(this, this.openItem));
             topic.subscribe("commonGrid/Close", lang.hitch(this, this.closeTab));
             topic.subscribe("commonGrid/Create", lang.hitch(this, this.createItem));
+            topic.subscribe("commonGrid/Delete", lang.hitch(this, this.deleteFromGrid));
         },
         initStores: function () {
             var restUrl = 'http://localhost:8080/ecm/rest/';
@@ -156,7 +159,7 @@ define([
                     return;
                 },
                 onExecute: function () {
-                    store.remove(id).then(success.bind(this, model), error);
+                    store.remove(id).then(success.bind(this, model), this.errorHandler);
                 }.bind(this)
 
             });
@@ -166,16 +169,28 @@ define([
                 this.welcomWidget.closeTabById(model.id);
                 this.updateTreeByModel(model);
             }
-
-            function error(err) {
-                myDialog = new Dialog({
-                    title: "Error!",
-                    content: err.responseText,
-                    style: "width: 300px"
-                });
-                console.log("error");
-                myDialog.show();
+        },
+        deleteFromGrid: function (items, ModelClass) {
+            var store = this.getStoreByModel(new ModelClass());
+            if (items.length) {
+                dojo.forEach(items, function (selectedItem) {
+                    if (selectedItem !== null) {
+                        store.get(selectedItem).then(function (data) {
+                            this.deleteItem(new ModelClass(data));
+                        }.bind(this))
+                    }
+                }.bind(this));
             }
+
+        },
+        errorHandler: function (err) {
+            myDialog = new Dialog({
+                title: "Error!",
+                content: err.responseText,
+                style: "width: 300px"
+            });
+            console.log("error");
+            myDialog.show();
         },
         getStoreByModel: function (model) {
             if (model instanceof Person) {

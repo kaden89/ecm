@@ -16,12 +16,9 @@ define([
     "dojo/store/Observable",
     "dojo/store/Memory",
     "dojo/_base/array",
-    // "widgets/CommonFormWidget",
-    // "widgets/MyTree",
     "dojo/data/ObjectStore",
     "dijit/tree/ForestStoreModel",
-    "dojo/text!/ecm/ui/templates/WelcomWidget.html",
-    "myApp/ecm/ui/widgets/CommonGrid"
+    "dojo/text!/ecm/ui/templates/WelcomWidget.html"
 ], function (lang,
              declare,
              topic,
@@ -41,10 +38,7 @@ define([
              array,
              ObjectStore,
              ForestStoreModel,
-             template,
-             CommonGrid,
-             AppController,
-             i18n) {
+             template) {
     return declare("WelcomWidget", [_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         templateString: template,
         navWidget: null,
@@ -76,10 +70,10 @@ define([
             var title, id;
             if (widget.isNew) {
                 title = "New " + widget.model.declaredClass;
-                id = this.paneSuffix+ widget.model.declaredClass;
+                id = this.paneSuffix + widget.model.declaredClass;
             } else {
                 title = widget.model.fullname;
-                id = this.paneSuffix+ widget.model.id;
+                id = this.paneSuffix + widget.model.id;
             }
             var pane = new ContentPane({
 
@@ -116,8 +110,10 @@ define([
         closeTabById: function (id) {
             var tabPane = this.tabContainer;
             var pane = Registry.byId(this.paneSuffix + id);
-            tabPane.removeChild(pane);
-            pane.destroy();
+            if (pane!= undefined){
+                tabPane.removeChild(pane);
+                pane.destroy();
+            }
         }
     });
 });
