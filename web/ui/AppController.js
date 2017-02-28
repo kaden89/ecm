@@ -54,7 +54,7 @@ define([
         },
         startup: function () {
             this.inherited(arguments);
-            xhr(window.location.href + "rest/config", {
+            xhr("rest/config", {
                 handleAs: "json"
             }).then(function (data) {
                 this.urlConfig = data;

@@ -1,8 +1,22 @@
 define([
     "dojo/_base/declare",
-    "dojo/Stateful"
-], function (declare, Stateful) {
-    var Task = declare("Task", [Stateful], {});
+    "dojo/Stateful",
+    "myApp/ecm/ui/utils/Utils"
+], function (declare, Stateful, Utils) {
+    var Task = declare("Task", [Stateful], {
+        date: null,
+        _dateSetter: function (value) {
+            this.date = Utils.addTimezoneToDate(value);
+        },
+        dateOfIssue: null,
+        _dateOfIssueSetter: function (value) {
+            this.dateOfIssue = Utils.addTimezoneToDate(value);
+        },
+        deadline: null,
+        _deadlineSetter: function (value) {
+            this.deadline = Utils.addTimezoneToDate(value);
+        }
+    });
     //static field
     Task.columns = [
         {id: 'id', field: 'id', name: 'id', width: '5%'},

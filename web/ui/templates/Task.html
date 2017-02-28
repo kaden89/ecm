@@ -103,11 +103,7 @@
                                name="date"
                                required="true"
                                data-dojo-type="dijit/form/DateTextBox"
-                               data-dojo-props="value: at(this.model, 'date').transform({
-                    parse: function(value){
-                     return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
-                    }
-                  })"/>
+                               data-dojo-props="value: at(this.model, 'date')"/>
                     </td>
                 </tr>
                 <tr>
@@ -119,11 +115,7 @@
                                name="dateOfIssue"
                                required="true"
                                data-dojo-type="dijit/form/DateTextBox"
-                               data-dojo-props="value: at(this.model, 'dateOfIssue').transform({
-                    parse: function(value){
-                     return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
-                    }
-                  })"/>
+                               data-dojo-props="value: at(this.model, 'dateOfIssue')"/>
                     </td>
                 </tr>
                 <tr>
@@ -135,11 +127,7 @@
                                name="deadline"
                                required="true"
                                data-dojo-type="dijit/form/DateTextBox"
-                               data-dojo-props="value: at(this.model, 'deadline').transform({
-                    parse: function(value){
-                     return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
-                    }
-                  })"/>
+                               data-dojo-props="value: at(this.model, 'deadline')"/>
                     </td>
                 </tr>
                 <tr>

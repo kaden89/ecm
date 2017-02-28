@@ -1,8 +1,14 @@
 define([
     "dojo/_base/declare",
-    "dojo/Stateful"
-], function (declare, Stateful) {
-    var Person = declare("Person", [Stateful], {});
+    "dojo/Stateful",
+    "myApp/ecm/ui/utils/Utils"
+], function (declare, Stateful, Utils) {
+    var Person = declare("Person", [Stateful], {
+        birthday: null,
+        _birthdaySetter: function (value) {
+            this.birthday = Utils.addTimezoneToDate(value);
+        }
+    });
     //static field
     Person.columns = [
         {id: 'id', field: 'id', name: 'id', width: '5%'},

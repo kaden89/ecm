@@ -91,11 +91,7 @@
                                name="date"
                                required="true"
                                data-dojo-type="dijit/form/DateTextBox"
-                               data-dojo-props="value: at(this.model, 'date').transform({
-                    parse: function(value){
-                     return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
-                    }
-                  })"/>
+                               data-dojo-props="value: at(this.model, 'date')"/>
                     </td>
                 </tr>
                 <tr>
@@ -119,11 +115,7 @@
                                name="outboundRegDate"
                                required="true"
                                data-dojo-type="dijit/form/DateTextBox"
-                               data-dojo-props="value: at(this.model, 'outboundRegDate').transform({
-                    parse: function(value){
-                     return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
-                    }
-                  })">
+                               data-dojo-props="value: at(this.model, 'outboundRegDate')">
                     </td>
                 </tr>
                 <tr>
