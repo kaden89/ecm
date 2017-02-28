@@ -12,7 +12,8 @@
                      style="text-align: center; font-size: large">
                     <span data-dojo-type="dojox/mvc/Output" data-dojo-props="value: at(this.model, 'firstname')"></span>
                     <span data-dojo-type="dojox/mvc/Output" data-dojo-props="value: at(this.model, 'surname')"></span>
-                    <span data-dojo-type="dojox/mvc/Output" data-dojo-props="value: at(this.model, 'patronymic')"></span>
+                    <span data-dojo-type="dojox/mvc/Output"
+                          data-dojo-props="value: at(this.model, 'patronymic')"></span>
                 </div>
             </div>
             <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'right'" style="width: 40%">
@@ -28,93 +29,55 @@
                 <div data-dojo-type="dijit/form/Form"
                      data-dojo-attach-point="form"
                      data-dojo-props="region:'right'"
-                     encType="multipart/form-data" action="/ecm/rest/employees" method="post"
                      style="border: 0px">
 
-                    <table style="border: 1px solid #9f9f9f;" cellspacing="10">
-                        <tr>
-                            <td>
-                                <label>ID:</label>
-                            </td>
-                            <td>
-                                <span data-dojo-type="dojox/mvc/Output"
-                                      data-dojo-attach-point="entityId"
-                                      data-dojo-props="value: at(this.model, 'id')"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>Fisrt name:</label>
-                            </td>
-                            <td>
-                                <input type="text"
-                                       name="firstname"
-                                       required="true"
-                                       data-dojo-type="dijit/form/ValidationTextBox"
-                                       data-dojo-props="value: at(this.model, 'firstname')">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>Surname:</label>
-                            </td>
-                            <td>
-                                <input type="text"
-                                       name="surname"
-                                       required="true"
-                                       data-dojo-type="dijit/form/ValidationTextBox"
-                                       data-dojo-props="value: at(this.model, 'surname')">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>Patronymic:</label>
-                            </td>
-                            <td>
-                                <input type="text"
-                                       name="patronymic"
-                                       required="true"
-                                       data-dojo-type="dijit/form/ValidationTextBox"
-                                       data-dojo-props="value: at(this.model, 'patronymic')">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>Date of birth:</label>
-                            </td>
-                            <td>
-                                <input type="text"
-                                       name="birthday"
-                                       required="true"
-                                       data-dojo-type="dijit/form/DateTextBox"
-                                       data-dojo-props="value: at(this.model, 'birthday')"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>Position:</label>
-                            </td>
-                            <td>
-                                <select required="true"
-                                        name="positionId"
-                                        data-dojo-type="dijit/form/FilteringSelect"
-                                        data-dojo-attach-point="position"
-                                        data-dojo-props="value: at(this.model, 'positionId'), labelAttr: 'post', searchAttr: 'post'"> </select>
-                            </td>
-                        </tr>
-                    </table>
+                    <div data-dojo-type="dojox/layout/TableContainer" data-dojo-props="cols:1">
+
+                        <div title="ID:" data-dojo-type="dojox/mvc/Output" data-dojo-attach-point="entityId" data-dojo-props="value: at(this.model, 'id')"></div>
+
+                        <div title="First name:"
+                             type="text"
+                             name="firstname"
+                             required="true"
+                             data-dojo-type="dijit/form/ValidationTextBox"
+                             data-dojo-props="value: at(this.model, 'firstname')"></div>
+
+                        <div title="Surname"
+                             type="text"
+                             name="surname"
+                             required="true"
+                             data-dojo-type="dijit/form/ValidationTextBox"
+                             data-dojo-props="value: at(this.model, 'surname')"></div>
 
 
-                    <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+                        <div title="Patronymic"
+                             type="text"
+                             name="patronymic"
+                             required="true"
+                             data-dojo-type="dijit/form/ValidationTextBox"
+                             data-dojo-props="value: at(this.model, 'patronymic')"></div>
+
+                        <div title="Date of birth:"
+                             type="text"
+                             name="birthday"
+                             required="true"
+                             data-dojo-type="dijit/form/DateTextBox"
+                             data-dojo-props="value: at(this.model, 'birthday')"></div>
+
+                        <div title="Position:"
+                             required="true"
+                             name="positionId"
+                             data-dojo-type="dijit/form/FilteringSelect"
+                             data-dojo-attach-point="position"
+                             data-dojo-props="value: at(this.model, 'positionId'), labelAttr: 'post', searchAttr: 'post'"></div>
                     </div>
+                    <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'"></div>
                 </div>
-
                 <div data-dojo-type="dojox/form/Uploader"
                      data-dojo-attach-point="uploader"></div>
                 <div data-dojo-type="dojox/form/uploader/FileList"
                      data-dojo-attach-point="filelist"></div>
                 <div data-dojo-type="dijit/form/Button" data-dojo-attach-point="button"></div>
-
             </div>
 
         </div>

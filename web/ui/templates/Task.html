@@ -6,141 +6,79 @@
         <div data-dojo-type="dijit/form/Form"
              data-dojo-attach-point="form"
              data-dojo-props="region:'right'"
-             encType="multipart/form-data" action="/ecm/rest/employees" method="post"
              style="border: 0px; width: 100%">
-            <table style="border: 1px solid #9f9f9f; width: 100%" cellspacing="10">
-                <tr>
-                    <td>
-                        <label>ID:</label>
-                    </td>
-                    <td>
-                        <span data-dojo-type="dojox/mvc/Output"
-                              data-dojo-attach-point="entityId"
-                              data-dojo-props="value: at(this.model, 'id')"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Name:</label>
-                    </td>
-                    <td>
-                        <input type="text"
-                               name="name"
-                               required="true"
-                               data-dojo-type="dijit/form/ValidationTextBox"
-                               data-dojo-props="value: at(this.model, 'name')">
-                    </td>
-                </tr>
-                <div data-dojo-type="dojo/store/JsonRest"
-                     data-dojo-props="target:'http://localhost:8080/ecm/rest/employees/', idProperty:'id'"
-                     data-dojo-id="personStore"></div>
-                <tr>
-                    <td>
-                        <label>Author:</label>
-                    </td>
-                    <td>
-                        <select required="true"
-                                name="authorId"
-                                data-dojo-type="dijit/form/FilteringSelect"
-                                data-dojo-props="value: at(this.model, 'authorId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
-                                data-dojo-attach-point="author"> </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Executor:</label>
-                    </td>
-                    <td>
-                        <select required="true"
-                                name="executorId"
-                                data-dojo-type="dijit/form/FilteringSelect"
-                                data-dojo-props="value: at(this.model, 'executorId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
-                                data-dojo-attach-point="executor"> </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Controller:</label>
-                    </td>
-                    <td>
-                        <select required="true"
-                                name="controllerId"
-                                data-dojo-type="dijit/form/FilteringSelect"
-                                data-dojo-props="value: at(this.model, 'controllerId'), store: personStore, labelAttr: 'fullname', searchAttr: 'fullname'"
-                                data-dojo-attach-point="controller"> </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Is controlled:</label>
-                    </td>
-                    <td>
-                        <input type="checkbox"
-                               name="isControlled"
-                               data-dojo-type="dijit/form/CheckBox"
-                               data-dojo-attach-point="isControlled"
-                               data-dojo-props="checked: at(this.model, 'isControlled')">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Reg number:</label>
-                    </td>
-                    <td>
-                        <input type="text"
-                               name="regNumber"
-                               required="true"
-                               data-dojo-type="dijit/form/ValidationTextBox"
-                               data-dojo-props="value: at(this.model, 'regNumber')">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Date:</label>
-                    </td>
-                    <td>
-                        <input type="date"
-                               name="date"
-                               required="true"
-                               data-dojo-type="dijit/form/DateTextBox"
-                               data-dojo-props="value: at(this.model, 'date')"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Date of issue:</label>
-                    </td>
-                    <td>
-                        <input type="date"
-                               name="dateOfIssue"
-                               required="true"
-                               data-dojo-type="dijit/form/DateTextBox"
-                               data-dojo-props="value: at(this.model, 'dateOfIssue')"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Deadline:</label>
-                    </td>
-                    <td>
-                        <input type="date"
-                               name="deadline"
-                               required="true"
-                               data-dojo-type="dijit/form/DateTextBox"
-                               data-dojo-props="value: at(this.model, 'deadline')"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Text:</label>
-                    </td>
-                    <td>
-                        <div data-dojo-type="dijit/Editor" name="text" data-dojo-props="value: at(this.model, 'text')">
-                        </div>
-                    </td>
-                </tr>
-            </table>
+            <div data-dojo-type="dojox/layout/TableContainer" data-dojo-props="cols:1">
 
+                <div title="ID:"
+                     data-dojo-type="dojox/mvc/Output"
+                     data-dojo-attach-point="entityId"
+                     data-dojo-props="value: at(this.model, 'id')"></div>
+
+                <div title="Name:"
+                     type="text"
+                     name="name"
+                     required="true"
+                     data-dojo-type="dijit/form/ValidationTextBox"
+                     data-dojo-props="value: at(this.model, 'name')"></div>
+
+                <div title="Author:"
+                     required="true"
+                     name="authorId"
+                     data-dojo-type="dijit/form/FilteringSelect"
+                     data-dojo-props="value: at(this.model, 'authorId'), labelAttr: 'fullname', searchAttr: 'fullname'"
+                     data-dojo-attach-point="author"> </div>
+
+                <div title="Executor:"
+                     required="true"
+                     name="executorId"
+                     data-dojo-type="dijit/form/FilteringSelect"
+                     data-dojo-props="value: at(this.model, 'executorId'), labelAttr: 'fullname', searchAttr: 'fullname'"
+                     data-dojo-attach-point="executor"> </div>
+
+                <div title="Controller:"
+                     required="true"
+                     name="controllerId"
+                     data-dojo-type="dijit/form/FilteringSelect"
+                     data-dojo-props="value: at(this.model, 'controllerId'), labelAttr: 'fullname', searchAttr: 'fullname'"
+                     data-dojo-attach-point="controller"> </div>
+
+                <div title="Is controlled:"
+                     type="checkbox"
+                     name="isControlled"
+                     data-dojo-type="dijit/form/CheckBox"
+                     data-dojo-attach-point="isControlled"
+                     data-dojo-props="checked: at(this.model, 'isControlled')"></div>
+
+                <div title="Reg number:"
+                     type="text"
+                     name="regNumber"
+                     required="true"
+                     data-dojo-type="dijit/form/ValidationTextBox"
+                     data-dojo-props="value: at(this.model, 'regNumber')"></div>
+
+                <div title="Date:"
+                       type="date"
+                       name="date"
+                       required="true"
+                       data-dojo-type="dijit/form/DateTextBox"
+                       data-dojo-props="value: at(this.model, 'date')"></div>
+
+                <div title="Date of issue:"
+                     type="date"
+                     name="dateOfIssue"
+                     required="true"
+                     data-dojo-type="dijit/form/DateTextBox"
+                     data-dojo-props="value: at(this.model, 'dateOfIssue')"></div>
+
+                <div title="Deadline:"
+                     type="date"
+                     name="deadline"
+                     required="true"
+                     data-dojo-type="dijit/form/DateTextBox"
+                     data-dojo-props="value: at(this.model, 'deadline')"></div>
+            </div>
+
+            <div data-dojo-type="dijit/Editor" name="text" data-dojo-props="value: at(this.model, 'text')"></div>
 
             <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
             </div>

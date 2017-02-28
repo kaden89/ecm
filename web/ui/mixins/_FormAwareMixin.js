@@ -5,10 +5,7 @@ define([
 ) {
     return declare([], {
         // summary:
-        //      Toggle visibility of a widget
-        // description:
-        //      This mixin can be used with any mijit/_TemplatedMixin-based widget
-
+        //      Добавляет колбеки модификации формы моделью.
         initForm: function (form) {
         },
 

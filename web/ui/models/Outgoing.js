@@ -8,6 +8,22 @@ define([
         date: null,
         _dateSetter: function (value) {
             this.date = Utils.addTimezoneToDate(value);
+        },
+        initForm: function (form) {
+            form.author.store = form.personStore;
+            form.recipient.store = form.personStore;
+
+            form.author.value = this.positionId;
+            form.recipient.value = this.recipientId;
+
+            if (!form.isNew){
+                form.personStore.get(this.authorId).then(function (data) {
+                    form.author.set('item', data);
+                }.bind(this));
+                form.personStore.get(this.recipientId).then(function (data) {
+                    form.recipient.set('item', data);
+                }.bind(this));
+            }
         }
     });
     //static field

@@ -13,6 +13,7 @@ define([
     "dijit/form/DateTextBox",
     "dijit/form/FilteringSelect",
     "dijit/form/CheckBox",
+    "dojox/layout/TableContainer",
     "dojox/mvc/at",
     "dojox/mvc/Output",
     "dojox/form/Uploader",
@@ -22,7 +23,7 @@ define([
     "dojo/_base/lang"
 
 ], function (declare, topic, _TemplatedMixin, _WidgetsInTemplateMixin, _WidgetBase, Editor, Select, Toolbar, Button, ValidationTextBox,
-             DateTextBox, FilteringSelect, CheckBox, at, Output, Uploader, FileList, IFrame, Form, lang) {
+             DateTextBox, FilteringSelect, CheckBox, TableContainer, at, Output, Uploader, FileList, IFrame, Form, lang) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         model: null,
         templateString: null,
@@ -74,7 +75,9 @@ define([
         },
         updateAfterSaveNew: function (data) {
             this.isNew = false;
+            //Чтобы mvc/at отрисовал новый ID на форме
             this.model.set('id', data.id);
+
             lang.mixin(this.model, data);
             this.deleteButton.set('disabled', false);
         }

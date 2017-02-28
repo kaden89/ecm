@@ -57,11 +57,7 @@ define([
 
             var avatar = form.avatar;
             if (!form.isNew){
-                loadPhoto(form.model.id);
-            }
-
-            function loadPhoto(id) {
-                xhr(form.urlConfig.employeeURL + "/"+id + "/photo", {
+                xhr(form.urlConfig.employeeURL + "/"+form.model.id + "/photo", {
                     handleAs: "json",
                     method: "get"
                 }).then(function (data) {
