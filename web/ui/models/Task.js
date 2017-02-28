@@ -26,7 +26,7 @@ define([
             form.executor.value = this.executorId;
             form.controller.value = this.controllerId;
 
-            if (!form.isNew){
+            if (!form.isNew) {
                 form.personStore.get(this.authorId).then(function (data) {
                     form.author.set('item', data);
                 }.bind(this));

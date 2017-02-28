@@ -69,19 +69,16 @@ public class AbstractRestController {
                 .build();
     }
 
-    private GenericDTOConverter getConverterFromClass(Class clazz){
+    private GenericDTOConverter getConverterFromClass(Class clazz) {
         GenericDTOConverter converter = null;
 
-        if (clazz.isAssignableFrom(Incoming.class)){
+        if (clazz.isAssignableFrom(Incoming.class)) {
             converter = getIncomingDTOConverter();
-        }
-        else if (clazz.isAssignableFrom(Outgoing.class)){
+        } else if (clazz.isAssignableFrom(Outgoing.class)) {
             converter = getOutgoingDTOConverter();
-        }
-        else if (clazz.isAssignableFrom(Task.class)){
+        } else if (clazz.isAssignableFrom(Task.class)) {
             converter = getTaskDTOConverter();
-        }
-        else if (clazz.isAssignableFrom(Person.class)){
+        } else if (clazz.isAssignableFrom(Person.class)) {
             converter = getPersonDTOConverter();
         }
         return converter;

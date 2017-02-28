@@ -110,7 +110,7 @@ define([
         closeTabById: function (id) {
             var tabPane = this.tabContainer;
             var pane = Registry.byId(this.paneSuffix + id);
-            if (pane!= undefined){
+            if (pane != undefined) {
                 tabPane.removeChild(pane);
                 pane.destroy();
             }

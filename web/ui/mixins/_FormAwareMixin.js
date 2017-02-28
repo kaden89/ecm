@@ -1,11 +1,9 @@
 define([
     "dojo/_base/declare"
-], function (
-    declare
-) {
+], function (declare) {
     return declare([], {
         // summary:
-        //      Добавляет колбеки модификации формы моделью.
+        //      Добавляет колбеки модификации формы.
         initForm: function (form) {
         },
 

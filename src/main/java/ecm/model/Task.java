@@ -90,6 +90,6 @@ public class Task extends Document {
 
     @Override
     public String toString() {
-        return "Task №"+super.toString();
+        return "Task №" + super.toString();
     }
 }

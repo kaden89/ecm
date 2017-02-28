@@ -18,8 +18,8 @@ public class IncomingFactory extends AbstractDocumentsFactory {
         populator.populateBasicsOfDocument(incoming);
         incoming.setSender(populator.getRandomPerson());
         incoming.setRecipient(populator.getRandomPerson());
-        incoming.setOutboundRegDate(populator.getRandomDate(LocalDate.of(2017,1,1), LocalDate.of(2017,1,31)));
-        incoming.setReferenceNumber(String.valueOf(populator.getRandomInt(1000, 4000))+populator.getRandomString(4));
+        incoming.setOutboundRegDate(populator.getRandomDate(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 31)));
+        incoming.setReferenceNumber(String.valueOf(populator.getRandomInt(1000, 4000)) + populator.getRandomString(4));
         return incoming;
     }
 }

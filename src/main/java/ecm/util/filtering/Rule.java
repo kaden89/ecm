@@ -69,18 +69,18 @@ public class Rule {
         if (isFieldAString(paramName, clazz) || isFieldAString(paramName, clazz.getSuperclass())) {
             return builder.append(" LOWER(e.")
                     .append(getLeftField() + ") ")
-                    .append(op==Conditions.CONTAIN ? op + " CONCAT('%', :": op + " :")
+                    .append(op == Conditions.CONTAIN ? op + " CONCAT('%', :" : op + " :")
                     .append((getLeftField() + " ").replaceAll("\\.", ""))
-                    .append(op==Conditions.CONTAIN ? ", '%')": "")
+                    .append(op == Conditions.CONTAIN ? ", '%')" : "")
                     .toString();
         } else return toString();
     }
 
     private boolean isFieldAString(String paramName, Class clazz) {
-        if (paramName.contains(".")){
+        if (paramName.contains(".")) {
             try {
-                 Class childClass = clazz.getDeclaredField(paramName.split("\\.")[0]).getType();
-                 return isFieldAString(paramName.split("\\.")[1], childClass);
+                Class childClass = clazz.getDeclaredField(paramName.split("\\.")[0]).getType();
+                return isFieldAString(paramName.split("\\.")[1], childClass);
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             }

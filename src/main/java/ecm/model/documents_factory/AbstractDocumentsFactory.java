@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public abstract class AbstractDocumentsFactory {
     @Inject
     DocumentPopulator populator;
-    
+
     @Inject
     private transient Logger log;
 

@@ -18,8 +18,8 @@ public class TaskFactory extends AbstractDocumentsFactory {
         populator.populateBasicsOfDocument(task);
         task.setController(populator.getRandomPerson());
         task.setExecutor(populator.getRandomPerson());
-        task.setDateOfIssue(populator.getRandomDate(LocalDate.of(2017,1,1), LocalDate.of(2017,1,31)));
-        task.setDeadline(populator.getRandomDate(LocalDate.of(2017,1,1), LocalDate.of(2017,1,31)));
+        task.setDateOfIssue(populator.getRandomDate(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 31)));
+        task.setDeadline(populator.getRandomDate(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 31)));
         task.setControlled(populator.getRandomBoolean());
         return task;
     }

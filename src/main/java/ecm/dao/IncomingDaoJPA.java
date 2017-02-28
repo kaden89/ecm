@@ -16,6 +16,6 @@ public class IncomingDaoJPA extends DocumentGenericDaoJpa<Incoming> {
     @Override
     public List<Incoming> findAllWithPersonId(int id) {
         return entityManager.createQuery("SELECT e FROM " + entityClass.getSimpleName() + " e where e.author.id = " + id
-        +" OR e.sender.id = "+ id + " OR e.recipient.id = "+ id).getResultList();
+                + " OR e.sender.id = " + id + " OR e.recipient.id = " + id).getResultList();
     }
 }

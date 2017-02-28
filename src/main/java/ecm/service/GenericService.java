@@ -2,6 +2,7 @@ package ecm.service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+
 import ecm.dao.GenericDAO;
 import ecm.util.filtering.Filter;
 import ecm.util.paging.Page;

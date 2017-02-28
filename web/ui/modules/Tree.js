@@ -20,25 +20,25 @@ define([
              ForestStoreModel,
              ContentPane) {
     return declare([Tree], {
-            showRoot: true,
-            itemTemplate: null,
-            reloadStoreOnRefresh: true,
-            constructor: function (params) {
-                lang.mixin(this, params);
-            },
-            update: function () {
-                this.dndController.selectNone();
-                this.model.store.clearOnClose = true;
-                this._itemNodesMap = {};
-                this.rootNode.state = "UNCHECKED";
-                this.model.childrenCache = null;
-                this.rootNode.destroyRecursive();
-                this.model.constructor(this.model);
-                this.postMixInProperties();
-                this._load();
-            },
-            startup: function () {
-                this.inherited(arguments);
-            }
-        });
+        showRoot: true,
+        itemTemplate: null,
+        reloadStoreOnRefresh: true,
+        constructor: function (params) {
+            lang.mixin(this, params);
+        },
+        update: function () {
+            this.dndController.selectNone();
+            this.model.store.clearOnClose = true;
+            this._itemNodesMap = {};
+            this.rootNode.state = "UNCHECKED";
+            this.model.childrenCache = null;
+            this.rootNode.destroyRecursive();
+            this.model.constructor(this.model);
+            this.postMixInProperties();
+            this._load();
+        },
+        startup: function () {
+            this.inherited(arguments);
+        }
+    });
 });

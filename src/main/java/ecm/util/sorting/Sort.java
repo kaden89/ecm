@@ -11,8 +11,8 @@ public class Sort {
     public Sort(String sortParam) {
 //        {sortField: id, direction: ASC}
         String[] sort = sortParam.replaceAll("\\{", "").replaceAll("\\}", "").split(",");
-        this.field = sort[0].split(":")[1].replaceAll(" ","");
-        this.direction = sort[1].split(":")[1].replaceAll(" ","");
+        this.field = sort[0].split(":")[1].replaceAll(" ", "");
+        this.direction = sort[1].split(":")[1].replaceAll(" ", "");
     }
 
     public Sort(String field, String direction) {

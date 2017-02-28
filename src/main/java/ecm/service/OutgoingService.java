@@ -20,7 +20,7 @@ public class OutgoingService extends AbstractGenericServiceImpl<Outgoing> {
 
     @Override
     public Page<Outgoing> findAllSortedAndPageable(Sort sort, RangeHeader range) {
-        switch (sort.getField()){
+        switch (sort.getField()) {
             case "authorName": {
                 sort.setField("author.fullname");
                 break;

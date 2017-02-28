@@ -97,7 +97,7 @@ define([
         initStore: function (url) {
             return new Observable(new JsonRest({
                 idProperty: 'id',
-                target: window.location.href + url,
+                target: url,
                 getChildren: function (object) {
                     return object;
                 }

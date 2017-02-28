@@ -1,4 +1,5 @@
 package ecm.util.filtering;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,13 +37,14 @@ public class Filter {
     }
 
 
-    public Map<String, Object> getQueryParams(){
+    public Map<String, Object> getQueryParams() {
         Map<String, Object> params = new HashMap<>();
         for (Rule rule : getData()) {
             params.put(rule.getLeftField().getData(), rule.getRightField().getData());
         }
         return params;
     }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -50,21 +52,21 @@ public class Filter {
         for (int i = 0; i < data.size(); i++) {
             builder.append(data.get(i).toString());
 
-            if (data.size()>1 && i!=data.size()-1){
-                builder.append(op+" ");
+            if (data.size() > 1 && i != data.size() - 1) {
+                builder.append(op + " ");
             }
         }
         return builder.toString();
     }
 
-    public String getCaseInsensitiveQueryString(Class clazz){
+    public String getCaseInsensitiveQueryString(Class clazz) {
         StringBuilder builder = new StringBuilder();
 
         for (int i = 0; i < data.size(); i++) {
             builder.append(data.get(i).getCaseInsensitiveString(clazz));
 
-            if (data.size()>1 && i!=data.size()-1){
-                builder.append(op+" ");
+            if (data.size() > 1 && i != data.size() - 1) {
+                builder.append(op + " ");
             }
         }
         return builder.toString();

@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
  */
 @Singleton
 @Transactional
-public class ImageServiceImpl implements ImageService{
+public class ImageServiceImpl implements ImageService {
     @Inject
     private ImageDAO imageDAO;
 

@@ -22,7 +22,7 @@ public class RangeHeader {
             this.offset = new Integer(parsed[0]);
             this.limit = new Integer(parsed[1]) - offset;
             //Stub for gridx range format from filter window : 'items=0-' and other possible problems...
-        }else {
+        } else {
             this.offset = 0;
             this.limit = 9999;
         }

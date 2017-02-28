@@ -1,4 +1,3 @@
-
 define([
     "dojo/_base/lang",
     "dojo/_base/declare",
@@ -61,7 +60,7 @@ define([
             this.tasksTree = this.initTree(tasksTreeStore, this.tasks, Task);
 
         },
-        initStore: function(url){
+        initStore: function (url) {
             return new JsonRest({
                 idProperty: 'id',
                 target: window.location + url,
@@ -75,7 +74,7 @@ define([
                 }
             });
         },
-        initTree: function (store, node, statefulModel) {
+        initTree: function (store, node, StatefulModel) {
             var model = new ObjectStoreModel({
                 store: store,
                 getRoot: function (onItem) {
@@ -93,13 +92,13 @@ define([
                 }
             });
 
-            return tree = new Tree({
+            return new Tree({
                 model: model,
                 onDblClick: function (item) {
-                    if (item.hasOwnProperty("children")){
-                        topic.publish("navigation/openGrid", statefulModel);
+                    if (item.hasOwnProperty("children")) {
+                        topic.publish("navigation/openGrid", StatefulModel);
                     } else {
-                        topic.publish("commonEvent/openItem", new statefulModel(item));
+                        topic.publish("commonEvent/openItem", new StatefulModel(item));
                     }
                 }
             }, node);
