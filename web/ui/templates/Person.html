@@ -12,8 +12,7 @@
                      style="text-align: center; font-size: large">
                     <span data-dojo-type="dojox/mvc/Output" data-dojo-props="value: at(this.model, 'firstname')"></span>
                     <span data-dojo-type="dojox/mvc/Output" data-dojo-props="value: at(this.model, 'surname')"></span>
-                    <span data-dojo-type="dojox/mvc/Output"
-                          data-dojo-props="value: at(this.model, 'patronymic')"></span>
+                    <span data-dojo-type="dojox/mvc/Output" data-dojo-props="value: at(this.model, 'patronymic')"></span>
                 </div>
             </div>
             <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'right'" style="width: 40%">
@@ -96,14 +95,11 @@
                                 <label>Position:</label>
                             </td>
                             <td>
-                                <div data-dojo-type="dojo/store/JsonRest"
-                                     data-dojo-props="target:'http://localhost:8080/ecm/rest/employees/posts', idProperty:'id'"
-                                     data-dojo-id="postStore"></div>
                                 <select required="true"
                                         name="positionId"
                                         data-dojo-type="dijit/form/FilteringSelect"
-                                        data-dojo-props="value: at(this.model, 'positionId'), store: postStore, labelAttr: 'post', searchAttr: 'post'"
-                                        data-dojo-attach-point="position"> </select>
+                                        data-dojo-attach-point="position"
+                                        data-dojo-props="value: at(this.model, 'positionId'), labelAttr: 'post', searchAttr: 'post'"> </select>
                             </td>
                         </tr>
                     </table>

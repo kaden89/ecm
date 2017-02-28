@@ -48,6 +48,7 @@ define([
         incomingStore: null,
         outgoingStore: null,
         taskStore: null,
+        postStore: null,
         urlConfig: null,
         constructor: function (params) {
             lang.mixin(this, params);
@@ -91,6 +92,7 @@ define([
             this.outgoingStore = this.initStore(this.urlConfig.outgoingURL);
             this.incomingStore = this.initStore(this.urlConfig.incomingURL);
             this.taskStore = this.initStore(this.urlConfig.taskURL);
+            this.postStore = this.initStore(this.urlConfig.postURL);
         },
         initStore: function (url) {
             return new Observable(new JsonRest({
@@ -107,7 +109,10 @@ define([
             var formWidget = new CommonForm({
                 model: model,
                 templateString: this.getTemplateByModel(model),
-                isNew: model.id == undefined
+                isNew: model.id == undefined,
+                personStore: this.personStore,
+                postStore: this.postStore,
+                urlConfig: this.urlConfig
             });
             this.welcomWidget.openNewTab(formWidget);
         },
@@ -132,7 +137,8 @@ define([
             //save new
             if (formWidget.isNew) {
                 store.add(formWidget.model).then(function (data) {
-                    formWidget.updateAfterSave(data);
+                    formWidget.updateAfterSaveNew(data);
+                    formWidget.model.updateFormAfterSaveNew(formWidget);
                     this.welcomWidget.reopenTabForModel(formWidget.model);
                     this.navWidget.updateTreeByModel(formWidget.model);
                 }.bind(this));

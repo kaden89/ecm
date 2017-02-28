@@ -1,9 +1,10 @@
 define([
     "dojo/_base/declare",
     "dojo/Stateful",
-    "myApp/ecm/ui/utils/Utils"
-], function (declare, Stateful, Utils) {
-    var Task = declare("Task", [Stateful], {
+    "myApp/ecm/ui/utils/Utils",
+    "myApp/ecm/ui/mixins/_FormAwareMixin"
+], function (declare, Stateful, Utils, _FormAwareMixin) {
+    var Task = declare("Task", [Stateful, _FormAwareMixin], {
         date: null,
         _dateSetter: function (value) {
             this.date = Utils.addTimezoneToDate(value);

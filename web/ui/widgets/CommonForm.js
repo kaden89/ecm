@@ -1,6 +1,4 @@
-/**
- * Created by dkarachurin on 19.01.2017.
- */
+
 define([
     "dojo/_base/declare",
     "dojo/topic",
@@ -29,12 +27,17 @@ define([
         model: null,
         templateString: null,
         isNew: null,
+        personStore: null,
+        postStore: null,
+        urlConfig: null,
         constructor: function (params) {
             lang.mixin(this, params);
         }
         ,
         startup: function () {
             this.inherited(arguments);
+
+            this.model.initForm(this);
 
             var toolbar = this.toolbar;
             var createButton = new Button({
@@ -69,9 +72,10 @@ define([
             toolbar.addChild(this.deleteButton);
             toolbar.addChild(closeButton);
         },
-        updateAfterSave: function (data) {
+        updateAfterSaveNew: function (data) {
             this.isNew = false;
-            this.model = new this.model.constructor(data);
+            this.model.set('id', data.id);
+            lang.mixin(this.model, data);
             this.deleteButton.set('disabled', false);
         }
     });

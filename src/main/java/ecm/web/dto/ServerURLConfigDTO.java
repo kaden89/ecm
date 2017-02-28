@@ -12,6 +12,7 @@ public class ServerURLConfigDTO {
     private String outgoingTree = "rest/documents/tree/outgoings";
     private String incomingTree = "rest/documents/tree/incomings";
     private String taskTree = "rest/documents/tree/tasks";
+    private String postURL = "rest/employees/posts";
 
     public ServerURLConfigDTO() {
     }
@@ -78,5 +79,13 @@ public class ServerURLConfigDTO {
 
     public void setTaskTree(String taskTree) {
         this.taskTree = taskTree;
+    }
+
+    public String getPostURL() {
+        return postURL;
+    }
+
+    public void setPostURL(String postURL) {
+        this.postURL = postURL;
     }
 }
