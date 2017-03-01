@@ -154,7 +154,7 @@ define([
         deleteItem: function (model) {
             var id = model.id;
             var store = this.getStoreByModel(model);
-            deleteDialog = new ConfirmDialog({
+            var deleteDialog = new ConfirmDialog({
                 title: "Delete",
                 content: "Are you sure that you want to delete " + model.fullname + "?",
                 style: "width: 300px",
@@ -162,7 +162,7 @@ define([
                     return;
                 },
                 onExecute: function () {
-                    store.remove(id).then(success.bind(this, model), this.errorHandler);
+                    store.remove(id).then(success.bind(this, model), this.handleError);
                 }.bind(this)
 
             });
@@ -185,7 +185,7 @@ define([
                 }.bind(this));
             }
         },
-        errorHandler: function (err) {
+        handleError: function (err) {
             new Dialog({
                 title: "Error!",
                 content: err.responseText,

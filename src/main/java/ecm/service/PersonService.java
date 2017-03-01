@@ -7,8 +7,8 @@ import ecm.util.paging.Page;
 import ecm.util.paging.RangeHeader;
 import ecm.util.sorting.Sort;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by dkarachurin on 08.02.2017.
  */
-@Singleton
+@Stateless
 //Bug with rollback https://java.net/jira/browse/GLASSFISH-20699
 @Transactional(dontRollbackOn = HasLinksException.class)
 public class PersonService extends AbstractGenericServiceImpl<Person> {

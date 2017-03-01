@@ -88,6 +88,11 @@
             <artifactId>jersey-container-servlet-core</artifactId>
             <version>2.25</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.jboss.weld</groupId>-->
+            <!--<artifactId>weld-osgi-bundle</artifactId>-->
+            <!--<version>2.4.2.SP1</version>-->
+        <!--</dependency>-->
 
         <!--Too long deploy with webjars-->
 

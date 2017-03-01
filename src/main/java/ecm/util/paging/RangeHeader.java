@@ -1,7 +1,5 @@
 package ecm.util.paging;
 
-import javax.validation.constraints.AssertTrue;
-
 /**
  * Created by Денис on 11.02.2017.
  */

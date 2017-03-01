@@ -1,9 +1,9 @@
 package ecm.model.documents_factory;
 
 import ecm.dao.GenericDAO;
-import ecm.util.exceptions.DocumentExistsException;
 import ecm.model.Document;
 import ecm.model.Person;
+import ecm.util.exceptions.DocumentExistsException;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

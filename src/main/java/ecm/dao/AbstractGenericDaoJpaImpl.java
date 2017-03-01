@@ -8,7 +8,6 @@ import org.hibernate.query.internal.QueryImpl;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.Parameter;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.lang.reflect.Field;

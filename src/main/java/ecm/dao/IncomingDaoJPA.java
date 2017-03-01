@@ -2,7 +2,6 @@ package ecm.dao;
 
 import ecm.model.Incoming;
 
-import javax.ejb.Stateless;
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
 import java.util.List;

@@ -5,8 +5,6 @@ import ecm.util.paging.Page;
 import ecm.util.paging.RangeHeader;
 import ecm.util.sorting.Sort;
 
-import javax.transaction.TransactionalException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**

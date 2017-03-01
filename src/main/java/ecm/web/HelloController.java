@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
  * Created by dkarachurin on 27.02.2017.
  */
 @Path(value = "")
-public class HelloController extends AbstractRestController {
+public class HelloController {
     @GET
     @Path("/config")
     @Produces(MediaType.APPLICATION_JSON)

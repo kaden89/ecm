@@ -10,9 +10,9 @@ import ecm.service.GenericService;
 import ecm.util.exceptions.DocumentExistsException;
 import ecm.web.dto.DepartmentsDTO;
 import ecm.web.dto.OrganizationsDTO;
+import ecm.web.dto.PersonDTO;
 import ecm.web.dto.PersonsDTO;
 import ecm.web.dto.converters.GenericDTOConverter;
-import ecm.web.dto.PersonDTO;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
@@ -26,9 +26,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static ecm.model.documents_factory.FactoryEnum.INCOMING;
-import static ecm.model.documents_factory.FactoryEnum.OUTGOING;
-import static ecm.model.documents_factory.FactoryEnum.TASK;
+import static ecm.model.documents_factory.FactoryEnum.*;
 
 /**
  * Created by dkarachurin on 12.01.2017.

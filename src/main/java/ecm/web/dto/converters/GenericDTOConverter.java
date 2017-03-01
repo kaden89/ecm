@@ -5,12 +5,12 @@ import java.util.Collection;
 /**
  * Created by dkarachurin on 02.02.2017.
  */
-public interface GenericDTOConverter<E, D> {
-    E fromDTO(D dto);
+public interface GenericDTOConverter<T, D> {
+    T fromDTO(D dto);
 
-    D toDTO(E entity);
+    D toDTO(T entity);
 
-    Collection<D> toDtoCollection(Collection<E> entities);
+    Collection<D> toDtoCollection(Collection<T> entities);
 
-    Collection<E> fromDtoCollection(Collection<D> dtoCollection);
+    Collection<T> fromDtoCollection(Collection<D> dtoCollection);
 }

@@ -1,9 +1,7 @@
 package ecm.web.dto.converters;
 
 import ecm.dao.GenericDAO;
-import ecm.model.Person;
 import ecm.model.Post;
-import ecm.web.dto.PersonDTO;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -13,20 +11,23 @@ import java.util.Collection;
  * Created by dkarachurin on 02.02.2017.
  */
 
-public abstract class AbstractStaffDTOConverterImpl<E, D> implements GenericDTOConverter<E, D> {
+public abstract class AbstractStaffDTOConverterImpl<T, D> implements GenericDTOConverter<T, D> {
     @Inject
     private GenericDAO<Post> postDAO;
 
-    public Collection<D> toDtoCollection(Collection<E> staffs) {
+    public AbstractStaffDTOConverterImpl() {
+    }
+
+    public Collection<D> toDtoCollection(Collection<T> staffs) {
         Collection<D> result = new ArrayList<>();
-        for (E staff : staffs) {
+        for (T staff : staffs) {
             result.add(toDTO(staff));
         }
         return result;
     }
 
-    public Collection<E> fromDtoCollection(Collection<D> dtoCollection) {
-        Collection<E> result = new ArrayList<>();
+    public Collection<T> fromDtoCollection(Collection<D> dtoCollection) {
+        Collection<T> result = new ArrayList<>();
         for (D dto : dtoCollection) {
             result.add(fromDTO(dto));
         }

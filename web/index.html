@@ -2,7 +2,6 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
     <style type="text/css">
         @import "vendor/dijit/themes/claro/claro.css";
         @import "vendor/gridx/resources/claro/Gridx.css";
@@ -10,14 +9,13 @@
         @import "resources/css/main.css";
     </style>
 
-
     <script>
         var dojoConfig = {
             async: 1,
             isDebug: true,
             cacheBust: 1,
 //            parseOnLoad: true,
-            packages: [ // paths are relative to vendor/dojo/dojo/dojo.js
+            packages: [
                 {name: 'myApp', location: '../../..'},
                 {name: "dijit", location: "../dijit"}
             ]
@@ -29,12 +27,9 @@
         var app = new AppController();
         app.startup();
     });</script>
-
 </head>
 
-
 <body class="claro">
-<!--<div data-dojo-type="myApp/ecm/ui/widgets/WelcomWidget"></div>-->
 <div id="app"></div>
 </body>
 </html>

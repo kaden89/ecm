@@ -3,15 +3,13 @@ package ecm.service;
 import ecm.dao.ImageDAO;
 import ecm.model.Image;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.transaction.Transactional;
 
 /**
  * Created by dkarachurin on 09.02.2017.
  */
-@Singleton
-@Transactional
+@Stateless
 public class ImageServiceImpl implements ImageService {
     @Inject
     private ImageDAO imageDAO;

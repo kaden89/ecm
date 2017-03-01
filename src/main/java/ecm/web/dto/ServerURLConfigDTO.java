@@ -6,12 +6,12 @@ package ecm.web.dto;
 public class ServerURLConfigDTO {
     private String employeeURL = "rest/employees";
     private String taskURL = "rest/documents/tasks";
-    private String incomingURL = "rest/documents/incomings";
-    private String outgoingURL = "rest/documents/outgoings";
-    private String employeeTree = "rest/employees/personTree";
-    private String outgoingTree = "rest/documents/tree/outgoings";
-    private String incomingTree = "rest/documents/tree/incomings";
-    private String taskTree = "rest/documents/tree/tasks";
+    private String incomingURL = "rest/incomings";
+    private String outgoingURL = "rest/outgoings";
+    private String employeeTree = "rest/employees/tree";
+    private String outgoingTree = "rest/outgoings/tree";
+    private String incomingTree = "rest/incomings/tree";
+    private String taskTree = "rest/tasks/tree";
     private String postURL = "rest/employees/posts";
 
     public ServerURLConfigDTO() {

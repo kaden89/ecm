@@ -4,8 +4,6 @@ import ecm.model.Document;
 import ecm.model.Outgoing;
 import ecm.util.exceptions.DocumentExistsException;
 
-import javax.inject.Inject;
-
 
 /**
  * Created by dkarachurin on 10.01.2017.

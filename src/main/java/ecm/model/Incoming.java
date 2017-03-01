@@ -1,17 +1,10 @@
 package ecm.model;
 
-import ecm.dao.GenericDAO;
 import ecm.web.dto.IncomingDTO;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import javax.inject.Inject;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
 
 /**

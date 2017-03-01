@@ -1,7 +1,5 @@
 package ecm.web.dto;
 
-import ecm.model.Staff;
-
 /**
  * Created by dkarachurin on 31.01.2017.
  */

@@ -5,14 +5,12 @@ import ecm.util.paging.Page;
 import ecm.util.paging.RangeHeader;
 import ecm.util.sorting.Sort;
 
-import javax.inject.Singleton;
-import javax.transaction.Transactional;
+import javax.ejb.Stateless;
 
 /**
  * Created by dkarachurin on 08.02.2017.
  */
-@Singleton
-@Transactional
+@Stateless
 public class TaskService extends AbstractGenericServiceImpl<Task> {
 
     public TaskService() {

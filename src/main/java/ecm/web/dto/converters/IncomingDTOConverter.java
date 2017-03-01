@@ -3,12 +3,12 @@ package ecm.web.dto.converters;
 import ecm.model.Incoming;
 import ecm.web.dto.IncomingDTO;
 
-import javax.inject.Singleton;
+import javax.ejb.Stateless;
 
 /**
  * Created by dkarachurin on 13.02.2017.
  */
-@Singleton
+@Stateless
 public class IncomingDTOConverter extends AbstractDocumentDTOConverterImpl<Incoming, IncomingDTO> {
     @Override
     public Incoming fromDTO(IncomingDTO dto) {

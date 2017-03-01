@@ -1,10 +1,7 @@
 package ecm.web.dto.converters;
 
 import ecm.dao.GenericDAO;
-import ecm.model.*;
-import ecm.web.dto.IncomingDTO;
-import ecm.web.dto.OutgoingDTO;
-import ecm.web.dto.TaskDTO;
+import ecm.model.Person;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -14,20 +11,23 @@ import java.util.Collection;
  * Created by dkarachurin on 01.02.2017.
  */
 
-public abstract class AbstractDocumentDTOConverterImpl<E, D> implements GenericDTOConverter<E, D> {
+public abstract class AbstractDocumentDTOConverterImpl<T, D> implements GenericDTOConverter<T, D> {
     @Inject
     private GenericDAO<Person> personDAO;
 
-    public Collection<D> toDtoCollection(Collection<E> documents) {
+    public AbstractDocumentDTOConverterImpl() {
+    }
+
+    public Collection<D> toDtoCollection(Collection<T> documents) {
         Collection<D> result = new ArrayList<>();
-        for (E document : documents) {
+        for (T document : documents) {
             result.add(toDTO(document));
         }
         return result;
     }
 
-    public Collection<E> fromDtoCollection(Collection<D> dtoCollection) {
-        Collection<E> result = new ArrayList<>();
+    public Collection<T> fromDtoCollection(Collection<D> dtoCollection) {
+        Collection<T> result = new ArrayList<>();
         for (D dto : dtoCollection) {
             result.add(fromDTO(dto));
         }

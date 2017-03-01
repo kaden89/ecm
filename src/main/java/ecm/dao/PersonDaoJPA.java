@@ -1,9 +1,9 @@
 package ecm.dao;
 
-import ecm.model.*;
+import ecm.model.Person;
 
 import javax.inject.Singleton;
-import javax.transaction.*;
+import javax.transaction.Transactional;
 
 /**
  * Created by dkarachurin on 12.01.2017.

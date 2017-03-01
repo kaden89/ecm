@@ -2,7 +2,6 @@ package ecm.dao;
 
 import ecm.model.Image;
 
-import javax.ejb.Stateless;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
