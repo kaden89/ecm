@@ -5,7 +5,7 @@ package ecm.web.dto;
  */
 public class ServerURLConfigDTO {
     private String employeeURL = "rest/employees";
-    private String taskURL = "rest/documents/tasks";
+    private String taskURL = "rest/tasks";
     private String incomingURL = "rest/incomings";
     private String outgoingURL = "rest/outgoings";
     private String employeeTree = "rest/employees/tree";

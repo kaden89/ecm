@@ -106,76 +106,27 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
 
     @Override
     public Page<T> findAllSortedFilteredAndPageable(Sort sort, Filter filter, RangeHeader range) {
-        Map<String, Object> params = filter.getQueryParams();
-        StringBuilder builder = new StringBuilder();
-        Query query = entityManager.createQuery(builder.append("SELECT e FROM ")
-                .append(entityClass.getSimpleName())
-                .append(" e WHERE")
-                .append(filter.getCaseInsensitiveQueryString(entityClass))
-                .append("ORDER BY e.")
-                .append(sort.getField())
-                .append(" ")
-                .append(sort.getDirection()).toString());
-        query.setFirstResult(range.getOffset());
-        query.setMaxResults(range.getLimit());
 
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            query.setParameter(entry.getKey().replaceAll("\\.", ""), getClassCastedParam(entry.getKey(), entry.getValue()));
-        }
-        //Count all possible items with current filter for Range header response
-        String countQueryString = ((QueryImpl) query).getQueryString();
-        countQueryString = countQueryString.replace("SELECT e FROM", "SELECT COUNT (e) FROM");
-        countQueryString = countQueryString.replace("ORDER BY e." + sort.getField() + " " + sort.getDirection(), "");
-        Query countQuery = entityManager.createQuery(countQueryString);
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            countQuery.setParameter(entry.getKey().replaceAll("\\.", ""), getClassCastedParam(entry.getKey(), entry.getValue()));
-        }
-        Long countResult = (Long) countQuery.getSingleResult();
-        return new Page(query.getResultList(), range.getOffset(), range.getOffset() + range.getLimit(), countResult != null ? countResult.intValue() : 0);
-    }
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> query = cb.createQuery(entityClass);
+        Root<T> root = query.from(entityClass);
+        query.where(filter.getFilterPredicate(cb,root, entityClass));
+        Path path = getCriteriaPath(root, sort.getField());
+        query.orderBy(sort.getDirection().equals(Direction.ASC) ? cb.asc(path) : cb.desc(path));
+        query.select(root);
+        TypedQuery<T> resultQuery = entityManager.createQuery(query);
+        resultQuery.setFirstResult(range.getOffset());
+        resultQuery.setMaxResults(range.getLimit());
 
-    private Object getClassCastedParam(String paramName, Object param) {
+        List<T> result = resultQuery.getResultList();
 
-        Object result = null;
-        try {
-            //Check superclass fields
-            result = castParamToFieldClassType(Class.forName(entityClass.getCanonicalName()).getSuperclass(), paramName, param);
-            if (result == null) {
-                //Check our class fields
-                result = castParamToFieldClassType(Class.forName(entityClass.getCanonicalName()), paramName, param);
-            }
+        CriteriaQuery<T> countQuery = cb.createQuery(entityClass);
+        Root<T> countRoot = countQuery.from(entityClass);
+        countQuery.where(filter.getFilterPredicate(cb,countRoot, entityClass));
+        countQuery.select((Selection<? extends T>) cb.count(countRoot));
+        Long countResult = (Long) entityManager.createQuery(countQuery).getSingleResult();
 
-        } catch (ClassNotFoundException e) {
-            log.warning(e.getMessage());
-        }
-        return result;
-    }
-
-    private Object castParamToFieldClassType(Class clazz, String paramName, Object param) {
-        if (paramName.contains(".")) {
-            try {
-                Class childClass = clazz.getDeclaredField(paramName.split("\\.")[0]).getType();
-                return castParamToFieldClassType(childClass, paramName.split("\\.")[1], param);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (Field field : clazz.getDeclaredFields()) {
-            if (field.getName().equals(paramName)) {
-                Class paramClass = field.getType();
-                if (paramClass == String.class) {
-                    return String.valueOf(param);
-                } else if (paramClass == Integer.class) {
-                    return Integer.parseInt(String.valueOf(param));
-                } else if (paramClass == LocalDate.class) {
-                    return LocalDate.parse(String.valueOf(param));
-                } else if (paramClass == boolean.class) {
-                    return Boolean.valueOf(String.valueOf(param));
-                }
-            }
-        }
-        return null;
+        return new Page(result, range.getOffset(), range.getOffset() + range.getLimit(), countResult != null ? countResult.intValue() : 0);
     }
 
     /**

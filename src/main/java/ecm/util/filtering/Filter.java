@@ -1,5 +1,10 @@
 package ecm.util.filtering;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,39 +41,20 @@ public class Filter {
         this.data = data;
     }
 
-
-    public Map<String, Object> getQueryParams() {
-        Map<String, Object> params = new HashMap<>();
-        for (Rule rule : getData()) {
-            params.put(rule.getLeftField().getData(), rule.getRightField().getData());
+    public Predicate getFilterPredicate(CriteriaBuilder cb, Root root, Class entityClass){
+        List<Predicate> predicates = new ArrayList<>();
+        Predicate result = null;
+        for (Rule rule : data) {
+            predicates.add(rule.getPredicate(cb, root, entityClass));
         }
-        return params;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 0; i < data.size(); i++) {
-            builder.append(data.get(i).toString());
-
-            if (data.size() > 1 && i != data.size() - 1) {
-                builder.append(op + " ");
-            }
+        switch (op){
+            case AND:
+                result = cb.and(predicates.toArray(new Predicate[predicates.size()]));
+                break;
+            case OR:
+                result = cb.or(predicates.toArray(new Predicate[predicates.size()]));
+                break;
         }
-        return builder.toString();
-    }
-
-    public String getCaseInsensitiveQueryString(Class clazz) {
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 0; i < data.size(); i++) {
-            builder.append(data.get(i).getCaseInsensitiveString(clazz));
-
-            if (data.size() > 1 && i != data.size() - 1) {
-                builder.append(op + " ");
-            }
-        }
-        return builder.toString();
+        return result;
     }
 }
