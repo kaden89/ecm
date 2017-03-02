@@ -1,24 +1,10 @@
 define([
     "dojo/_base/declare",
     "dijit/Tree",
-    "dojo/dom",
-    "dojo/dom-style",
-    "dojo/on",
-    "dojo/_base/lang",
-    "dojo/data/ObjectStore",
-    "dijit/registry",
-    "dijit/tree/ForestStoreModel",
-    "dijit/layout/ContentPane"
+    "dojo/_base/lang"
 ], function (declare,
              Tree,
-             dom,
-             domStyle,
-             on,
-             lang,
-             ObjectStore,
-             registry,
-             ForestStoreModel,
-             ContentPane) {
+             lang) {
     return declare([Tree], {
         showRoot: true,
         itemTemplate: null,

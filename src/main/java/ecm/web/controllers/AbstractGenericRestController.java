@@ -33,33 +33,15 @@ public abstract class AbstractGenericRestController<T, D> {
 
     @Inject
     private transient Logger log;
+
     @Inject
     private Gson gson;
 
-    /**
-     * Инжектятся все сервисы для универсальности, т.к. EJB и CDI путаются в дженерик интерфейсах
-     * GenericService<T> и  GenericDTOConverter<T, D> - так не получается инжектить
-     * доступ только через getService() и getDtoConverter() для определения класса
-     */
-    @EJB
-    private PersonService personService;
-    @EJB
-    private IncomingService incomingService;
-    @EJB
-    private OutgoingService outgoingService;
-    @EJB
-    private TaskService taskService;
+    @Inject
+    private GenericService<T> service;
 
     @Inject
-    private ImageService imageService;
-    @Inject
-    private GenericDTOConverter<Incoming, IncomingDTO> incomingDTOConverter;
-    @Inject
-    private GenericDTOConverter<Outgoing, OutgoingDTO> outgoingDTOConverter;
-    @Inject
-    private GenericDTOConverter<Task, TaskDTO> taskDTOConverter;
-    @Inject
-    private GenericDTOConverter<Person, PersonDTO> personDTOConverter;
+    private GenericDTOConverter<T, D> converter;
 
     @SuppressWarnings("unchecked")
     public AbstractGenericRestController() {
@@ -73,7 +55,7 @@ public abstract class AbstractGenericRestController<T, D> {
     @Path("/tree/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTree() {
-        List<D> dtos = (List<D>) getDtoConverter().toDtoCollection(getService().findAll());
+        List<D> dtos = (List<D>) converter.toDtoCollection(service.findAll());
         TreeNode<D> root = new TreeNode<>(typeOfT.getSimpleName(), "", dtos);
         String jsonInString = toJson(root);
         return Response.ok(jsonInString).build();
@@ -82,16 +64,18 @@ public abstract class AbstractGenericRestController<T, D> {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEntityList(@HeaderParam("Range") RangeHeader range, @QueryParam("sort") Sort sort, @QueryParam("filter") String filterString) {
-        if (filterString != null && sort != null && range != null) {
+    public Response getEntityList(@HeaderParam("Range") RangeHeader range, @QueryParam("sort") String sortString, @QueryParam("filter") String filterString) {
+        if (filterString != null && sortString != null && range != null) {
             Filter filter = (Filter) fromJson(filterString, Filter.class);
-            Page<T> page = getService().findAllSortedFilteredAndPageable(sort, filter, range);
+            Sort sort = (Sort) fromJson(sortString, Sort.class);
+            Page<T> page = service.findAllSortedFilteredAndPageable(sort, filter, range);
             return getPageResponse(page);
-        } else if (sort != null && range != null) {
-            Page<T> page = getService().findAllSortedAndPageable(sort, range);
+        } else if (sortString != null && range != null) {
+            Sort sort = (Sort) fromJson(sortString, Sort.class);
+            Page<T> page = service.findAllSortedAndPageable(sort, range);
             return getPageResponse(page);
         } else {
-            Collection<D> tasks = getDtoConverter().toDtoCollection(getService().findAll());
+            Collection<D> tasks = converter.toDtoCollection(service.findAll());
             return Response.ok(toJson(tasks)).header("Content-Range", "items 0-" + tasks.size() + "/" + tasks.size()).build();
         }
     }
@@ -100,7 +84,7 @@ public abstract class AbstractGenericRestController<T, D> {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEntity(@PathParam("id") int employeeId) {
-        D dto = (D) getDtoConverter().toDTO(getService().find(employeeId));
+        D dto = converter.toDTO(service.find(employeeId));
         return Response.ok(dto).build();
     }
 
@@ -109,9 +93,8 @@ public abstract class AbstractGenericRestController<T, D> {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createEntity(D dto) {
-//        dto.setId(null);
-        T document = (T) getService().save(getDtoConverter().fromDTO(dto));
-        return Response.ok(getDtoConverter().toDTO(document)).build();
+        T document = service.save(converter.fromDTO(dto));
+        return Response.ok(converter.toDTO(document)).build();
     }
 
     @PUT
@@ -119,15 +102,14 @@ public abstract class AbstractGenericRestController<T, D> {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateEntity(@PathParam("id") int id, D dto) {
-//        dto.setId(id);
-        T updated = (T) getService().update(getDtoConverter().fromDTO(dto));
-        return Response.ok(getDtoConverter().toDTO(updated)).build();
+        T updated = service.update(converter.fromDTO(dto));
+        return Response.ok(converter.toDTO(updated)).build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteEntity(@PathParam("id") int taskId) {
-        getService().delete(taskId);
+        service.delete(taskId);
         return Response.ok().build();
     }
     public String toJson(Object obj) {
@@ -139,67 +121,17 @@ public abstract class AbstractGenericRestController<T, D> {
     }
 
     public Response getPageResponse(Page page) {
-        return Response.ok(toJson(getDtoConverter().toDtoCollection(page.getItems())))
+        return Response.ok(toJson(converter.toDtoCollection(page.getItems())))
                 .header("Content-Range", "items " + page.getStartIndex() + "-" + page.getEndIndex() + "/" + page.getAllItemsCount())
                 .build();
-    }
-
-
-    private GenericService getService(){
-        GenericService service = null;
-
-        if (typeOfT.isAssignableFrom(Incoming.class)){
-            service = incomingService;
-        }
-        else if (typeOfT.isAssignableFrom(Outgoing.class)){
-            service = outgoingService;
-        }
-        else if (typeOfT.isAssignableFrom(Task.class)){
-            service = taskService;
-        }
-        else if (typeOfT.isAssignableFrom(Person.class)){
-            service = personService;
-        }
-        return service;
-    }
-
-    private GenericDTOConverter getDtoConverter(){
-        GenericDTOConverter converter = null;
-
-        if (typeOfT.isAssignableFrom(Incoming.class)){
-            converter = incomingDTOConverter;
-        }
-        else if (typeOfT.isAssignableFrom(Outgoing.class)){
-            converter = outgoingDTOConverter;
-        }
-        else if (typeOfT.isAssignableFrom(Task.class)){
-            converter = taskDTOConverter;
-        }
-        else if (typeOfT.isAssignableFrom(Person.class)){
-            converter = personDTOConverter;
-        }
-        return converter;
     }
 
     public Logger getLog() {
         return log;
     }
 
-    public void setLog(Logger log) {
-        this.log = log;
-    }
-
     public Gson getGson() {
         return gson;
-    }
-
-
-    public ImageService getImageService() {
-        return imageService;
-    }
-
-    public void setImageService(ImageService imageService) {
-        this.imageService = imageService;
     }
 
 }

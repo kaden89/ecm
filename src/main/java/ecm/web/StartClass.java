@@ -14,6 +14,7 @@ import ecm.web.dto.PersonDTO;
 import ecm.web.dto.PersonsDTO;
 import ecm.web.dto.converters.GenericDTOConverter;
 
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

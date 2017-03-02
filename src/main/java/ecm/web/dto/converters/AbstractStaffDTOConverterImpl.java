@@ -37,8 +37,4 @@ public abstract class AbstractStaffDTOConverterImpl<T, D> implements GenericDTOC
     public GenericDAO<Post> getPostDAO() {
         return postDAO;
     }
-
-    public void setPostDAO(GenericDAO<Post> postDAO) {
-        this.postDAO = postDAO;
-    }
 }

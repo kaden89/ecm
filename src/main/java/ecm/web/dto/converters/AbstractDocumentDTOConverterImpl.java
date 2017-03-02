@@ -37,8 +37,4 @@ public abstract class AbstractDocumentDTOConverterImpl<T, D> implements GenericD
     public GenericDAO<Person> getPersonDAO() {
         return personDAO;
     }
-
-    public void setPersonDAO(GenericDAO<Person> personDAO) {
-        this.personDAO = personDAO;
-    }
 }

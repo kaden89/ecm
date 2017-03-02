@@ -3,6 +3,7 @@ package ecm.dao;
 import ecm.util.filtering.Filter;
 import ecm.util.paging.Page;
 import ecm.util.paging.RangeHeader;
+import ecm.util.sorting.Direction;
 import ecm.util.sorting.Sort;
 import org.hibernate.query.internal.QueryImpl;
 
@@ -10,6 +11,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -48,7 +51,13 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
 
     @Override
     public List<T> findAll() {
-        return entityManager.createQuery("SELECT e FROM " + entityClass.getSimpleName() + " e").getResultList();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> query = cb.createQuery(entityClass);
+        Root<T> root = query.from(entityClass);
+        query.select(root);
+        TypedQuery<T> q = entityManager.createQuery(query);
+
+        return q.getResultList();
     }
 
     @Override
@@ -80,12 +89,19 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
 
     @Override
     public Page<T> findAllSortedAndPageable(Sort sort, RangeHeader range) {
-        Query queryTotal = entityManager.createQuery("SELECT COUNT (e.id) FROM " + entityClass.getSimpleName() + " e");
-        Long countResult = (Long) queryTotal.getSingleResult();
-        Query query = entityManager.createQuery("SELECT e FROM " + entityClass.getSimpleName() + " e ORDER BY e." + sort.getField() + " " + sort.getDirection());
-        query.setFirstResult(range.getOffset());
-        query.setMaxResults(range.getLimit());
-        return new Page(query.getResultList(), range.getOffset(), range.getOffset() + range.getLimit(), countResult != null ? countResult.intValue() : 0);
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> query = cb.createQuery(entityClass);
+        Root<T> root = query.from(entityClass);
+        query.select((Selection<? extends T>) cb.count(root));
+        Long countResult = (Long) entityManager.createQuery(query).getSingleResult();
+        query.select(root);
+        Path path = getCriteriaPath(root, sort.getField());
+        query.orderBy(sort.getDirection().equals(Direction.ASC) ? cb.asc(path) : cb.desc(path));
+        TypedQuery<T> resultQuery = entityManager.createQuery(query);
+        resultQuery.setFirstResult(range.getOffset());
+        resultQuery.setMaxResults(range.getLimit());
+
+        return new Page(resultQuery.getResultList(), range.getOffset(), range.getOffset() + range.getLimit(), countResult != null ? countResult.intValue() : 0);
     }
 
     @Override
@@ -160,5 +176,23 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
             }
         }
         return null;
+    }
+
+    /**
+     * Evaluates given string path (splitting by dot) and returns the desired path
+     *
+     * @param root       Root to start with
+     * @param pathString Result path
+     * @return Path to desired property
+     */
+    private Path getCriteriaPath(Root root, String pathString) {
+        String[] fields = pathString.split("\\.");
+        Path path = root.get(fields[0]);
+
+        for (int i = 1; i < fields.length; i++) {
+            path = path.get(fields[i]);
+        }
+
+        return path;
     }
 }

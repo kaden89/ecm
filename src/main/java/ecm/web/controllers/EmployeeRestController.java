@@ -3,11 +3,14 @@ package ecm.web.controllers;
 import ecm.model.Image;
 import ecm.model.Person;
 import ecm.model.Post;
+import ecm.service.GenericService;
+import ecm.service.ImageService;
 import ecm.service.PostService;
 import ecm.web.dto.PersonDTO;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -26,8 +29,11 @@ import java.util.List;
 public class EmployeeRestController extends AbstractGenericRestController<Person, PersonDTO> {
     public static final String REST_URL = "/employees";
 
-    @EJB
-    private PostService postService;
+    @Inject
+    private ImageService imageService;
+
+    @Inject
+    private GenericService<Post> postService;
 
     @GET
     @Path("/posts")
@@ -48,7 +54,7 @@ public class EmployeeRestController extends AbstractGenericRestController<Person
     @Path("/{id}/photo")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPhoto(@PathParam("id") int ownerId) {
-        return Response.ok(getImageService().findByOwnerId(ownerId)).build();
+        return Response.ok(imageService.findByOwnerId(ownerId)).build();
     }
 
     @POST
@@ -63,12 +69,12 @@ public class EmployeeRestController extends AbstractGenericRestController<Person
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Image image = getImageService().findByOwnerId(ownerId);
+        Image image = imageService.findByOwnerId(ownerId);
         if (image == null) {
-            result = getImageService().save(new Image(ownerId, bytes));
+            result = imageService.save(new Image(ownerId, bytes));
         } else {
             image.setImage(bytes);
-            result = getImageService().update(image);
+            result = imageService.update(image);
         }
         return Response.ok(result).build();
     }

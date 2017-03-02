@@ -6,16 +6,12 @@ package ecm.util.sorting;
 public class Sort {
 
     private String field;
-    private String direction;
+    private Direction direction;
 
-    public Sort(String sortParam) {
-//        {sortField: id, direction: ASC}
-        String[] sort = sortParam.replaceAll("\\{", "").replaceAll("\\}", "").split(",");
-        this.field = sort[0].split(":")[1].replaceAll(" ", "");
-        this.direction = sort[1].split(":")[1].replaceAll(" ", "");
+    public Sort() {
     }
 
-    public Sort(String field, String direction) {
+    public Sort(String field, Direction direction) {
         this.field = field;
         this.direction = direction;
     }
@@ -28,11 +24,11 @@ public class Sort {
         this.field = field;
     }
 
-    public String getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(String direction) {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
 }
