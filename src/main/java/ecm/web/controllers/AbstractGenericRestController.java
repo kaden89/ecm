@@ -12,6 +12,7 @@ import ecm.web.dto.converters.GenericDTOConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -39,14 +40,14 @@ public abstract class AbstractGenericRestController<T, D> {
     @Inject
     private GenericDTOConverter<T, D> converter;
 
-    @SuppressWarnings("unchecked")
     public AbstractGenericRestController() {
-        this.typeOfT = (Class<T>)
-                ((ParameterizedType) getClass()
-                        .getGenericSuperclass())
-                        .getActualTypeArguments()[0];
     }
 
+    @PostConstruct
+    @SuppressWarnings("unchecked")
+    private void resolveTypeOfT(){
+        this.typeOfT = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
     @GET
     @Path("/tree/")
     @Produces(MediaType.APPLICATION_JSON)

@@ -35,17 +35,7 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
 
     @PostConstruct
     private void resolveEntityClass() {
-        Class obtainedClass = getClass();
-        Type genericSuperclass;
-        for (; ; ) {
-            genericSuperclass = obtainedClass.getGenericSuperclass();
-            if (genericSuperclass instanceof ParameterizedType) {
-                break;
-            }
-            obtainedClass = obtainedClass.getSuperclass();
-        }
-        ParameterizedType genericSuperclass_ = (ParameterizedType) genericSuperclass;
-        this.entityClass = ((Class) (genericSuperclass_.getActualTypeArguments()[0]));
+        this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     @Override
