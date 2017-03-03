@@ -138,4 +138,8 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
     public Class<T> getEntityClass() {
         return entityClass;
     }
+
+    public Logger getLog() {
+        return log;
+    }
 }
