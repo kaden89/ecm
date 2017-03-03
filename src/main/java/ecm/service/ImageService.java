@@ -13,8 +13,6 @@ public interface ImageService {
 
     public Image update(Image image);
 
-    public Image saveOrUpdate(Image image);
-
     public void deleteByOwnerId(int id);
 
     public void deleteAll();

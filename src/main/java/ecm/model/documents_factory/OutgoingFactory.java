@@ -13,9 +13,9 @@ public class OutgoingFactory extends AbstractDocumentsFactory {
     @Override
     public Document createDocument() throws DocumentExistsException {
         Outgoing outgoing = new Outgoing();
-        populator.populateBasicsOfDocument(outgoing);
-        outgoing.setRecipient(populator.getRandomPerson());
-        outgoing.setDeliveryMethod(populator.getRandomString(10));
+        getPopulator().populateBasicsOfDocument(outgoing);
+        outgoing.setRecipient(getPopulator().getRandomPerson());
+        outgoing.setDeliveryMethod(getPopulator().getRandomString(10));
         return outgoing;
     }
 }

@@ -1,12 +1,16 @@
 package ecm.dao;
 
+import ecm.util.db.DbUtils;
 import ecm.util.filtering.Filter;
 import ecm.util.paging.Page;
 import ecm.util.paging.RangeHeader;
 import ecm.util.sorting.Direction;
 import ecm.util.sorting.Sort;
 import org.hibernate.query.internal.QueryImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,7 +23,6 @@ import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Created by dkarachurin on 13.01.2017.
@@ -27,15 +30,17 @@ import java.util.logging.Logger;
 public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
 
     @PersistenceContext(unitName = "EcmPersistence")
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
-    Class<T> entityClass;
+    private Class<T> entityClass;
 
-    @Inject
-    private transient Logger log;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public AbstractGenericDaoJpaImpl() {
+    }
 
+    @PostConstruct
+    private void resolveEntityClass(){
         Class obtainedClass = getClass();
         Type genericSuperclass;
         for (; ; ) {
@@ -84,7 +89,10 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
 
     @Override
     public void deleteAll() {
-        entityManager.createQuery("DELETE FROM " + entityClass.getSimpleName() + " e").executeUpdate();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaDelete<T> delete = cb.createCriteriaDelete(entityClass);
+        Root<T> e = delete.from(entityClass);
+        entityManager.createQuery(delete).executeUpdate();
     }
 
     @Override
@@ -95,7 +103,7 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
         query.select((Selection<? extends T>) cb.count(root));
         Long countResult = (Long) entityManager.createQuery(query).getSingleResult();
         query.select(root);
-        Path path = getCriteriaPath(root, sort.getField());
+        Path path = DbUtils.getCriteriaPath(root, sort.getField());
         query.orderBy(sort.getDirection().equals(Direction.ASC) ? cb.asc(path) : cb.desc(path));
         TypedQuery<T> resultQuery = entityManager.createQuery(query);
         resultQuery.setFirstResult(range.getOffset());
@@ -111,7 +119,7 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
         CriteriaQuery<T> query = cb.createQuery(entityClass);
         Root<T> root = query.from(entityClass);
         query.where(filter.getFilterPredicate(cb,root, entityClass));
-        Path path = getCriteriaPath(root, sort.getField());
+        Path path = DbUtils.getCriteriaPath(root, sort.getField());
         query.orderBy(sort.getDirection().equals(Direction.ASC) ? cb.asc(path) : cb.desc(path));
         query.select(root);
         TypedQuery<T> resultQuery = entityManager.createQuery(query);
@@ -129,21 +137,11 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
         return new Page(result, range.getOffset(), range.getOffset() + range.getLimit(), countResult != null ? countResult.intValue() : 0);
     }
 
-    /**
-     * Evaluates given string path (splitting by dot) and returns the desired path
-     *
-     * @param root       Root to start with
-     * @param pathString Result path
-     * @return Path to desired property
-     */
-    private Path getCriteriaPath(Root root, String pathString) {
-        String[] fields = pathString.split("\\.");
-        Path path = root.get(fields[0]);
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
 
-        for (int i = 1; i < fields.length; i++) {
-            path = path.get(fields[i]);
-        }
-
-        return path;
+    public Class<T> getEntityClass() {
+        return entityClass;
     }
 }

@@ -13,6 +13,8 @@ import ecm.util.paging.RangeHeader;
 import ecm.util.sorting.Sort;
 import ecm.web.dto.*;
 import ecm.web.dto.converters.GenericDTOConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
@@ -22,7 +24,7 @@ import javax.ws.rs.core.Response;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 /**
  * Created by dkarachurin on 24.01.2017.
@@ -31,8 +33,7 @@ public abstract class AbstractGenericRestController<T, D> {
 
     private Class<T> typeOfT;
 
-    @Inject
-    private transient Logger log;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Inject
     private Gson gson;
@@ -134,4 +135,15 @@ public abstract class AbstractGenericRestController<T, D> {
         return gson;
     }
 
+    public Class<T> getTypeOfT() {
+        return typeOfT;
+    }
+
+    public GenericService<T> getService() {
+        return service;
+    }
+
+    public GenericDTOConverter<T, D> getConverter() {
+        return converter;
+    }
 }

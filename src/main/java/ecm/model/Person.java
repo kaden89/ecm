@@ -105,7 +105,6 @@ public class Person extends Staff implements Comparable<Person>, Storable {
         this.fullname = fullname;
     }
 
-    @PostLoad
     @PrePersist
     private void calculateFullname() {
         this.fullname = firstname + " " + surname + " " + patronymic;

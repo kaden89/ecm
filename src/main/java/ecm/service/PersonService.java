@@ -22,13 +22,13 @@ import java.util.List;
 public class PersonService extends AbstractGenericServiceImpl<Person> {
 
     @Inject
-    DocumentGenericDAO<Outgoing> outgoingDAO;
+    private DocumentGenericDAO<Outgoing> outgoingDAO;
 
     @Inject
-    DocumentGenericDAO<Incoming> incomingDAO;
+    private DocumentGenericDAO<Incoming> incomingDAO;
 
     @Inject
-    DocumentGenericDAO<Task> taskDAO;
+    private DocumentGenericDAO<Task> taskDAO;
 
     public PersonService() {
     }
@@ -49,11 +49,5 @@ public class PersonService extends AbstractGenericServiceImpl<Person> {
         String err = "Cannot delete " + find(id).toString() + ". He has links to " + all.size() + " documents.";
 
         if (haveDocuments) throw new HasLinksException(err);
-    }
-
-    @Override
-    public Page<Person> findAllSortedAndPageable(Sort sort, RangeHeader range) {
-        if (sort.getField().equals("positionName")) sort.setField("position.post");
-        return super.findAllSortedAndPageable(sort, range);
     }
 }

@@ -5,10 +5,11 @@ import ecm.util.filtering.Filter;
 import ecm.util.paging.Page;
 import ecm.util.paging.RangeHeader;
 import ecm.util.sorting.Sort;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by dkarachurin on 08.02.2017.
@@ -18,8 +19,7 @@ public abstract class AbstractGenericServiceImpl<T> implements GenericService<T>
     @Inject
     private GenericDAO<T> genericDao;
 
-    @Inject
-    private transient Logger log;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public AbstractGenericServiceImpl() {
     }

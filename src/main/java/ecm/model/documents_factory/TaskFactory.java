@@ -14,12 +14,12 @@ public class TaskFactory extends AbstractDocumentsFactory {
     @Override
     public Document createDocument() throws DocumentExistsException {
         Task task = new Task();
-        populator.populateBasicsOfDocument(task);
-        task.setController(populator.getRandomPerson());
-        task.setExecutor(populator.getRandomPerson());
-        task.setDateOfIssue(populator.getRandomDate(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 31)));
-        task.setDeadline(populator.getRandomDate(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 31)));
-        task.setControlled(populator.getRandomBoolean());
+        getPopulator().populateBasicsOfDocument(task);
+        task.setController(getPopulator().getRandomPerson());
+        task.setExecutor(getPopulator().getRandomPerson());
+        task.setDateOfIssue(getPopulator().getRandomDate(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 31)));
+        task.setDeadline(getPopulator().getRandomDate(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 31)));
+        task.setControlled(getPopulator().getRandomBoolean());
         return task;
     }
 }

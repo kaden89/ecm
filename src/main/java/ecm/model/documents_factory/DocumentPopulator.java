@@ -28,7 +28,6 @@ public class DocumentPopulator {
 
 
     public Document populateBasicsOfDocument(Document document) throws DocumentExistsException {
-        document.setId(null);
         document.setRegNumber(getRandomRegNumber(5));
         documents.put(document.getRegNumber(), document);
         document.setName(getRandomString(10));

@@ -13,6 +13,8 @@ import ecm.web.dto.OrganizationsDTO;
 import ecm.web.dto.PersonDTO;
 import ecm.web.dto.PersonsDTO;
 import ecm.web.dto.converters.GenericDTOConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
@@ -25,7 +27,6 @@ import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.logging.Logger;
 
 import static ecm.model.documents_factory.FactoryEnum.*;
 
@@ -40,8 +41,7 @@ public class StartClass implements ServletContextListener {
     @Inject
     private GenericDTOConverter<Person, PersonDTO> personDTOConverter;
 
-    @Inject
-    private transient Logger log;
+    private final Logger log = LoggerFactory.getLogger(StartClass.class);
 
     @Inject
     private DocumentsFactory factory;
@@ -79,9 +79,9 @@ public class StartClass implements ServletContextListener {
         try {
             generateDocuments();
         } catch (InstantiationException e) {
-            log.warning(e.getMessage());
+            log.error(e.getMessage());
         } catch (IllegalAccessException e) {
-            log.warning(e.getMessage());
+            log.error(e.getMessage());
         }
 
 
@@ -117,7 +117,7 @@ public class StartClass implements ServletContextListener {
                 taskService.save(task);
 
             } catch (DocumentExistsException e) {
-                log.warning(e.getMessage());
+                log.error(e.getMessage());
             }
         }
 
@@ -154,7 +154,7 @@ public class StartClass implements ServletContextListener {
             try {
                 theDir.mkdir();
             } catch (SecurityException se) {
-                log.warning(se.getMessage());
+                log.error(se.getMessage());
             }
         }
 
@@ -166,7 +166,7 @@ public class StartClass implements ServletContextListener {
                     gson.toJson(jsonElement, writer);
                 }
             } catch (IOException e) {
-                log.warning(e.getMessage());
+                log.error(e.getMessage());
             }
         }
 
@@ -190,9 +190,9 @@ public class StartClass implements ServletContextListener {
             }
 
         } catch (JAXBException e) {
-            log.warning(e.getMessage());
+            log.error(e.getMessage());
         } catch (IOException e) {
-            log.warning(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 }

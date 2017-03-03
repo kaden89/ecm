@@ -18,7 +18,14 @@ define(["dojo/store/JsonRest", "dojo/_base/declare", "dojo/_base/lang", "dojo/_b
                 //Changes here:
                 for (d = 0; d < a.sort.length; d++) {
                     var f = a.sort[d];
-                    b += "sort={field: " + encodeURIComponent(f.attribute) + ", direction: " + (f.descending ? 'DESC' : 'ASC') + "}"
+                    var path;
+                    if (f.hasOwnProperty("colId")){
+                        path = encodeURIComponent(f.colId);
+                    } else {
+                        path = encodeURIComponent(f.attribute);
+                    }
+
+                    b += "sort={field: " + path + ", direction: " + (f.descending ? 'DESC' : 'ASC') + "}"
                 }
             }
             var g = e("GET", {

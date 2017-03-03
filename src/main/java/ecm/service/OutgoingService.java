@@ -12,22 +12,4 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class OutgoingService extends AbstractGenericServiceImpl<Outgoing> {
-
-    public OutgoingService() {
-    }
-
-    @Override
-    public Page<Outgoing> findAllSortedAndPageable(Sort sort, RangeHeader range) {
-        switch (sort.getField()) {
-            case "authorName": {
-                sort.setField("author.fullname");
-                break;
-            }
-            case "recipientName": {
-                sort.setField("recipient.fullname");
-                break;
-            }
-        }
-        return super.findAllSortedAndPageable(sort, range);
-    }
 }

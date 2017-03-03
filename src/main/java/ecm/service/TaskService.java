@@ -12,26 +12,4 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class TaskService extends AbstractGenericServiceImpl<Task> {
-
-    public TaskService() {
-    }
-
-    @Override
-    public Page<Task> findAllSortedAndPageable(Sort sort, RangeHeader range) {
-        switch (sort.getField()) {
-            case "authorName": {
-                sort.setField("author.fullname");
-                break;
-            }
-            case "executorName": {
-                sort.setField("executor.fullname");
-                break;
-            }
-            case "controllerName": {
-                sort.setField("controller.fullname");
-                break;
-            }
-        }
-        return super.findAllSortedAndPageable(sort, range);
-    }
 }

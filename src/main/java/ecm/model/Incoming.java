@@ -35,9 +35,7 @@ public class Incoming extends Document {
     }
 
     public Incoming(IncomingDTO dto) {
-        super(dto.getName(), dto.getText(), dto.getRegNumber(), dto.getDate(), null);
-        this.referenceNumber = dto.getReferenceNumber();
-        this.outboundRegDate = dto.getOutboundRegDate();
+        this(dto.getName(), dto.getText(), dto.getRegNumber(), dto.getDate(), null, null, null, dto.getReferenceNumber(), dto.getOutboundRegDate());
         this.setId(dto.getId());
     }
 

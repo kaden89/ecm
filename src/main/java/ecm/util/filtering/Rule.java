@@ -1,7 +1,12 @@
 package ecm.util.filtering;
 
+import ecm.util.db.DbUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import javax.ws.rs.NotSupportedException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,6 +16,7 @@ import java.util.List;
 public class Rule {
     private Conditions op;
     private List<Field> data;
+    private final Logger log = LoggerFactory.getLogger(Rule.class);
 
     public Rule() {
     }
@@ -57,12 +63,12 @@ public class Rule {
         switch (op){
             case EQUAL:
                 predicate = cb.equal(
-                        getCriteriaPath(root, getLeftField().toString()),
+                        DbUtils.getCriteriaPath(root, getLeftField().toString()),
                         getClassCastedParam(getLeftField().toString(), getRightField().getData(), entityClass));
                 break;
             case CONTAIN:
                 predicate = cb.like(
-                        cb.lower(getCriteriaPath(root, getLeftField().toString())),
+                        cb.lower(DbUtils.getCriteriaPath(root, getLeftField().toString())),
                         getRightField().getData().toLowerCase());
                 break;
         }
@@ -81,7 +87,7 @@ public class Rule {
             }
 
         } catch (ClassNotFoundException e) {
-//            log.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return result;
     }
@@ -107,26 +113,11 @@ public class Rule {
                     return LocalDate.parse(String.valueOf(param));
                 } else if (paramClass == boolean.class) {
                     return Boolean.valueOf(String.valueOf(param));
+                } else {
+                    throw new NotSupportedException("Class " + paramClass.toString() + "not supported");
                 }
             }
         }
         return null;
-    }
-    /**
-     * Evaluates given string path (splitting by dot) and returns the desired path
-     *
-     * @param root       Root to start with
-     * @param pathString Result path
-     * @return Path to desired property
-     */
-    private Path getCriteriaPath(Root root, String pathString) {
-        String[] fields = pathString.split("\\.");
-        Path path = root.get(fields[0]);
-
-        for (int i = 1; i < fields.length; i++) {
-            path = path.get(fields[i]);
-        }
-
-        return path;
     }
 }

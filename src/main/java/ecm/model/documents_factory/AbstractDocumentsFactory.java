@@ -2,19 +2,27 @@ package ecm.model.documents_factory;
 
 import ecm.model.Document;
 import ecm.util.exceptions.DocumentExistsException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.util.logging.Logger;
 
 /**
  * Created by dkarachurin on 10.01.2017.
  */
 public abstract class AbstractDocumentsFactory {
     @Inject
-    DocumentPopulator populator;
+    private DocumentPopulator populator;
 
-    @Inject
-    private transient Logger log;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public abstract Document createDocument() throws DocumentExistsException;
+
+    public DocumentPopulator getPopulator() {
+        return populator;
+    }
+
+    public Logger getLog() {
+        return log;
+    }
 }

@@ -14,11 +14,11 @@ public class IncomingFactory extends AbstractDocumentsFactory {
     @Override
     public Document createDocument() throws DocumentExistsException {
         Incoming incoming = new Incoming();
-        populator.populateBasicsOfDocument(incoming);
-        incoming.setSender(populator.getRandomPerson());
-        incoming.setRecipient(populator.getRandomPerson());
-        incoming.setOutboundRegDate(populator.getRandomDate(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 31)));
-        incoming.setReferenceNumber(String.valueOf(populator.getRandomInt(1000, 4000)) + populator.getRandomString(4));
+        getPopulator().populateBasicsOfDocument(incoming);
+        incoming.setSender(getPopulator().getRandomPerson());
+        incoming.setRecipient(getPopulator().getRandomPerson());
+        incoming.setOutboundRegDate(getPopulator().getRandomDate(LocalDate.of(2017, 1, 1), LocalDate.of(2017, 1, 31)));
+        incoming.setReferenceNumber(String.valueOf(getPopulator().getRandomInt(1000, 4000)) + getPopulator().getRandomString(4));
         return incoming;
     }
 }

@@ -27,8 +27,7 @@ public class Outgoing extends Document {
     }
 
     public Outgoing(OutgoingDTO dto) {
-        super(dto.getName(), dto.getText(), dto.getRegNumber(), dto.getDate(), null);
-        this.deliveryMethod = dto.getDeliveryMethod();
+        this(dto.getName(), dto.getText(), dto.getRegNumber(), dto.getDate(), null, null, dto.getDeliveryMethod());
         this.setId(dto.getId());
     }
 

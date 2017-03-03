@@ -19,7 +19,7 @@ import java.util.List;
 public class IncomingDaoJPA extends DocumentGenericDaoJpa<Incoming> {
     @Override
     public List<Incoming> findAllWithPersonId(int id) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Incoming> query = cb.createQuery(Incoming.class);
         Root<Incoming> root = query.from(Incoming.class);
         Predicate authorCondition = cb.equal(root.get("author").get("id"), id);
@@ -27,7 +27,7 @@ public class IncomingDaoJPA extends DocumentGenericDaoJpa<Incoming> {
         Predicate recipientCondition = cb.equal(root.get("recipient").get("id"), id);
         Predicate p = cb.or(authorCondition, senderCondition, recipientCondition);
         query.where(p);
-        TypedQuery<Incoming> q = entityManager.createQuery(query);
+        TypedQuery<Incoming> q = getEntityManager().createQuery(query);
 
         return  q.getResultList();
     }

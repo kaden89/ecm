@@ -30,11 +30,6 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image saveOrUpdate(Image image) {
-        return imageDAO.saveOrUpdate(image);
-    }
-
-    @Override
     public void deleteByOwnerId(int id) {
         imageDAO.deleteByOwnerId(id);
     }

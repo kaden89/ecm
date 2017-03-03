@@ -17,17 +17,15 @@ import java.util.List;
  * Created by dkarachurin on 25.01.2017.
  */
 @Stateless
-public class ImageDaoJPA implements ImageDAO {
-    @PersistenceContext(unitName = "EcmPersistence")
-    EntityManager entityManager;
+public class ImageDaoJPA extends AbstractImageDAO {
 
     public Image findByOwnerId(int ownerId) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Image> query = cb.createQuery(Image.class);
         Root<Image> root = query.from(Image.class);
         Predicate condition = cb.equal(root.get("ownerId"), ownerId);
         query.where(condition);
-        TypedQuery<Image> q = entityManager.createQuery(query);
+        TypedQuery<Image> q = getEntityManager().createQuery(query);
         List<Image> results = q.getResultList();
 
         if (results.isEmpty()){
@@ -40,25 +38,20 @@ public class ImageDaoJPA implements ImageDAO {
     }
 
     public Image save(Image image) {
-        entityManager.persist(image);
+        getEntityManager().persist(image);
         return image;
     }
 
     public Image update(Image image) {
-        return entityManager.merge(image);
+        return getEntityManager().merge(image);
     }
-
-    public Image saveOrUpdate(Image image) {
-        return entityManager.merge(image);
-    }
-
 
     public void deleteByOwnerId(int id) {
         Image entity = findByOwnerId(id);
-        entityManager.remove(entity);
+        getEntityManager().remove(entity);
     }
 
     public void deleteAll() {
-        entityManager.createQuery("DELETE FROM Image i").executeUpdate();
+        getEntityManager().createQuery("DELETE FROM Image i").executeUpdate();
     }
 }

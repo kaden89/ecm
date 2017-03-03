@@ -96,7 +96,9 @@ public abstract class Document implements Comparable<Document>, Storable {
     public int compareTo(Document document) {
         if (this.getDate().equals(document.getDate())) {
             return this.getRegNumber().compareTo(document.getRegNumber());
-        } else return this.getDate().compareTo(document.getDate());
+        } else {
+            return this.getDate().compareTo(document.getDate());
+        }
     }
 
     @Override

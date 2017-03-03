@@ -36,10 +36,7 @@ public class Task extends Document {
     }
 
     public Task(TaskDTO dto) {
-        super(dto.getName(), dto.getText(), dto.getRegNumber(), dto.getDate(), null);
-        this.dateOfIssue = dto.getDateOfIssue();
-        this.deadline = dto.getDeadline();
-        this.isControlled = dto.isControlled();
+        this(dto.getName(), dto.getText(), dto.getRegNumber(), dto.getDate(), null, dto.getDateOfIssue(), dto.getDeadline(), null, dto.isControlled(), null);
         this.setId(dto.getId());
     }
 
