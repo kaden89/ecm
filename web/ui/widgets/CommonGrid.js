@@ -37,8 +37,6 @@ define([
         constructor: function (params) {
             lang.mixin(this, params);
             this.templateString = template;
-            console.log(this.store);
-            console.log(params);
         }
         ,
         startup: function () {
