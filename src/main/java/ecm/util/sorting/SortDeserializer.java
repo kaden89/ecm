@@ -27,7 +27,7 @@ public class SortDeserializer implements JsonDeserializer<Sort> {
     public Sort deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         JsonObject jobject = (JsonObject) jsonElement;
         String sortFieldName = jobject.get("field").getAsString();
-        switch (jobject.get("field").getAsString()){
+        switch (jobject.get("field").getAsString()) {
             case DTO_AUTHOR_NAME:
                 sortFieldName = AUTHOR_NAME;
                 break;

@@ -1,6 +1,8 @@
 package ecm.web.dto.converters;
+
 import ecm.model.Incoming;
 import ecm.web.dto.IncomingDTO;
+
 import javax.inject.Singleton;
 
 /**

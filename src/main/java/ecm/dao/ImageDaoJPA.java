@@ -3,14 +3,12 @@ package ecm.dao;
 import ecm.model.Image;
 
 import javax.ejb.Stateless;
-import javax.inject.Singleton;
-import javax.persistence.*;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.Metamodel;
-import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -28,10 +26,9 @@ public class ImageDaoJPA extends AbstractImageDAO {
         TypedQuery<Image> q = getEntityManager().createQuery(query);
         List<Image> results = q.getResultList();
 
-        if (results.isEmpty()){
+        if (results.isEmpty()) {
             return null;
-        }
-        else if (results.size() == 1){
+        } else if (results.size() == 1) {
             return results.get(0);
         }
         throw new NonUniqueResultException();

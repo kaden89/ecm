@@ -10,5 +10,5 @@ import javax.ws.rs.Path;
  */
 @Path(value = TaskRestController.REST_URL)
 public class TaskRestController extends AbstractGenericRestController<Task, TaskDTO> {
-     public static final String REST_URL = "/tasks";
+    public static final String REST_URL = "/tasks";
 }

@@ -2,21 +2,16 @@
 package ecm.web.controllers;
 
 import com.google.gson.Gson;
-import ecm.model.Incoming;
-import ecm.model.Outgoing;
-import ecm.model.Person;
-import ecm.model.Task;
-import ecm.service.*;
+import ecm.service.GenericService;
 import ecm.util.filtering.Filter;
 import ecm.util.paging.Page;
 import ecm.util.paging.RangeHeader;
 import ecm.util.sorting.Sort;
-import ecm.web.dto.*;
+import ecm.web.dto.TreeNode;
 import ecm.web.dto.converters.GenericDTOConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -47,7 +42,7 @@ public abstract class AbstractGenericRestController<T, D> {
     @SuppressWarnings("unchecked")
     public AbstractGenericRestController() {
         this.typeOfT = (Class<T>)
-                ((ParameterizedType)getClass()
+                ((ParameterizedType) getClass()
                         .getGenericSuperclass())
                         .getActualTypeArguments()[0];
     }
@@ -113,6 +108,7 @@ public abstract class AbstractGenericRestController<T, D> {
         service.delete(taskId);
         return Response.ok().build();
     }
+
     public String toJson(Object obj) {
         return gson.toJson(obj);
     }

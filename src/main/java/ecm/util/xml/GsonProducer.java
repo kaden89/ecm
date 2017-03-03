@@ -8,7 +8,6 @@ import ecm.util.sorting.Sort;
 import ecm.util.sorting.SortDeserializer;
 
 import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
 import java.time.LocalDate;
 
 

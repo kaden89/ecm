@@ -1,9 +1,6 @@
 package ecm.service;
 
 import ecm.model.Outgoing;
-import ecm.util.paging.Page;
-import ecm.util.paging.RangeHeader;
-import ecm.util.sorting.Sort;
 
 import javax.ejb.Stateless;
 

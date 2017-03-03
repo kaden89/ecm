@@ -3,9 +3,6 @@ package ecm.service;
 import ecm.dao.DocumentGenericDAO;
 import ecm.model.*;
 import ecm.util.exceptions.HasLinksException;
-import ecm.util.paging.Page;
-import ecm.util.paging.RangeHeader;
-import ecm.util.sorting.Sort;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

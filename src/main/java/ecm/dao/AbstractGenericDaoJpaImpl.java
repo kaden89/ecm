@@ -6,23 +6,17 @@ import ecm.util.paging.Page;
 import ecm.util.paging.RangeHeader;
 import ecm.util.sorting.Direction;
 import ecm.util.sorting.Sort;
-import org.hibernate.query.internal.QueryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by dkarachurin on 13.01.2017.
@@ -40,7 +34,7 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
     }
 
     @PostConstruct
-    private void resolveEntityClass(){
+    private void resolveEntityClass() {
         Class obtainedClass = getClass();
         Type genericSuperclass;
         for (; ; ) {
@@ -118,7 +112,7 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> query = cb.createQuery(entityClass);
         Root<T> root = query.from(entityClass);
-        query.where(filter.getFilterPredicate(cb,root, entityClass));
+        query.where(filter.getFilterPredicate(cb, root, entityClass));
         Path path = DbUtils.getCriteriaPath(root, sort.getField());
         query.orderBy(sort.getDirection().equals(Direction.ASC) ? cb.asc(path) : cb.desc(path));
         query.select(root);
@@ -130,7 +124,7 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
 
         CriteriaQuery<T> countQuery = cb.createQuery(entityClass);
         Root<T> countRoot = countQuery.from(entityClass);
-        countQuery.where(filter.getFilterPredicate(cb,countRoot, entityClass));
+        countQuery.where(filter.getFilterPredicate(cb, countRoot, entityClass));
         countQuery.select((Selection<? extends T>) cb.count(countRoot));
         Long countResult = (Long) entityManager.createQuery(countQuery).getSingleResult();
 

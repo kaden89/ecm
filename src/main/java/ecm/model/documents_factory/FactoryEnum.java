@@ -3,18 +3,8 @@ package ecm.model.documents_factory;
 import ecm.model.Incoming;
 import ecm.model.Outgoing;
 import ecm.model.Task;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.CDI;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 
 /**

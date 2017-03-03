@@ -2,6 +2,7 @@ package ecm;
 
 //import ecm.web.EmployeeRestController;
 //import ecm.web.WidgetRestController;
+
 import ecm.web.HelloController;
 import ecm.web.controllers.EmployeeRestController;
 import ecm.web.controllers.IncomingRestController;
@@ -21,7 +22,7 @@ import java.util.Set;
 public class AppConfig extends Application {
     @Override
     public Set<Class<?>> getClasses() {
-        final Set<Class<?>> classes = new HashSet<Class<?>>();
+        final Set<Class<?>> classes = new HashSet<>();
         classes.add(EmployeeRestController.class);
         classes.add(IncomingRestController.class);
         classes.add(OutgoingRestController.class);

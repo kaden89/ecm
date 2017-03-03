@@ -4,8 +4,9 @@ import ecm.util.db.DbUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.ws.rs.NotSupportedException;
 import java.time.LocalDate;
 import java.util.List;
@@ -58,9 +59,9 @@ public class Rule {
         return rightField;
     }
 
-    public Predicate getPredicate(CriteriaBuilder cb, Root root, Class entityClass){
+    public Predicate getPredicate(CriteriaBuilder cb, Root root, Class entityClass) {
         Predicate predicate = null;
-        switch (op){
+        switch (op) {
             case EQUAL:
                 predicate = cb.equal(
                         DbUtils.getCriteriaPath(root, getLeftField().toString()),

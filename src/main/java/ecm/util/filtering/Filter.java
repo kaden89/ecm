@@ -1,13 +1,10 @@
 package ecm.util.filtering;
 
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by dkarachurin on 10.02.2017.
@@ -41,13 +38,13 @@ public class Filter {
         this.data = data;
     }
 
-    public Predicate getFilterPredicate(CriteriaBuilder cb, Root root, Class entityClass){
+    public Predicate getFilterPredicate(CriteriaBuilder cb, Root root, Class entityClass) {
         List<Predicate> predicates = new ArrayList<>();
         Predicate result = null;
         for (Rule rule : data) {
             predicates.add(rule.getPredicate(cb, root, entityClass));
         }
-        switch (op){
+        switch (op) {
             case AND:
                 result = cb.and(predicates.toArray(new Predicate[predicates.size()]));
                 break;

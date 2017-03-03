@@ -5,11 +5,9 @@ import ecm.model.Person;
 import ecm.model.Post;
 import ecm.service.GenericService;
 import ecm.service.ImageService;
-import ecm.service.PostService;
 import ecm.web.dto.PersonDTO;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
