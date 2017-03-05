@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Слой сервиса реализующий доступ к DAO класса {@link Person}
  * @author dkarachurin
  */
 @Stateless

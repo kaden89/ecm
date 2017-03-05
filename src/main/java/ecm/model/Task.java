@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
+ * Модель документа Задача
  * @author dkarachurin
  */
 @Entity

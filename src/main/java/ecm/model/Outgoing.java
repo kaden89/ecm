@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 /**
+ * Модель Исходящего документа
  * @author dkarachurin
  */
 @Entity

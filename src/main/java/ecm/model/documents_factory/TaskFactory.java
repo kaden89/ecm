@@ -7,6 +7,7 @@ import ecm.util.exceptions.DocumentExistsException;
 import java.time.LocalDate;
 
 /**
+ * Фабрика документа Задача
  * @author dkarachurin
  */
 public class TaskFactory extends AbstractDocumentsFactory {

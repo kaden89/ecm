@@ -19,6 +19,9 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
+ * Абстарктная реализация {@link GenericDAO}
+ * @see PersonDaoJPA
+ * @see PostDaoJPA
  * @author dkarachurin
  */
 public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {

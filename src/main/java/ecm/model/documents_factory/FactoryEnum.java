@@ -7,22 +7,27 @@ import ecm.model.Task;
 import javax.enterprise.inject.spi.CDI;
 
 /**
+ * Перечисление типов фабрик
  * @author dkarachurin
  */
 
 public enum FactoryEnum {
-    INCOMING(Incoming.class, IncomingFactory.class),
-    OUTGOING(Outgoing.class, OutgoingFactory.class),
-    TASK(Task.class, TaskFactory.class);
+    INCOMING(IncomingFactory.class),
+    OUTGOING(OutgoingFactory.class),
+    TASK(TaskFactory.class);
 
     private Class factoryClass;
-    private Class docClass;
 
-    FactoryEnum(Class docClass, Class factoryClass) {
+    FactoryEnum(Class factoryClass) {
         this.factoryClass = factoryClass;
-        this.docClass = docClass;
     }
 
+    /**
+     * Возвращает инстанс фабрики указанной в параметре перечисления
+     * @return Фабрика для документа
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
     public AbstractDocumentsFactory getFactory() throws IllegalAccessException, InstantiationException {
         return (AbstractDocumentsFactory) CDI.current().select(factoryClass).get();
     }

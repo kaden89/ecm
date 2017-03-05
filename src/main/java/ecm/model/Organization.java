@@ -1,6 +1,7 @@
 package ecm.model;
 
 /**
+ * Модель Организации
  * @author dkarachurin
  */
 public class Organization extends Staff {

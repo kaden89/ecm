@@ -7,8 +7,8 @@ import java.util.List;
  */
 public interface DocumentGenericDAO<T> extends GenericDAO<T> {
     /**
-     *
-     * @param id Находит все документы в котоых всречается {@link ecm.model.Person} с таким ID
+     * Находит все документы в которых всречается {@link ecm.model.Person} с таким ID
+     * @param id ID объекта {@link ecm.model.Person}
      * @return Список найденных документов
      */
     List<T> findAllWithPersonId(int id);

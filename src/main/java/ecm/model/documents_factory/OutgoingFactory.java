@@ -6,6 +6,7 @@ import ecm.util.exceptions.DocumentExistsException;
 
 
 /**
+ * Фабрика документа Исходящий
  * @author dkarachurin
  */
 public class OutgoingFactory extends AbstractDocumentsFactory {

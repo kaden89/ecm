@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 /**
+ * Модель Сотрудника
  * @author dkarachurin
  */
 @Entity
@@ -24,7 +25,7 @@ public class Person extends Staff implements Comparable<Person>, Storable {
     private Post position;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "ownerId")
-    private Image photo;
+    private Avatar photo;
     @NotNull
     private LocalDate birthday;
     //Auto fill field for simplest sorting
@@ -90,11 +91,11 @@ public class Person extends Staff implements Comparable<Person>, Storable {
         this.birthday = birthday;
     }
 
-    public Image getPhoto() {
+    public Avatar getPhoto() {
         return photo;
     }
 
-    public void setPhoto(Image photo) {
+    public void setPhoto(Avatar photo) {
         this.photo = photo;
     }
 
@@ -106,6 +107,9 @@ public class Person extends Staff implements Comparable<Person>, Storable {
         this.fullname = fullname;
     }
 
+    /**
+     * Собирает поле fullname перед сохранением в БД
+     */
     @PrePersist
     private void calculateFullname() {
         this.fullname = firstname + " " + surname + " " + patronymic;

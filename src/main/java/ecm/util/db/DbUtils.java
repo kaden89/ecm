@@ -5,15 +5,16 @@ import javax.persistence.criteria.Root;
 import javax.ws.rs.NotFoundException;
 
 /**
+ * Класс содержит утильные методы для работы с БД
  * @author dkarachurin
  */
 public class DbUtils {
     /**
-     * Evaluates given string path (splitting by dot) and returns the desired path
+     * Вычисляет путь к полю по переданной строке для Criteria API
      *
-     * @param root       Root to start with
-     * @param pathString Result path
-     * @return Path to desired property
+     * @param root       Корневой путь
+     * @param pathString Путь к полю в виде строки
+     * @return Путь к полю в виде {@link Path}
      */
     public static Path getCriteriaPath(Root root, String pathString) {
         String[] fields = pathString.split("\\.");
@@ -27,39 +28,16 @@ public class DbUtils {
     }
 
     /**
-     *
-     * @param object
-     * @param id
-     * @param <T>
-     * @return
+     * Выбрасывает {@link NotFoundException} если объект null
+     * @param object Искомый объект
+     * @param id ID объекта
+     * @param <T> Тип объекта
+     * @return Объект
      */
     public static <T> T checkNotFoundWithId(T object, int id) {
         if (object == null) {
             throw new NotFoundException("Not found entity with " + "id=" + id);
         }
         return object;
-    }
-
-    /**
-     *
-     * @param object
-     * @param msg
-     * @param <T>
-     * @return
-     */
-    public static <T> T checkNotFound(T object, String msg) {
-        checkNotFound(object != null, msg);
-        return object;
-    }
-
-    /**
-     *
-     * @param found
-     * @param msg
-     */
-    public static void checkNotFound(boolean found, String msg) {
-        if (!found) {
-            throw new NotFoundException("Not found entity with " + msg);
-        }
     }
 }

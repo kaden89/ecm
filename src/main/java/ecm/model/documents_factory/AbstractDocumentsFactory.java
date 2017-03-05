@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 
 /**
+ * Абстрактная фабрика
+ * @see IncomingFactory
+ * @see OutgoingFactory
+ * @see TaskFactory
  * @author dkarachurin
  */
 public abstract class AbstractDocumentsFactory {
@@ -16,6 +20,11 @@ public abstract class AbstractDocumentsFactory {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * Создает документ
+     * @return Созданный документ
+     * @throws DocumentExistsException
+     */
     public abstract Document createDocument() throws DocumentExistsException;
 
     public DocumentPopulator getPopulator() {

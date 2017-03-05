@@ -6,7 +6,7 @@ import javax.persistence.PersistenceContext;
 /**
  * @author dkarachurin
  */
-public abstract class AbstractImageDAO implements ImageDAO {
+public abstract class AbstractAvatarDAO implements AvatarDAO {
     @PersistenceContext(unitName = "EcmPersistence")
     private EntityManager entityManager;
 

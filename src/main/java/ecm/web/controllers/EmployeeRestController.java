@@ -1,10 +1,10 @@
 package ecm.web.controllers;
 
-import ecm.model.Image;
+import ecm.model.Avatar;
 import ecm.model.Person;
 import ecm.model.Post;
 import ecm.service.GenericService;
-import ecm.service.ImageService;
+import ecm.service.AvatarService;
 import ecm.web.dto.PersonDTO;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -28,7 +28,7 @@ public class EmployeeRestController extends AbstractGenericRestController<Person
     public static final String REST_URL = "/employees";
 
     @Inject
-    private ImageService imageService;
+    private AvatarService avatarService;
 
     @Inject
     private GenericService<Post> postService;
@@ -52,7 +52,7 @@ public class EmployeeRestController extends AbstractGenericRestController<Person
     @Path("/{id}/photo")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPhoto(@PathParam("id") int ownerId) {
-        return Response.ok(imageService.findByOwnerId(ownerId)).build();
+        return Response.ok(avatarService.findByOwnerId(ownerId)).build();
     }
 
     @POST
@@ -61,18 +61,18 @@ public class EmployeeRestController extends AbstractGenericRestController<Person
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadPhoto(@PathParam("id") int ownerId, @FormDataParam("uploadedfile") File photo) {
         byte[] bytes = null;
-        Image result;
+        Avatar result;
         try {
             bytes = Files.readAllBytes(Paths.get(photo.getPath()));
         } catch (IOException e) {
-            e.printStackTrace();
+            getLog().error(e.getMessage());
         }
-        Image image = imageService.findByOwnerId(ownerId);
-        if (image == null) {
-            result = imageService.save(new Image(ownerId, bytes));
+        Avatar avatar = avatarService.findByOwnerId(ownerId);
+        if (avatar == null) {
+            result = avatarService.save(new Avatar(ownerId, bytes));
         } else {
-            image.setImage(bytes);
-            result = imageService.update(image);
+            avatar.setImage(bytes);
+            result = avatarService.update(avatar);
         }
         return Response.ok(result).build();
     }

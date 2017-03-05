@@ -3,10 +3,11 @@ package ecm.model;
 import javax.persistence.*;
 
 /**
+ * Модель аватара класса {@link Person}
  * @author dkarachurin
  */
 @Entity
-public class Image {
+public class Avatar {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
@@ -15,10 +16,10 @@ public class Image {
 
     private Integer ownerId;
 
-    public Image() {
+    public Avatar() {
     }
 
-    public Image(Integer ownerId, byte[] image) {
+    public Avatar(Integer ownerId, byte[] image) {
         this.image = image;
         this.ownerId = ownerId;
     }

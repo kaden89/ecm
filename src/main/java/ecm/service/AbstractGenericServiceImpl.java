@@ -13,6 +13,12 @@ import javax.inject.Inject;
 import java.util.List;
 
 /**
+ * Абстрактная реализация {@link GenericService}
+ * @see IncomingService
+ * @see OutgoingService
+ * @see TaskService
+ * @see PersonService
+ * @see PostService
  * @author dkarachurin
  */
 public abstract class AbstractGenericServiceImpl<T> implements GenericService<T> {

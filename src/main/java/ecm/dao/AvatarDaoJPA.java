@@ -1,6 +1,6 @@
 package ecm.dao;
 
-import ecm.model.Image;
+import ecm.model.Avatar;
 
 import javax.ejb.Stateless;
 import javax.persistence.NonUniqueResultException;
@@ -12,20 +12,20 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
- * JPA Реализация интерфейса {@link ImageDAO}
+ * JPA Реализация интерфейса {@link AvatarDAO}
  * @author dkarachurin
  */
 @Stateless
-public class ImageDaoJPA extends AbstractImageDAO {
+public class AvatarDaoJPA extends AbstractAvatarDAO {
 
-    public Image findByOwnerId(int ownerId) {
+    public Avatar findByOwnerId(int ownerId) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Image> query = cb.createQuery(Image.class);
-        Root<Image> root = query.from(Image.class);
+        CriteriaQuery<Avatar> query = cb.createQuery(Avatar.class);
+        Root<Avatar> root = query.from(Avatar.class);
         Predicate condition = cb.equal(root.get("ownerId"), ownerId);
         query.where(condition);
-        TypedQuery<Image> q = getEntityManager().createQuery(query);
-        List<Image> results = q.getResultList();
+        TypedQuery<Avatar> q = getEntityManager().createQuery(query);
+        List<Avatar> results = q.getResultList();
 
         if (results.isEmpty()) {
             return null;
@@ -35,20 +35,20 @@ public class ImageDaoJPA extends AbstractImageDAO {
         throw new NonUniqueResultException();
     }
 
-    public Image save(Image image) {
-        getEntityManager().persist(image);
-        return image;
+    public Avatar save(Avatar avatar) {
+        getEntityManager().persist(avatar);
+        return avatar;
     }
 
-    public Image update(Image image) {
-        return getEntityManager().merge(image);
+    public Avatar update(Avatar avatar) {
+        return getEntityManager().merge(avatar);
     }
 
-    public void delete(Image image) {
-        getEntityManager().remove(image);
+    public void delete(Avatar avatar) {
+        getEntityManager().remove(avatar);
     }
 
     public void deleteAll() {
-        getEntityManager().createQuery("DELETE FROM Image i").executeUpdate();
+        getEntityManager().createQuery("DELETE FROM Avatar i").executeUpdate();
     }
 }

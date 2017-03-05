@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
+ * Утильнай класс для заполнения полей документов рандомными значениями
  * @author dkarachurin
  */
 @Singleton
@@ -27,6 +28,12 @@ public class DocumentPopulator {
     private HashMap<String, Document> documents = new HashMap<>();
 
 
+    /**
+     * Заполняет общие для всех документов поля рандомными значениями
+     * @param document Документ для заполнения
+     * @return Документ с заполненными полями
+     * @throws DocumentExistsException
+     */
     public Document populateBasicsOfDocument(Document document) throws DocumentExistsException {
         document.setRegNumber(getRandomRegNumber(5));
         documents.put(document.getRegNumber(), document);
@@ -37,6 +44,12 @@ public class DocumentPopulator {
         return document;
     }
 
+    /**
+     * Генерирует рандомное число в диапозоне
+     * @param min Минимальное значение
+     * @param max Максимальное значение
+     * @return Сгенерированное число
+     */
     public int getRandomInt(int min, int max) {
         if (min >= max) {
             throw new IllegalArgumentException("max must be greater than min");
@@ -44,6 +57,11 @@ public class DocumentPopulator {
         return random.nextInt(min, max + 1);
     }
 
+    /**
+     * Генерирует рандомную строку
+     * @param length Длинна нужной строки
+     * @return Сгенерированная строка
+     */
     public String getRandomString(int length) {
         checkLength(length);
 
@@ -54,6 +72,12 @@ public class DocumentPopulator {
         return new String(text);
     }
 
+    /**
+     * Генерирует случайную дату в диапозоне
+     * @param min Мин. дата
+     * @param max Макс. дата
+     * @return Сгенерированная дата
+     */
     public LocalDate getRandomDate(LocalDate min, LocalDate max) {
         if (min.isAfter(max)) {
             throw new IllegalArgumentException("max must be greater than min");
@@ -65,6 +89,10 @@ public class DocumentPopulator {
         return randomDate;
     }
 
+    /**
+     * Возвращает случайный объект класса {@link Person} из БД
+     * @return случайный объект {@link Person}
+     */
     public Person getRandomPerson() {
         List<Person> list = personDAO.findAll();
         if (list.size() != 0)
@@ -76,6 +104,12 @@ public class DocumentPopulator {
         return random.nextBoolean();
     }
 
+    /**
+     * Генерирует случайное число
+     * @param length Длинна числа
+     * @return Сгенерированнео число
+     * @throws DocumentExistsException В случае сли документ с таким рег. номером уже существует
+     */
     public String getRandomRegNumber(int length) throws DocumentExistsException {
         checkLength(length);
 
@@ -90,12 +124,21 @@ public class DocumentPopulator {
         return regNumber;
     }
 
+    /**
+     * Проверяет уникальность RegNumber
+     * @param regNumber рег. номер
+     * @throws DocumentExistsException
+     */
     private void checkNumber(String regNumber) throws DocumentExistsException {
         if (documents.containsKey(regNumber))
             throw new DocumentExistsException("Document with reg number " + regNumber + " already exist.");
 
     }
 
+    /**
+     * Проверяет валидность длинны
+     * @param length Длинна
+     */
     private void checkLength(int length) {
         if (length <= 0) {
             throw new IllegalArgumentException("Length must be greater than 0");

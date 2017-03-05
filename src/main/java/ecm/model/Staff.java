@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
+ * Абстрактная модель оргструктуры
  * @author dkarachurin
  */
 @MappedSuperclass

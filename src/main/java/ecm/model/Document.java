@@ -9,6 +9,7 @@ import java.time.LocalDate;
 
 
 /**
+ * Абстрактная модель документа
  * @author dkarachurin
  */
 @MappedSuperclass

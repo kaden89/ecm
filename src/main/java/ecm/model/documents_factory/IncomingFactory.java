@@ -7,6 +7,7 @@ import ecm.util.exceptions.DocumentExistsException;
 import java.time.LocalDate;
 
 /**
+ * Фабрика документа Входящий
  * @author dkarachurin
  */
 public class IncomingFactory extends AbstractDocumentsFactory {
