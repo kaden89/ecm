@@ -3,7 +3,7 @@ package ecm.util.filtering;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by dkarachurin on 10.02.2017.
+ * @author dkarachurin
  */
 //and, or, not, equal, greater, less, greaterEqual, lessEqual, match, contain, startWith, endWith
 

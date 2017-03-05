@@ -5,7 +5,7 @@ import ecm.model.Incoming;
 import java.time.LocalDate;
 
 /**
- * Created by dkarachurin on 01.02.2017.
+ * @author dkarachurin
  */
 public class IncomingDTO extends AbstractDocumentDTO {
     private Integer senderId;

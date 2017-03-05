@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created by dkarachurin on 01.02.2017.
+ * @author dkarachurin
  */
 
 public abstract class AbstractDocumentDTOConverterImpl<T, D> implements GenericDTOConverter<T, D> {

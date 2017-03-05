@@ -1,7 +1,8 @@
 package ecm.dao;
 
 /**
- * Created by Денис on 11.02.2017.
+ * Абстрактное DAO для документов, реализующее {@link DocumentGenericDAO}
+ * @author dkarachurin
  */
 public abstract class DocumentGenericDaoJpa<T> extends AbstractGenericDaoJpaImpl<T> implements DocumentGenericDAO<T> {
 }

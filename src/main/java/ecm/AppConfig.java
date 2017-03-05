@@ -1,8 +1,5 @@
 package ecm;
 
-//import ecm.web.EmployeeRestController;
-//import ecm.web.WidgetRestController;
-
 import ecm.web.HelloController;
 import ecm.web.controllers.EmployeeRestController;
 import ecm.web.controllers.IncomingRestController;
@@ -16,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by dkarachurin on 12.01.2017.
+ * @author dkarachurin
  */
 @ApplicationPath("/rest")
 public class AppConfig extends Application {

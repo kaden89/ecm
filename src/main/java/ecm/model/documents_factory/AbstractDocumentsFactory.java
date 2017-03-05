@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 
 /**
- * Created by dkarachurin on 10.01.2017.
+ * @author dkarachurin
  */
 public abstract class AbstractDocumentsFactory {
     @Inject

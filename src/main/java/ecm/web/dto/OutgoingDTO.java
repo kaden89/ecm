@@ -3,7 +3,7 @@ package ecm.web.dto;
 import ecm.model.Outgoing;
 
 /**
- * Created by dkarachurin on 02.02.2017.
+ * @author dkarachurin
  */
 public class OutgoingDTO extends AbstractDocumentDTO {
     private Integer recipientId;

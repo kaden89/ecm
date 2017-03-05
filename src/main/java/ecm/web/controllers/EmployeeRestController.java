@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author dkarachurin on 01.03.2017.
+ * @author dkarachurin
  */
 @Path(value = EmployeeRestController.REST_URL)
 public class EmployeeRestController extends AbstractGenericRestController<Person, PersonDTO> {

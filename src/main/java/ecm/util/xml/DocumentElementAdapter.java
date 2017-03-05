@@ -6,7 +6,7 @@ import ecm.model.Document;
 import java.lang.reflect.Type;
 
 /**
- * Created by dkarachurin on 31.01.2017.
+ * @author dkarachurin
  */
 public class DocumentElementAdapter implements JsonSerializer<Document> {
     @Override

@@ -1,7 +1,7 @@
 package ecm.web.dto;
 
 /**
- * Created by dkarachurin on 27.02.2017.
+ * @author dkarachurin
  */
 public class ServerURLConfigDTO {
     private String employeeURL = "rest/employees";

@@ -2,9 +2,10 @@ package ecm.util.db;
 
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.NotFoundException;
 
 /**
- * @author dkarachurin on 03.03.2017.
+ * @author dkarachurin
  */
 public class DbUtils {
     /**
@@ -23,5 +24,42 @@ public class DbUtils {
         }
 
         return path;
+    }
+
+    /**
+     *
+     * @param object
+     * @param id
+     * @param <T>
+     * @return
+     */
+    public static <T> T checkNotFoundWithId(T object, int id) {
+        if (object == null) {
+            throw new NotFoundException("Not found entity with " + "id=" + id);
+        }
+        return object;
+    }
+
+    /**
+     *
+     * @param object
+     * @param msg
+     * @param <T>
+     * @return
+     */
+    public static <T> T checkNotFound(T object, String msg) {
+        checkNotFound(object != null, msg);
+        return object;
+    }
+
+    /**
+     *
+     * @param found
+     * @param msg
+     */
+    public static void checkNotFound(boolean found, String msg) {
+        if (!found) {
+            throw new NotFoundException("Not found entity with " + msg);
+        }
     }
 }

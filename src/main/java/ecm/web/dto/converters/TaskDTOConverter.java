@@ -6,7 +6,7 @@ import ecm.web.dto.TaskDTO;
 import javax.inject.Singleton;
 
 /**
- * Created by dkarachurin on 13.02.2017.
+ * @author dkarachurin
  */
 @Singleton
 public class TaskDTOConverter extends AbstractDocumentDTOConverterImpl<Task, TaskDTO> {

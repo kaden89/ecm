@@ -6,7 +6,7 @@ import ecm.web.dto.TaskDTO;
 import javax.ws.rs.Path;
 
 /**
- * @author dkarachurin on 01.03.2017.
+ * @author dkarachurin
  */
 @Path(value = TaskRestController.REST_URL)
 public class TaskRestController extends AbstractGenericRestController<Task, TaskDTO> {

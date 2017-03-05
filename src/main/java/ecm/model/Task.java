@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
- * Created by dkarachurin on 09.01.2017.
+ * @author dkarachurin
  */
 @Entity
 public class Task extends Document {

@@ -5,9 +5,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
- * Created by dkarachurin on 09.02.2017.
+ * @author dkarachurin
  */
 @Entity
 public class Post {
@@ -15,6 +16,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
     private Integer id;
+    @Size(max = 255)
     private String post;
 
     public Post() {

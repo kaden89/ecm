@@ -6,7 +6,7 @@ import ecm.web.dto.PersonDTO;
 import javax.inject.Singleton;
 
 /**
- * Created by dkarachurin on 13.02.2017.
+ * @author dkarachurin
  */
 @Singleton
 public class PersonDTOConverter extends AbstractStaffDTOConverterImpl<Person, PersonDTO> {

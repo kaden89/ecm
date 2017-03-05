@@ -1,8 +1,5 @@
 package ecm.web;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import ecm.model.*;
 import ecm.model.documents_factory.DocumentsFactory;
 import ecm.model.documents_factory.FactoryEnum;
@@ -30,7 +27,7 @@ import java.util.*;
 import static ecm.model.documents_factory.FactoryEnum.*;
 
 /**
- * Created by dkarachurin on 12.01.2017.
+ * @author dkarachurin
  */
 public class StartClass implements ServletContextListener {
 
@@ -88,7 +85,6 @@ public class StartClass implements ServletContextListener {
         Person test2 = new Person("test person2", "without", "documents", post2, LocalDate.now());
         personService.save(test);
         personService.save(test2);
-//        writeJSONtoDisk();
     }
 
     @Override
@@ -140,43 +136,8 @@ public class StartClass implements ServletContextListener {
         return document;
     }
 
-
-    private void writeJSONtoDisk() {
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .create();
-
-        String dirName = "C:\\reports\\";
-        File theDir = new File(dirName);
-
-        if (!theDir.exists()) {
-            try {
-                theDir.mkdir();
-            } catch (SecurityException se) {
-                log.error(se.getMessage());
-            }
-        }
-
-        for (Map.Entry<Person, TreeSet<Document>> entry : result.entrySet()) {
-            try (Writer writer = new FileWriter(dirName + entry.getKey().toString() + ".json")) {
-                for (Document document : entry.getValue()) {
-                    JsonElement jsonElement = gson.toJsonTree(document);
-                    jsonElement.getAsJsonObject().addProperty("type", document.getClass().getSimpleName());
-                    gson.toJson(jsonElement, writer);
-                }
-            } catch (IOException e) {
-                log.error(e.getMessage());
-            }
-        }
-
-    }
-
     private void loadStaff() {
-        try (
-                InputStream personsStream = context.getResourceAsStream("/resources/xml/persons.xml");
-//                InputStream organizationsStream = context.getResourceAsStream("/resources/xml/organizations.xml");
-//                InputStream departmentsStream = context.getResourceAsStream("/resources/xml/departments.xml")
-        ) {
+        try (InputStream personsStream = context.getResourceAsStream("/resources/xml/persons.xml")) {
             JAXBContext context = JAXBContext.newInstance(OrganizationsDTO.class, DepartmentsDTO.class, PersonsDTO.class, PersonDTO.class);
             Unmarshaller um = context.createUnmarshaller();
             PersonsDTO persons = (PersonsDTO) um.unmarshal(personsStream);

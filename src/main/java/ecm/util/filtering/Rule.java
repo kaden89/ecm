@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Created by dkarachurin on 10.02.2017.
+ * @author dkarachurin
  */
 public class Rule {
     private Conditions op;

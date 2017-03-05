@@ -6,7 +6,7 @@ import java.lang.reflect.Type;
 
 
 /**
- * @author dkarachurin on 03.03.2017.
+ * @author dkarachurin
  */
 public class SortDeserializer implements JsonDeserializer<Sort> {
 

@@ -2,18 +2,20 @@ package ecm.service;
 
 import ecm.model.Image;
 
+import javax.ws.rs.NotFoundException;
+
 /**
- * Created by dkarachurin on 09.02.2017.
+ * @author dkarachurin
  */
 public interface ImageService {
 
-    public Image findByOwnerId(int ownerId);
+    public Image findByOwnerId(int ownerId) throws NotFoundException;
 
     public Image save(Image image);
 
     public Image update(Image image);
 
-    public void deleteByOwnerId(int id);
+    public void deleteByOwnerId(int ownerId) throws NotFoundException;
 
     public void deleteAll();
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created by dkarachurin on 02.02.2017.
+ * @author dkarachurin
  */
 
 public abstract class AbstractStaffDTOConverterImpl<T, D> implements GenericDTOConverter<T, D> {

@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
- * Created by dkarachurin on 02.02.2017.
+ * @author dkarachurin
  */
 @XmlSeeAlso({PersonDTO.class})
 @XmlAccessorType(XmlAccessType.FIELD)

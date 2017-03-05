@@ -3,7 +3,7 @@ package ecm.web.dto;
 import java.util.List;
 
 /**
- * Created by Денис on 09.12.2016.
+ * @author dkarachurin
  */
 public class TreeNode<T> {
 

@@ -5,9 +5,9 @@ import ecm.model.Person;
 import javax.ejb.Stateless;
 
 /**
- * Created by dkarachurin on 12.01.2017.
+ *  JPA DAO для класса {@link Person}
+ * @author dkarachurin
  */
 @Stateless
 public class PersonDaoJPA extends AbstractGenericDaoJpaImpl<Person> {
-
 }

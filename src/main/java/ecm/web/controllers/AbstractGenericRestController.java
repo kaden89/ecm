@@ -21,10 +21,10 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
 
-
 /**
- * Created by dkarachurin on 24.01.2017.
+ * @author dkarachurin
  */
+
 public abstract class AbstractGenericRestController<T, D> {
 
     private Class<T> typeOfT;

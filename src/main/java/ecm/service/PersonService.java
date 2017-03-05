@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by dkarachurin on 08.02.2017.
+ * @author dkarachurin
  */
 @Stateless
 //Bug with rollback https://java.net/jira/browse/GLASSFISH-20699

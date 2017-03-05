@@ -3,7 +3,7 @@ package ecm.model;
 import javax.persistence.*;
 
 /**
- * Created by dkarachurin on 25.01.2017.
+ * @author dkarachurin
  */
 @Entity
 public class Image {

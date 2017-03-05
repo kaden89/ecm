@@ -5,7 +5,7 @@ import ecm.model.Task;
 import javax.ejb.Stateless;
 
 /**
- * Created by dkarachurin on 08.02.2017.
+ * @author dkarachurin
  */
 @Stateless
 public class TaskService extends AbstractGenericServiceImpl<Task> {

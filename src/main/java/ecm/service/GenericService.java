@@ -6,19 +6,20 @@ import ecm.util.paging.Page;
 import ecm.util.paging.RangeHeader;
 import ecm.util.sorting.Sort;
 
+import javax.ws.rs.NotFoundException;
 import java.util.List;
 
 /**
- * Created by dkarachurin on 08.02.2017.
+ * @author dkarachurin
  */
 
 public interface GenericService<T> {
 
-    T find(int id);
+    T find(int id) throws NotFoundException;
 
     List<T> findAll();
 
-    Page<T> findAllSortedAndPageable(Sort sort, RangeHeader range);
+    Page<T> findAllSortedAndPageable(Sort sort, RangeHeader range) ;
 
     Page<T> findAllSortedFilteredAndPageable(Sort sort, Filter filter, RangeHeader range);
 
@@ -26,11 +27,9 @@ public interface GenericService<T> {
 
     T update(T updateInstance);
 
-    void delete(int id);
+    void delete(int id) throws NotFoundException;
 
     void deleteAll();
 
     GenericDAO<T> getGenericDao();
-
-    void setGenericDao(GenericDAO<T> genericDao);
 }

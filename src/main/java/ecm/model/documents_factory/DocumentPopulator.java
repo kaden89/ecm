@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Created by dkarachurin on 10.01.2017.
+ * @author dkarachurin
  */
 @Singleton
 public class DocumentPopulator {

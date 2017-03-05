@@ -1,6 +1,7 @@
 package ecm.service;
 
 import ecm.dao.GenericDAO;
+import ecm.util.db.DbUtils;
 import ecm.util.filtering.Filter;
 import ecm.util.paging.Page;
 import ecm.util.paging.RangeHeader;
@@ -12,7 +13,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 /**
- * Created by dkarachurin on 08.02.2017.
+ * @author dkarachurin
  */
 public abstract class AbstractGenericServiceImpl<T> implements GenericService<T> {
 
@@ -26,37 +27,32 @@ public abstract class AbstractGenericServiceImpl<T> implements GenericService<T>
 
     @Override
     public T find(int id) {
-        return this.getGenericDao().find(id);
+        return DbUtils.checkNotFoundWithId(genericDao.find(id), id);
     }
 
     @Override
     public List<T> findAll() {
-        return this.getGenericDao().findAll();
+        return genericDao.findAll();
     }
 
     @Override
     public T save(T newInstance) {
-        return this.getGenericDao().save(newInstance);
+        return genericDao.save(newInstance);
     }
 
     @Override
     public T update(T updateInstance) {
-        return this.getGenericDao().update(updateInstance);
+        return genericDao.update(updateInstance);
     }
 
     @Override
     public void delete(int id) {
-        this.getGenericDao().delete(getGenericDao().find(id));
+        genericDao.delete(DbUtils.checkNotFoundWithId(genericDao.find(id), id));
     }
 
     @Override
     public GenericDAO<T> getGenericDao() {
         return genericDao;
-    }
-
-    @Override
-    public void setGenericDao(GenericDAO<T> genericDao) {
-        this.genericDao = genericDao;
     }
 
     @Override

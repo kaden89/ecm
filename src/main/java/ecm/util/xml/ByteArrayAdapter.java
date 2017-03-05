@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
 import java.util.Base64;
 
 /**
- * Created by dkarachurin on 25.01.2017.
+ * @author dkarachurin
  */
 public class ByteArrayAdapter implements JsonSerializer<byte[]> {
     @Override

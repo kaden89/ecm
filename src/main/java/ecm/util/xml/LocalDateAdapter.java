@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.LocalDate;
 
 /**
- * Created by dkarachurin on 25.01.2017.
+ * @author dkarachurin
  */
 
 public class LocalDateAdapter extends XmlAdapter<String, LocalDate> {

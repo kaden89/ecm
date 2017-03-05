@@ -5,18 +5,19 @@ import ecm.web.dto.PersonDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 /**
- * Created by dkarachurin on 09.01.2017.
+ * @author dkarachurin
  */
 @Entity
 public class Person extends Staff implements Comparable<Person>, Storable {
-    @NotNull
+    @Size(max = 255)
     private String firstname;
-    @NotNull
+    @Size(max = 255)
     private String surname;
-    @NotNull
+    @Size(max = 255)
     private String patronymic;
     @NotNull
     @ManyToOne
@@ -27,7 +28,7 @@ public class Person extends Staff implements Comparable<Person>, Storable {
     @NotNull
     private LocalDate birthday;
     //Auto fill field for simplest sorting
-    @NotNull
+    @Size(max = 1024)
     private String fullname;
 
 

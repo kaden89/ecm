@@ -19,7 +19,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
- * Created by dkarachurin on 13.01.2017.
+ * @author dkarachurin
  */
 public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
 
@@ -33,6 +33,9 @@ public abstract class AbstractGenericDaoJpaImpl<T> implements GenericDAO<T> {
     public AbstractGenericDaoJpaImpl() {
     }
 
+    /**
+     * Определение класса для которого создано DAO
+     */
     @PostConstruct
     private void resolveEntityClass() {
         this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];

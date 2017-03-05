@@ -4,11 +4,12 @@ import ecm.dao.Storable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 
 /**
- * Created by dkarachurin on 09.01.2017.
+ * @author dkarachurin
  */
 @MappedSuperclass
 public abstract class Document implements Comparable<Document>, Storable {
@@ -16,10 +17,10 @@ public abstract class Document implements Comparable<Document>, Storable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
     private Integer id;
-    @NotNull
+    @Size(max = 255)
     private String name;
     private String text;
-    @NotNull
+    @Size(max = 255)
     private String regNumber;
     @NotNull
     private LocalDate date;

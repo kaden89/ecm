@@ -5,7 +5,7 @@ import ecm.model.Post;
 import javax.ejb.Stateless;
 
 /**
- * Created by dkarachurin on 09.02.2017.
+ * @author dkarachurin
  */
 @Stateless
 public class PostService extends AbstractGenericServiceImpl<Post> {

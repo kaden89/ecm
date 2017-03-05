@@ -11,7 +11,8 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
- * Created by dkarachurin on 16.01.2017.
+ *  JPA DAO для документа {@link Incoming}
+ * @author dkarachurin
  */
 @Stateless
 public class IncomingDaoJPA extends DocumentGenericDaoJpa<Incoming> {

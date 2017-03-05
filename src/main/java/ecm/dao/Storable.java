@@ -1,7 +1,7 @@
 package ecm.dao;
 
 /**
- * Created by dkarachurin on 09.01.2017.
+ * @author dkarachurin
  */
 public interface Storable {
     Integer getId();

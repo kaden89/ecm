@@ -5,16 +5,18 @@ import ecm.web.dto.OutgoingDTO;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 /**
- * Created by dkarachurin on 09.01.2017.
+ * @author dkarachurin
  */
 @Entity
 public class Outgoing extends Document {
     @ManyToOne
     @NotNull
     private Person recipient;
+    @Size(max = 255)
     private String deliveryMethod;
 
     public Outgoing() {

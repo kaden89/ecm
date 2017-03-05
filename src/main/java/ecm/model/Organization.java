@@ -1,7 +1,7 @@
 package ecm.model;
 
 /**
- * Created by dkarachurin on 11.01.2017.
+ * @author dkarachurin
  */
 public class Organization extends Staff {
     private String fullName;

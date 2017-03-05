@@ -12,7 +12,8 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
- * Created by dkarachurin on 25.01.2017.
+ * JPA Реализация интерфейса {@link ImageDAO}
+ * @author dkarachurin
  */
 @Stateless
 public class ImageDaoJPA extends AbstractImageDAO {
@@ -43,9 +44,8 @@ public class ImageDaoJPA extends AbstractImageDAO {
         return getEntityManager().merge(image);
     }
 
-    public void deleteByOwnerId(int id) {
-        Image entity = findByOwnerId(id);
-        getEntityManager().remove(entity);
+    public void delete(Image image) {
+        getEntityManager().remove(image);
     }
 
     public void deleteAll() {

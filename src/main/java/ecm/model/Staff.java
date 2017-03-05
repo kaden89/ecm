@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by dkarachurin on 11.01.2017.
+ * @author dkarachurin
  */
 @MappedSuperclass
 @Access(value = AccessType.FIELD)

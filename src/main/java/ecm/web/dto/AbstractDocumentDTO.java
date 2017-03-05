@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import java.time.LocalDate;
 
 /**
- * Created by dkarachurin on 01.02.2017.
+ * @author dkarachurin
  */
 @XmlSeeAlso({IncomingDTO.class, OutgoingDTO.class, TaskDTO.class})
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -29,14 +29,8 @@ public abstract class AbstractDocumentDTO {
     }
 
     public AbstractDocumentDTO(Document document) {
-        this.id = document.getId();
-        this.name = document.getName();
-        this.text = document.getText();
-        this.regNumber = document.getRegNumber();
-        this.date = document.getDate();
-        this.authorId = document.getAuthor().getId();
+        this(document.getId(), document.getName(), document.getText(), document.getRegNumber(), document.getDate(), document.getAuthor().getId());
         this.authorName = document.getAuthor().toString();
-
     }
 
     public AbstractDocumentDTO(Integer id, String name, String text, String regNumber, LocalDate date, Integer authorId) {

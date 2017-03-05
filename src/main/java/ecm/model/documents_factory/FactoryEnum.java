@@ -6,9 +6,8 @@ import ecm.model.Task;
 
 import javax.enterprise.inject.spi.CDI;
 
-
 /**
- * Created by dkarachurin on 10.01.2017.
+ * @author dkarachurin
  */
 
 public enum FactoryEnum {

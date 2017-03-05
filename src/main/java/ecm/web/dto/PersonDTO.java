@@ -5,7 +5,7 @@ import ecm.model.Person;
 import java.time.LocalDate;
 
 /**
- * Created by dkarachurin on 02.02.2017.
+ * @author dkarachurin
  */
 public class PersonDTO extends AbstractStaffDTO {
     private String firstname;

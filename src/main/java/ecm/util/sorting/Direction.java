@@ -3,7 +3,7 @@ package ecm.util.sorting;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * @author dkarachurin on 02.03.2017.
+ * @author dkarachurin
  */
 public enum Direction {
     @SerializedName("ASC")

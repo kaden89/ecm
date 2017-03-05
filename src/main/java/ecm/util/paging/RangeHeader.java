@@ -1,7 +1,7 @@
 package ecm.util.paging;
 
 /**
- * Created by Денис on 11.02.2017.
+ * @author dkarachurin
  */
 public class RangeHeader {
     private static final String RANGE_PREFIX = "items=";

@@ -3,7 +3,7 @@ package ecm.util.paging;
 import java.util.List;
 
 /**
- * Created by Денис on 11.02.2017.
+ * @author dkarachurin
  */
 public class Page<T> {
     List<T> items;

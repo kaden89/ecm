@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by dkarachurin on 11.01.2017.
+ * @author dkarachurin
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "persons")

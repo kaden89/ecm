@@ -5,7 +5,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Created by dkarachurin on 18.01.2017.
+ * @author dkarachurin
  */
 public class HasLinksException extends WebApplicationException {
     public HasLinksException(String message) {

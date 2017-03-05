@@ -2,12 +2,13 @@ package ecm.service;
 
 import ecm.dao.ImageDAO;
 import ecm.model.Image;
+import ecm.util.db.DbUtils;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
- * Created by dkarachurin on 09.02.2017.
+ * @author dkarachurin
  */
 @Stateless
 public class ImageServiceImpl implements ImageService {
@@ -16,7 +17,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Image findByOwnerId(int ownerId) {
-        return imageDAO.findByOwnerId(ownerId);
+        return DbUtils.checkNotFoundWithId(imageDAO.findByOwnerId(ownerId), ownerId);
     }
 
     @Override
@@ -30,8 +31,8 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void deleteByOwnerId(int id) {
-        imageDAO.deleteByOwnerId(id);
+    public void deleteByOwnerId(int ownerId) {
+        imageDAO.delete(DbUtils.checkNotFoundWithId(imageDAO.findByOwnerId(ownerId), ownerId));
     }
 
     @Override

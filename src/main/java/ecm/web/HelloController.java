@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Created by dkarachurin on 27.02.2017.
+ * @author dkarachurin
  */
 @Path(value = "")
 public class HelloController {

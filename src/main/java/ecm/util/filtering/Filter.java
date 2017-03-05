@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by dkarachurin on 10.02.2017.
+ * @author dkarachurin
  */
 public class Filter {
 

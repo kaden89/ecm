@@ -1,7 +1,7 @@
 package ecm.util.sorting;
 
 /**
- * Created by Денис on 11.02.2017.
+ * @author dkarachurin
  */
 public class Sort {
 

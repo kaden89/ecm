@@ -6,7 +6,7 @@ import ecm.util.exceptions.DocumentExistsException;
 
 
 /**
- * Created by dkarachurin on 10.01.2017.
+ * @author dkarachurin
  */
 public class OutgoingFactory extends AbstractDocumentsFactory {
 

@@ -4,9 +4,8 @@ import ecm.model.Outgoing;
 import ecm.web.dto.OutgoingDTO;
 
 import javax.ws.rs.Path;
-
 /**
- * @author dkarachurin on 01.03.2017.
+ * @author dkarachurin
  */
 @Path(value = OutgoingRestController.REST_URL)
 public class OutgoingRestController extends AbstractGenericRestController<Outgoing, OutgoingDTO> {

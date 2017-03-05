@@ -1,7 +1,7 @@
 package ecm.util.filtering;
 
 /**
- * Created by dkarachurin on 10.02.2017.
+ * @author dkarachurin
  */
 public class Field {
     private String op;

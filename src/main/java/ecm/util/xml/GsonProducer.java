@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 
 /**
- * Created by dkarachurin on 13.02.2017.
+ * @author dkarachurin
  */
 public class GsonProducer {
     @Produces
