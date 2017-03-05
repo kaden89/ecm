@@ -4,22 +4,10 @@
  */
 define([
     "dojo/_base/declare",
-    "dojo/_base/lang",
-    "dojo/request/xhr",
-    "dojo/dom-attr",
     "dojo/Stateful",
-    "dojo/store/Observable",
-    "dijit/form/FilteringSelect",
-    "dojox/mvc/at",
     "myApp/ecm/ui/utils/Utils"
 ], function (declare,
-             lang,
-             xhr,
-             domAttr,
              Stateful,
-             Observable,
-             FilteringSelect,
-             at,
              Utils) {
     var Person = declare("Person", [Stateful], {
         birthday: null,
