@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
+ * Объектное представление правила из JSON фильтра Gridx.
+ * Содержит 2 поля {@link Field}: свойство и его значение, и условие {@link Conditions} между ними
  * @author dkarachurin
  */
 public class Rule {
@@ -43,7 +45,11 @@ public class Rule {
         this.data = data;
     }
 
-    public Field getLeftField() {
+    /**
+     * Определяет какое из двух полей является свойством
+     * @return Поле Свойство
+     */
+    public Field getPropertyField() {
         Field leftField = null;
         for (Field field : data) {
             if (field.isCol()) leftField = field;
@@ -51,7 +57,11 @@ public class Rule {
         return leftField;
     }
 
-    public Field getRightField() {
+    /**
+     * Определяет какое из двух полей является значением
+     * @return Поле Значение
+     */
+    public Field getValueField() {
         Field rightField = null;
         for (Field field : data) {
             if (!field.isCol()) rightField = field;
@@ -59,23 +69,38 @@ public class Rule {
         return rightField;
     }
 
+    /**
+     *  Формирует предикат для Criteria API
+     * @param cb Criteria Builder
+     * @param root Корневой путь
+     * @param entityClass класс Entity
+     * @return Предикат
+     */
     public Predicate getPredicate(CriteriaBuilder cb, Root root, Class entityClass) {
         Predicate predicate = null;
         switch (op) {
             case EQUAL:
                 predicate = cb.equal(
-                        DbUtils.getCriteriaPath(root, getLeftField().toString()),
-                        getClassCastedParam(getLeftField().toString(), getRightField().getData(), entityClass));
+                        DbUtils.getCriteriaPath(root, getPropertyField().toString()),
+                        getClassCastedParam(getPropertyField().toString(), getValueField().getData(), entityClass));
                 break;
             case CONTAIN:
                 predicate = cb.like(
-                        cb.lower(DbUtils.getCriteriaPath(root, getLeftField().toString())),
-                        getRightField().getData().toLowerCase());
+                        cb.lower(DbUtils.getCriteriaPath(root, getPropertyField().toString())),
+                        getValueField().getData().toLowerCase());
                 break;
         }
         return predicate;
     }
 
+    /**
+     * Типизирует пришедшее с клиента поле.
+     * Ищет в entity классе поле с таким именем, определяет его тип и приводит к этому типу
+     * @param paramName Имя проперти класса
+     * @param param Значение проперти класса
+     * @param entityClass Класс Entity
+     * @return Значение приведенное к нужному типу
+     */
     private Object getClassCastedParam(String paramName, Object param, Class entityClass) {
 
         Object result = null;
@@ -93,6 +118,13 @@ public class Rule {
         return result;
     }
 
+    /**
+     * Имплементация приведения значения к нужному типу типу
+     * @param clazz Класс Entity
+     * @param paramName Имя проперти класса
+     * @param param Значение проперти класса
+     * @return Значение приведенное к нужному типу
+     */
     private Object castParamToFieldClassType(Class clazz, String paramName, Object param) {
         if (paramName.contains(".")) {
             try {

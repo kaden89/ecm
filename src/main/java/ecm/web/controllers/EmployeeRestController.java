@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Реализация rest контроллера для класса {@link Person}
  * @author dkarachurin
  */
 @Path(value = EmployeeRestController.REST_URL)
@@ -33,6 +34,10 @@ public class EmployeeRestController extends AbstractGenericRestController<Person
     @Inject
     private GenericService<Post> postService;
 
+    /**
+     * Возвращает список всех должностей {@link Post}
+     * @return Список должностей
+     */
     @GET
     @Path("/posts")
     public Response getPosts() {
@@ -48,6 +53,11 @@ public class EmployeeRestController extends AbstractGenericRestController<Person
         return Response.ok(postService.find(postId)).build();
     }
 
+    /**
+     * Возвращает аватар конкретного {@link Person}
+     * @param ownerId ID сотрудника
+     * @return аватар {@link Avatar}
+     */
     @GET
     @Path("/{id}/photo")
     @Produces(MediaType.APPLICATION_JSON)
@@ -55,6 +65,12 @@ public class EmployeeRestController extends AbstractGenericRestController<Person
         return Response.ok(avatarService.findByOwnerId(ownerId)).build();
     }
 
+    /**
+     * Загружает аватар для конкретного {@link Person}
+     * @param ownerId ID сотрудника
+     * @param photo картинка
+     * @return Загруженный аватар
+     */
     @POST
     @Path("/{id}/photo")
     @Consumes(MediaType.MULTIPART_FORM_DATA)

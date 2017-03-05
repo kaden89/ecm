@@ -12,6 +12,7 @@ import java.time.LocalDate;
 
 
 /**
+ * Инстанциирует класс {@link Gson} для инжекта
  * @author dkarachurin
  */
 public class GsonProducer {

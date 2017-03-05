@@ -6,6 +6,7 @@ import java.lang.reflect.Type;
 
 
 /**
+ * Кастомный десериализатор класса {@link Sort}. Маппит проперти DTO на проперти доменных классов
  * @author dkarachurin
  */
 public class SortDeserializer implements JsonDeserializer<Sort> {

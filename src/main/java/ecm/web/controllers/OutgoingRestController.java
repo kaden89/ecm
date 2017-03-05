@@ -5,6 +5,7 @@ import ecm.web.dto.OutgoingDTO;
 
 import javax.ws.rs.Path;
 /**
+ * Реализация rest контроллера для класса {@link Outgoing}
  * @author dkarachurin
  */
 @Path(value = OutgoingRestController.REST_URL)

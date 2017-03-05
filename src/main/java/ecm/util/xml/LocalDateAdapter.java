@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.LocalDate;
 
 /**
+ * Адаптер для даты пришедшей с клиента
  * @author dkarachurin
  */
 

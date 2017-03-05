@@ -6,6 +6,7 @@ import ecm.web.dto.IncomingDTO;
 import javax.ws.rs.Path;
 
 /**
+ * Реализация rest контроллера для класса {@link Incoming}
  * @author dkarachurin
  */
 @Path(value = IncomingRestController.REST_URL)

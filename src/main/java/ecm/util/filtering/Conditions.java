@@ -3,9 +3,9 @@ package ecm.util.filtering;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * Условия запроса приходящие с клиента
  * @author dkarachurin
  */
-//and, or, not, equal, greater, less, greaterEqual, lessEqual, match, contain, startWith, endWith
 
 public enum Conditions {
     @SerializedName("and")

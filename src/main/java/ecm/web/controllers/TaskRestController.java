@@ -6,6 +6,7 @@ import ecm.web.dto.TaskDTO;
 import javax.ws.rs.Path;
 
 /**
+ * Реализация rest контроллера для класса {@link Task}
  * @author dkarachurin
  */
 @Path(value = TaskRestController.REST_URL)

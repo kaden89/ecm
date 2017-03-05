@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Объектное представление JSON фильтра получаемого от Gridx.
+ * Содержит список правил {@link Rule} и условия между ними {@link Conditions}
+ * Формирует предикат для Criteria API для метода where()
  * @author dkarachurin
  */
 public class Filter {
@@ -38,6 +41,13 @@ public class Filter {
         this.data = data;
     }
 
+    /**
+     * Формирует предикат для Criteria API
+     * @param cb Criteria Builder
+     * @param root Корневой путь
+     * @param entityClass класс Entity
+     * @return
+     */
     public Predicate getFilterPredicate(CriteriaBuilder cb, Root root, Class entityClass) {
         List<Predicate> predicates = new ArrayList<>();
         Predicate result = null;

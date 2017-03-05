@@ -1,6 +1,7 @@
 package ecm.util.paging;
 
 /**
+ * Объектное представление range header приходящего с клиента для пейджинговых запросов
  * @author dkarachurin
  */
 public class RangeHeader {

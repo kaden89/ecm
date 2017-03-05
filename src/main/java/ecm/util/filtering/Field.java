@@ -1,6 +1,7 @@
 package ecm.util.filtering;
 
 /**
+ * Поле из JSON фильтра, может быть проперти класса (isCol) либо значением (!isCol)
  * @author dkarachurin
  */
 public class Field {

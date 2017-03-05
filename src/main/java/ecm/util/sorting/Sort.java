@@ -1,6 +1,7 @@
 package ecm.util.sorting;
 
 /**
+ * Представляет собой объектное представление приходящего с клиента сортировочного JSON. Содержит поле и направление
  * @author dkarachurin
  */
 public class Sort {
