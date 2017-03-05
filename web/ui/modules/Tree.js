@@ -1,3 +1,8 @@
+/**
+ * Наследованный от Tree модуль. Для добавления функции обновления дерева после изменения данных в  Store,
+ * т.к. Observable JsonRest и Tree вместе не работают.
+ * @author dkarachurin
+ */
 define([
     "dojo/_base/declare",
     "dijit/Tree",

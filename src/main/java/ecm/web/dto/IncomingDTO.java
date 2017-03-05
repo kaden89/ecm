@@ -5,6 +5,7 @@ import ecm.model.Incoming;
 import java.time.LocalDate;
 
 /**
+ * ДТО {@link Incoming}
  * @author dkarachurin
  */
 public class IncomingDTO extends AbstractDocumentDTO {

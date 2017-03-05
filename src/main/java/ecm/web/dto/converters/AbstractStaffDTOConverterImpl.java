@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
+ * Абстарктная реализация конвертера объектов орг структуры: ДТО-Объект
+ * @see PersonDTOConverter
  * @author dkarachurin
  */
 

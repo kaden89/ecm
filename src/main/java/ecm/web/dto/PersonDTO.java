@@ -5,6 +5,7 @@ import ecm.model.Person;
 import java.time.LocalDate;
 
 /**
+ * ДТО {@link Person}
  * @author dkarachurin
  */
 public class PersonDTO extends AbstractStaffDTO {

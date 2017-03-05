@@ -3,6 +3,7 @@ package ecm.web.dto;
 import ecm.model.Outgoing;
 
 /**
+ * ДТО {@link Outgoing}
  * @author dkarachurin
  */
 public class OutgoingDTO extends AbstractDocumentDTO {

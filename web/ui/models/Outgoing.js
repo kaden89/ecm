@@ -1,3 +1,7 @@
+/**
+ * Модель для документа Outgoing
+ * @author dkarachurin
+ */
 define([
     "dojo/_base/declare",
     "dojo/Stateful",

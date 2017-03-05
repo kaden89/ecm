@@ -10,6 +10,10 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import java.time.LocalDate;
 
 /**
+ * Абстрактная модель ДТО документов
+ * @see IncomingDTO
+ * @see OutgoingDTO
+ * @see TaskDTO
  * @author dkarachurin
  */
 @XmlSeeAlso({IncomingDTO.class, OutgoingDTO.class, TaskDTO.class})

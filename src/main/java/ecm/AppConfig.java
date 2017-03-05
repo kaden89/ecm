@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Конфигурационный файл приложения
  * @author dkarachurin
  */
 @ApplicationPath("/rest")

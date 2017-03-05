@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * ДТО коллекции {@link ecm.model.Person}
  * @author dkarachurin
  */
 @XmlAccessorType(XmlAccessType.FIELD)

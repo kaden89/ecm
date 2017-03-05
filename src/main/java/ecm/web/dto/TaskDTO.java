@@ -5,6 +5,7 @@ import ecm.model.Task;
 import java.time.LocalDate;
 
 /**
+ * ДТО {@link Task}
  * @author dkarachurin
  */
 public class TaskDTO extends AbstractDocumentDTO {

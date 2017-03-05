@@ -6,6 +6,7 @@ import ecm.web.dto.IncomingDTO;
 import javax.inject.Singleton;
 
 /**
+ * Конвертер {@link Incoming} - {@link IncomingDTO}
  * @author dkarachurin
  */
 @Singleton

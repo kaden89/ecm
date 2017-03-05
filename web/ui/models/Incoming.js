@@ -1,3 +1,7 @@
+/**
+ * Модель для документа Incoming
+ * @author dkarachurin
+ */
 define([
     "dojo/_base/declare",
     "dojo/Stateful",
@@ -35,7 +39,9 @@ define([
             }
         }
     });
-    //static field
+    /**
+     * Статическое поле структуры грида
+     */
     Incoming.columns = [
         {id: 'id', field: 'id', name: 'id', width: '5%'},
         {id: 'name', field: 'name', name: 'Name', width: '10%'},

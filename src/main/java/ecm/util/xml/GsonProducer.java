@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 
 /**
- * Инстанциирует класс {@link Gson} для инжекта
+ * Производит экземпляр класса {@link Gson} для CDI
  * @author dkarachurin
  */
 public class GsonProducer {
@@ -20,7 +20,6 @@ public class GsonProducer {
     public Gson produceGson() {
         return new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, (JsonSerializer<LocalDate>) (localDate, type, jsonSerializationContext) -> new JsonPrimitive(localDate.toString()))
-                .registerTypeAdapter(byte[].class, new ByteArrayAdapter())
                 .registerTypeAdapter(Sort.class, new SortDeserializer())
                 .create();
     }

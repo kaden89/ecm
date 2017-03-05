@@ -3,6 +3,7 @@ package ecm.web.dto;
 import java.util.List;
 
 /**
+ * Класс для формирования JSON для Dojo Tree
  * @author dkarachurin
  */
 public class TreeNode<T> {

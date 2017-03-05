@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * ДТО {@link Department}
  * @author dkarachurin
  */
 @XmlAccessorType(XmlAccessType.FIELD)

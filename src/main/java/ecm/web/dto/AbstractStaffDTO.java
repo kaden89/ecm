@@ -6,6 +6,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
+ * Абстрактная модель ДТО объектов орг структуры
+ * @see PersonDTO
+ * @see DepartmentsDTO
+ * @see OrganizationsDTO
  * @author dkarachurin
  */
 @XmlSeeAlso({PersonDTO.class})

@@ -1,6 +1,7 @@
 package ecm.web.dto;
 
 /**
+ * Класс для отправки на клиент конфигурации URL
  * @author dkarachurin
  */
 public class ServerURLConfigDTO {

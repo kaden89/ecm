@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
+ * Контроллер для отправки конфигурации URL
  * @author dkarachurin
  */
 @Path(value = "")
@@ -16,7 +17,7 @@ public class HelloController {
     @GET
     @Path("/config")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEmployeeRoot() {
+    public Response getUrlConfig() {
         return Response.ok(new ServerURLConfigDTO()).build();
     }
 }

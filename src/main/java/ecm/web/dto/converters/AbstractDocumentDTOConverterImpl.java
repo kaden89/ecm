@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
+ * Абстарктная реализация конвертера документов: ДТО-Объект
+ * @see IncomingDTOConverter
+ * @see OutgoingDTOConverter
+ * @see TaskDTOConverter
  * @author dkarachurin
  */
 

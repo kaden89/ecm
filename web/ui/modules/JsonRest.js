@@ -1,6 +1,10 @@
+/**
+ * Наследованный от JsonRest модуль. Для переопределение метода который генерирует сортировочный GET запрос
+ *  Чтобы вместо 'sort(+-fieldName)' был JSON 'sort={field: fieldName, direction=DESC/ASC}'
+ * @author dkarachurin
+ */
 define(["dojo/store/JsonRest", "dojo/_base/declare", "dojo/_base/lang", "dojo/_base/xhr", "dojo/store/util/QueryResults"], function (JsonRest, declare, h, e, m) {
     return declare([JsonRest], {
-        //Override original method which build query sort params for next template: 'sort={field: fieldName, direction=DESC/ASC}' instead 'sort(+-fieldName)'
         query: function (b, a) {
             a = a || {};
             var c = h.mixin({
@@ -15,7 +19,7 @@ define(["dojo/store/JsonRest", "dojo/_base/declare", "dojo/_base/lang", "dojo/_b
             if (a && a.sort) {
                 var k = this.sortParam;
                 b += (b || d ? "\x26" : "?") + (k ? k + "\x3d" : "");
-                //Changes here:
+                //Изменения тут:
                 for (d = 0; d < a.sort.length; d++) {
                     var f = a.sort[d];
                     var path;

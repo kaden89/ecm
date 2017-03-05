@@ -27,6 +27,7 @@ import java.util.*;
 import static ecm.model.documents_factory.FactoryEnum.*;
 
 /**
+ * Стартовый класс для загрузки данных из xml и генерации документов
  * @author dkarachurin
  */
 public class StartClass implements ServletContextListener {

@@ -1,3 +1,7 @@
+/**
+ * Модель для сотрудников Person
+ * @author dkarachurin
+ */
 define([
     "dojo/_base/declare",
     "dojo/_base/lang",

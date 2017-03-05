@@ -6,6 +6,7 @@ import ecm.web.dto.TaskDTO;
 import javax.inject.Singleton;
 
 /**
+ * Конвертер {@link Task} - {@link TaskDTO}
  * @author dkarachurin
  */
 @Singleton
