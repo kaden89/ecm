@@ -108,7 +108,7 @@ define([
             if (this.welcomWidget.switchOnTabById(model.id == undefined ? model.declaredClass : model.id)) return;
             var formWidget = new CommonForm({
                 model: model,
-                templateString: this.getTemplateByModel(model),
+                // templateString: this.getTemplateByModel(model),
                 isNew: model.id == undefined,
                 personStore: this.personStore,
                 postStore: this.postStore,
@@ -138,7 +138,6 @@ define([
             if (formWidget.isNew) {
                 store.add(formWidget.model).then(function (data) {
                     formWidget.updateAfterSaveNew(data);
-                    formWidget.model.updateFormAfterSaveNew(formWidget);
                     this.welcomWidget.reopenTabForModel(formWidget.model);
                     this.navWidget.updateTreeByModel(formWidget.model);
                 }.bind(this));

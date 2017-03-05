@@ -5,10 +5,9 @@
 define([
     "dojo/_base/declare",
     "dojo/Stateful",
-    "myApp/ecm/ui/utils/Utils",
-    "myApp/ecm/ui/mixins/_FormAwareMixin"
-], function (declare, Stateful, Utils, _FormAwareMixin) {
-    var Task = declare("Task", [Stateful, _FormAwareMixin], {
+    "myApp/ecm/ui/utils/Utils"
+], function (declare, Stateful, Utils) {
+    var Task = declare("Task", [Stateful], {
         date: null,
         _dateSetter: function (value) {
             this.date = Utils.addTimezoneToDate(value);
@@ -20,27 +19,6 @@ define([
         deadline: null,
         _deadlineSetter: function (value) {
             this.deadline = Utils.addTimezoneToDate(value);
-        },
-        initForm: function (form) {
-            form.author.store = form.personStore;
-            form.executor.store = form.personStore;
-            form.controller.store = form.personStore;
-
-            form.author.value = this.positionId;
-            form.executor.value = this.executorId;
-            form.controller.value = this.controllerId;
-
-            if (!form.isNew) {
-                form.personStore.get(this.authorId).then(function (data) {
-                    form.author.set('item', data);
-                }.bind(this));
-                form.personStore.get(this.executorId).then(function (data) {
-                    form.executor.set('item', data);
-                }.bind(this));
-                form.personStore.get(this.controllerId).then(function (data) {
-                    form.controller.set('item', data);
-                }.bind(this));
-            }
         }
     });
     //static field

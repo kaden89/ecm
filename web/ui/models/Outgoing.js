@@ -5,29 +5,12 @@
 define([
     "dojo/_base/declare",
     "dojo/Stateful",
-    "myApp/ecm/ui/utils/Utils",
-    "myApp/ecm/ui/mixins/_FormAwareMixin"
-], function (declare, Stateful, Utils, _FormAwareMixin) {
-    var Outgoing = declare("Outgoing", [Stateful, _FormAwareMixin], {
+    "myApp/ecm/ui/utils/Utils"
+], function (declare, Stateful, Utils) {
+    var Outgoing = declare("Outgoing", [Stateful], {
         date: null,
         _dateSetter: function (value) {
             this.date = Utils.addTimezoneToDate(value);
-        },
-        initForm: function (form) {
-            form.author.store = form.personStore;
-            form.recipient.store = form.personStore;
-
-            form.author.value = this.positionId;
-            form.recipient.value = this.recipientId;
-
-            if (!form.isNew) {
-                form.personStore.get(this.authorId).then(function (data) {
-                    form.author.set('item', data);
-                }.bind(this));
-                form.personStore.get(this.recipientId).then(function (data) {
-                    form.recipient.set('item', data);
-                }.bind(this));
-            }
         }
     });
     //static field
