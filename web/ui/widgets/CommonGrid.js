@@ -1,3 +1,7 @@
+/**
+ * Виджет общей формы для отображения таблицы документов и Person
+ * @author dkarachurin
+ */
 define([
     "dojo/_base/declare",
     "dojo/topic",

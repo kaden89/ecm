@@ -1,3 +1,7 @@
+/**
+ * Виджет стартовой страницы приложения
+ * @author dkarachurin
+ */
 define([
     "dojo/_base/lang",
     "dojo/_base/declare",

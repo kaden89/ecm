@@ -1,3 +1,7 @@
+/**
+ * Контроллер приложения. Управляет виджетами и хранилищами
+ * @author dkarachurin
+ */
 define([
     "dijit/_WidgetBase",
     "dojo/_base/declare",
@@ -19,11 +23,7 @@ define([
     "myApp/ecm/ui/models/Incoming",
     "myApp/ecm/ui/models/Outgoing",
     "myApp/ecm/ui/models/Person",
-    "myApp/ecm/ui/models/Task",
-    "dojo/text!/ecm/ui/templates/Person.html",
-    "dojo/text!/ecm/ui/templates/Incoming.html",
-    "dojo/text!/ecm/ui/templates/Outgoing.html",
-    "dojo/text!/ecm/ui/templates/Task.html"
+    "myApp/ecm/ui/models/Task"
 ], function (_WidgetBase,
              declare,
              dom,
@@ -40,7 +40,7 @@ define([
              CommonForm,
              NavigationWidget,
              WelcomWidget,
-             CommonGrid, Incoming, Outgoing, Person, Task, personTemplate, incomingTemplate, outgoingTemplate, taskTemplate) {
+             CommonGrid, Incoming, Outgoing, Person, Task) {
     return declare("AppController", [_WidgetBase], {
         navWidget: null,
         welcomWidget: null,
@@ -108,7 +108,6 @@ define([
             if (this.welcomWidget.switchOnTabById(model.id == undefined ? model.declaredClass : model.id)) return;
             var formWidget = new CommonForm({
                 model: model,
-                // templateString: this.getTemplateByModel(model),
                 isNew: model.id == undefined,
                 personStore: this.personStore,
                 postStore: this.postStore,
@@ -201,17 +200,6 @@ define([
                 return this.outgoingStore;
             } else if (model instanceof Task) {
                 return this.taskStore;
-            }
-        },
-        getTemplateByModel: function (model) {
-            if (model instanceof Person) {
-                return personTemplate;
-            } else if (model instanceof Incoming) {
-                return incomingTemplate;
-            } else if (model instanceof Outgoing) {
-                return outgoingTemplate;
-            } else if (model instanceof Task) {
-                return taskTemplate;
             }
         }
     });

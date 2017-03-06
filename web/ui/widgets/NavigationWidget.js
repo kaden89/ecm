@@ -1,3 +1,7 @@
+/**
+ * Виджет Меню навигации
+ * @author dkarachurin
+ */
 define([
     "dojo/_base/lang",
     "dojo/_base/declare",
